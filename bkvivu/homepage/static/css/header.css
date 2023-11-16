@@ -1,0 +1,179 @@
+button{
+    cursor: pointer;
+}
+
+.header{
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.header .left{
+    margin-left: 50px;
+}
+.header .left .logo{
+    display: flex;
+
+}
+.header .left .logo img{
+    width: 70px;
+    height: 60px;
+    border-radius: 15px;
+}
+
+.header .left .logo .description {
+    margin: auto 0px auto 10px;
+}
+.header .description h2, .header .description p{
+    margin: 0px;
+}
+
+.header .center{
+    width: 30%;
+}
+.header .center form{
+    display: flex;
+    position: relative;
+    width: 100%;
+}
+.header .center input{
+    width: 90%;
+    padding: 10px;
+    border-radius: 10px 0px 0px 10px;
+    font-size: 16px;
+    border-right: none;
+    margin-right: 0px;
+}
+.header .center button{
+    font-size: 20px;
+    border-radius: 0px 10px 10px 0px;
+    padding: 0px 15px;
+    background-color: #fff;
+}
+
+.header .right{
+    display: flex;
+    margin-right: 50px;
+}
+.header .right a{
+    float: left;
+    /* color: black; */
+    width: 130px;
+    text-align: center;
+    padding: 14px 10px 10px 0px;
+    font-size: 18px;
+    position: relative;
+}
+.header .right .subnav{
+    display: none;
+    position: absolute;
+    top: 60px;
+    width: 130px;
+    flex-direction: column;
+    background-color: #f1f1f1;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.header .right .subnav a {
+    /* display: block; */
+    color: black;
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+    text-align: left;
+}
+.header .right a:hover {
+    background-color: #ddd;
+    border-radius: 15px;
+    /* color: black; */
+}
+.header .right .subnav a:hover {
+    background-color: #ddd;
+    border-radius: 0px;
+    /* color: black; */
+}
+.header .right button{
+    background-color: aqua;
+    margin-left: 10px;
+    padding: 5px 15px 5px 15px;
+    border-radius: 15px;
+    border-color: none;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+.login{
+    display: none;
+    position:absolute;
+    top: 60px;
+    z-index: 2;
+}
+
+.login form {
+    background-color: #fff;
+    box-sizing: border-box;
+    width: 260px;
+    margin: 0;
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+    padding-bottom: 40px;
+    border-radius: 3px;
+}
+
+.login form h1 {
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.login input {
+    margin: 40px 25px;
+    width: 200px;
+    display: block;
+    border: none;
+    padding: 10px 0;
+    border-bottom: solid 1px #1abc9c;
+    transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, #1abc9c 4%);
+    background-position: -200px 0;
+    background-size: 200px 100%;
+    background-repeat: no-repeat;
+    color: #0e6252;
+}
+
+.login input:focus, .login input:valid {
+    box-shadow: none;
+    outline: none;
+    background-position: 0 0;
+}
+
+.login input:focus::-webkit-input-placeholder, .login input:valid::-webkit-input-placeholder {
+    color: #1abc9c;
+    font-size: 11px;
+    transform: translateY(-12px);
+    visibility: visible !important;
+}
+
+.login button {
+    border: none;
+    background: #1abc9c;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 6px;
+    width: 200px;
+    color: white;
+    margin-left: 25px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.login button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.right .sign-in:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+}
