@@ -62,3 +62,6 @@ def counter(request):
   words = request.POST['text']
   n = len(words.split())
   return render(request, 'home/counter.html', {'n': n})
+
+def testtruong(request):
+  return render(request, 'profile/profile.html')
