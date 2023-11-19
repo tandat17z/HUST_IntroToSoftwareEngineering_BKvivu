@@ -18,7 +18,7 @@ button{
     display: flex;
 
 }
-.header .left .logo img{
+.header .left .logo img, .header .right .img-user{
     width: 70px;
     height: 60px;
     border-radius: 15px;
@@ -296,4 +296,10 @@ display: table;
     #-box-signup .cancelbtn, #-box-signup .signupbtn {
     width: 100%;
 }
+}
+
+.header .right .img-user{
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
 }
