@@ -1,9 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+
 <html>
     <head>
         <meta charset="utf-8">
@@ -13,24 +8,24 @@
 
         <!-- css -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-        <link rel="stylesheet" href="{% static 'css/styles.css'%}"></link>
-        <link rel="stylesheet" href="{% static 'css/header.css'%}"></link>
-        <link rel="stylesheet" href="{% static 'css/slideshow.css'%}"></link>
-        <link rel="stylesheet" href="{% static 'css/topshop.css'%}"></link>
-        <link rel="stylesheet" href="{% static 'css/toppost.css'%}"></link>
-        <link rel="stylesheet" href="{% static 'css/saleoff.css'%}"></link>
-        <link rel="stylesheet" href="{% static 'css/footer.css'%}"></link>
+        <link rel="stylesheet" href="css/styles.css"></link>
+        <link rel="stylesheet" href="css/header.css"></link>
+        <link rel="stylesheet" href="css/slideshow.css"></link>
+        <link rel="stylesheet" href="css/topshop.css"></link>
+        <link rel="stylesheet" href="css/toppost.css"></link>
+        <link rel="stylesheet" href="css/saleoff.css"></link>
+        <link rel="stylesheet" href="css/footer.css"></link>
 
         <!-- js -->
 
-        <link rel = "icon" href ="{% static 'images/logo.png' %}" type = "image/x-icon"> 
+        <link rel = "icon" href ="images/logo.png" type = "image/x-icon"> 
         <title>BKvivu - nền tảng chia sẻ hàng đầu dành cho sinh viên</title>
     </head>
     <body>
         <div class="header">
             <div class="left">
                 <a href="" class="logo">
-                    <img src="{% static 'images/logo.png' %}"  alt="logo">
+                    <img src="images/logo.png"  alt="logo">
                     <div class = "description">
                         <h2>BKvivu</h2>
                         <p>Nền tảng chia sẻ dịch vụ hàng đầu</p>
@@ -40,7 +35,7 @@
             
             <div class="center">
                 <form action = "search" method = "POST">
-                    {% csrf_token %}
+                    <!-- {% csrf_token %} -->
                     <input type="text" placeholder="Nay đi đâu ta ..." name="search">
                     <button type="submit"><i class="fa fa-search"></i></button>
                 </form>
@@ -58,7 +53,7 @@
                     <a href="" id="tab_login"><i class="fa fa-fw fa-user"></i> Đăng nhập</a>
                     <div class="login">
                         <form action='login' method='POST'>
-                            {% csrf_token %}
+                            <!-- {% csrf_token %} -->
                             <h1>Login</h1>
                             <input name = 'username' placeholder="Username" type="text">
                             <input name = 'password' placeholder="Password" type="password">
@@ -70,20 +65,19 @@
                     <button class="sign-up-btn" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Đăng kí</button>
                     <div id="id01" class="modal">
                         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-                        <form class="modal-content" method='POST' >
-                            {% csrf_token %}
+                        <form class="modal-content" action="">
                             <div class="container">
                                 <h1>Sign Up</h1>
                                 <p>Please fill in this form to create an account.</p>
                                 <hr>
                                 <label for="username"><b>Username</b></label>
-                                <input type="text" placeholder="Enter Username" name="su-username" required>
+                                <input type="text" placeholder="Enter Username" name="username" required>
                         
                                 <label for="psw"><b>Password</b></label>
-                                <input type="password" placeholder="Enter Password" name="su-psw" required>
+                                <input type="password" placeholder="Enter Password" name="psw" required>
                         
                                 <label for="psw-repeat"><b>Repeat Password</b></label>
-                                <input type="password" placeholder="Repeat Password" name="su-psw-repeat" required>
+                                <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
                                 
                                 <!-- <label>
                                 <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
@@ -98,27 +92,29 @@
                             </div>
                         </form>
                     </div>
-                </div>  
+
+
+                </div>
             </div>
         </div>
         
         <!-- Slideshow container -->
         <div class="slideshow-container" >
             <div class="mySlides fade">
-                <img src="{% static 'images/img11.jpg' %}" style="width:100%; height: 600px">
+                <img src="images/img11.jpg" style="width:100%; height: 600px">
             </div>
         
             <div class="mySlides fade">
-                <img src="{% static 'images/img22.jpg' %}" style="width:100%; height: 600px;">
+                <img src="images/img22.jpg" style="width:100%; height: 600px;">
             </div>
         
             <div class="mySlides fade">
-                <img src="{% static 'images/img33.jpg' %}" style="width:100%; height: 600px">
+                <img src="images/img33.jpg" style="width:100%; height: 600px">
             </div>
             <div class="box-right">
-                <img src="{% static 'images/food.jpg' %}" alt="">
-                <img src="{% static 'images/img22.jpg' %}" alt="">
-                <img src="{% static 'images/food.jpg' %}" alt="">
+                <img src="images/food.jpg" alt="">
+                <img src="images/img22.jpg" alt="">
+                <img src="images/food.jpg" alt="">
             </div>
             <!-- Next and previous buttons -->
             <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
@@ -140,10 +136,10 @@
                         <h2>1</h2>
                     </div>
                     <a href="">
-                        <img src="{% static 'images/logo.png' %}" alt="logo_shop">
+                        <img src="images/logo.png" alt="logo_shop">
                     </a>  
                     <div class="stars">
-                        <p>5/5 <span><img src="{% static 'images/star.png' %}" alt=""></span></p>
+                        <p>5/5 <span><img src="images/star.png" alt=""></span></p>
                         <h2>Nhà hàng Tandat17z</h2>
                     </div>
                 </button>
@@ -152,10 +148,10 @@
                         <h2>2</h2>
                     </div>
                     <a href="">
-                        <img src="{% static 'images/logo.png' %}" alt="logo_shop">
+                        <img src="images/logo.png" alt="logo_shop">
                     </a>    
                     <div class="stars">
-                        <p>4.5/5 <span><img src="{% static 'images/star.png' %}" alt=""></span></p>
+                        <p>4.5/5 <span><img src="images/star.png" alt=""></span></p>
                         <h2>Nhà hàng Tandat17z</h2>
                     </div>
                 </button>
@@ -164,10 +160,10 @@
                         <h2>3</h2>
                     </div>
                     <a href="">
-                        <img src="{% static 'images/logo.png' %}" alt="logo_shop">
+                        <img src="images/logo.png" alt="logo_shop">
                     </a>  
                     <div class="stars">
-                        <p>5/5<span><img src="{% static 'images/star.png' %}" alt=""></span></p>
+                        <p>5/5<span><img src="images/star.png" alt=""></span></p>
                         <h2>Nhà hàng Tandat17z</h2>
                     </div>
                 </button>
@@ -175,17 +171,17 @@
             <div id="London" class="tabcontent" style="display: block;">
                 <!-- <h3>London</h3>
                 <p>London is the capital city of England.</p> -->
-                <img src="{% static 'images/img1.jpg' %}" alt="">
+                <img src="images/img1.jpg" alt="">
             </div>
             <div id="Paris" class="tabcontent">
                 <!-- <h3>Paris</h3>
                 <p>Paris is the capital of France.</p> -->
-                <img src="{% static 'images/img2.jpg' %}" alt="">
+                <img src="images/img2.jpg" alt="">
             </div>
             <div id="Tokyo" class="tabcontent">
                 <!-- <h3>Tokyo</h3>
                 <p>Tokyo is the capital of Japan.</p> -->
-                <img src="{% static 'images/img3.jpg' %}" alt="">
+                <img src="images/img3.jpg" alt="">
             </div>
         </div>
         
@@ -472,8 +468,8 @@
             <p>&copy;2023 BKvivu | BaoDungDatDatThanhTruong</p>
         </footer>
     
-        <script src="{% static 'js/scripts.js' %}"></script>
-        <script src="{% static 'js/header.js' %}"></script>
+        <script src="js/scripts.js"></script>
+        <script src="js/header.js"></script>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     </body>
