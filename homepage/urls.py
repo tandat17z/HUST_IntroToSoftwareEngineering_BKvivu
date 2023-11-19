@@ -8,4 +8,5 @@ urlpatterns = [
     path('homepage/', views.homepage),
     path('input', views.test),
     path('counter', views.counter),
+    path('testtruong', views.testtruong)
 ]
