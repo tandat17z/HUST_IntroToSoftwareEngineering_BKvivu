@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import *
 
+
+# global user
 # Create your views here.
 def main(request):
   # template = loader.get_template('home/main.html')
@@ -14,54 +16,76 @@ def signup_view(request):
   psw = request.POST['su-psw']
   psw_repeat = request.POST['su-psw-repeat']
 
-  user = User.objects.filter(username = username)
-  if psw != psw_repeat or len(user) > 0:
+  users = User.objects.filter(username = username)
+  if psw != psw_repeat or len(users) > 0:
     signup = False
+    context = {
+      'signup': signup,
+      'login': True,
+    }
   else:
     signup = True
     new_user = User(username= username, password = psw)
     new_user.save()
-
-  context = {
-    'signup': signup,
-    'login': True,
-    'username': username,
-  }
+    global user
+    user = new_user
+    context = {
+      'signup': signup,
+      'login': True,
+      'username': user.username,
+    }
   return render(request, 'home/alert.html', context)
 
 
 def homepage(request):
-  return render(request, 'home/homepage.html')
+  print(user)
+  context ={
+    'user': user,
+  }
+  return render(request, 'home/homepage.html', context)
 
 def login_view(request):
   username = request.POST['username']
   password = request.POST['password']
 
-  user = User.objects.filter(username = username)
-  if len(user) != 1:
+  users = User.objects.filter(username = username)
+  if len(users) != 1:
     print('Lỗi trùng tên đăng nhập')
     logged = False
-  elif user[0].password == password:
+  elif users[0].password == password:
     logged = True
+    global user
+    user = users[0]
   else:
     logged = False
 
-  context = {
-    'type': False,
-    'signup': False,
-    'login': logged,
-    'username': username,
-  }
+  if logged:
+    context = {
+      'type': False,
+      'signup': False,
+      'login': logged,
+      'username': user.username,
+    }
+  else:
+    context = {
+      'type': False,
+      'signup': False,
+      'login': logged,
+      # 'username': user.username,
+    }
   return render(request, 'home/alert.html', context)
 
 
-def test(request):
-  return render(request, 'home/index.html')
+# def test(request):
+#   return render(request, 'home/index.html')
 
-def counter(request):
-  words = request.POST['text']
-  n = len(words.split())
-  return render(request, 'home/counter.html', {'n': n})
+# def counter(request):
+#   words = request.POST['text']
+#   n = len(words.split())
+#   return render(request, 'home/counter.html', {'n': n})
 
-def testtruong(request):
-  return render(request, 'profile/profile.html')
+def testtruong(request, username):
+  context = {
+    'username': username,
+  }
+  return render(request, 'profile/profile.html', context)

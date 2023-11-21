@@ -1,10 +1,11 @@
+{% load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="/homepage/static/Truong/style.css">
+    <link rel="stylesheet" href="{% static 'Truong/style.css'%}">
     <script src="https://kit.fontawesome.com/bc4d8a1311.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -42,7 +43,7 @@
                 </div>
             </a>
 
-            <a href="#log-out" class="log-out">
+            <a href="\" class="log-out">
                 <div >
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <span>Log out</span>
@@ -58,7 +59,7 @@
                 <img src="/img/avatar.jpg" alt="">
             </div>
             <div class="name">
-                <h1 id="name-profile">Phan Bá Trường</h2>
+                <h1 id="name-profile">{{ username }}</h2>
                 <div class="rated">
                     <h4 id="point-rate">4.5</h4>
                     <h4 id="point-max">/ 5</h4>
@@ -290,7 +291,7 @@
                         </div>
                         <div class="left-name-time">
                             <div class="name">
-                                <h4>Phan Bá Trường</h4>
+                                <h4>{{ username }}</h4>
                             </div>
                             <div class="time">
                                 <span>3 giờ trước</span>
@@ -339,7 +340,7 @@
                         </div>
                         <div class="left-name-time">
                             <div class="name">
-                                <h4>Phan Bá Trường</h4>
+                                <h4>{{ username }}</h4>
                             </div>
                             <div class="time">
                                 <span>3 giờ trước</span>
@@ -388,7 +389,7 @@
                         </div>
                         <div class="left-name-time">
                             <div class="name">
-                                <h4>Phan Bá Trường</h4>
+                                <h4>{{ username }}</h4>
                             </div>
                             <div class="time">
                                 <span>3 giờ trước</span>

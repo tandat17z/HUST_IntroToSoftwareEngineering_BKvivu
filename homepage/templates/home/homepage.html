@@ -2,8 +2,9 @@
 {% load static %}
 
 {% block info_user%}
-<a href="" class="logo-user">
+<a href="{% url 'user_profile' username=user.username %}" class="logo-user">
     <img class="img-user" src="{% static 'images/logo.png' %}"  alt="logo" style="">
+    {{user.username}}
 </a>
 
 {% endblock %}

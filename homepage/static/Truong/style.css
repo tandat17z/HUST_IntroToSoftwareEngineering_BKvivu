@@ -35,7 +35,7 @@ img{
     display: flex;
     flex-direction: column;
     background-color: #7da8ce;
-    text-shadow: 1px 1px 5px #155069F;
+    text-shadow: 1px 1px 5px #15069F;
     text-align: center;
     z-index: 10;
 }
