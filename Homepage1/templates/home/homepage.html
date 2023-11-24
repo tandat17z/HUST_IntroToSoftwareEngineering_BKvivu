@@ -1,0 +1,10 @@
+{% extends "home/base/main.html" %}
+{% load static %}
+
+{% block info_user%}
+<a href="/profile/{{tk.username}}" class="logo-user">
+    <img class="img-user" src = "{{tk.avatar.url}}"/>
+    {{tk.username}}
+</a>
+
+{% endblock %}

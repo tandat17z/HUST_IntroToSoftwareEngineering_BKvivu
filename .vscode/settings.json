@@ -1,0 +1,7 @@
+{
+    "html.format.contentUnformatted": "",
+    "html.format.templating": true,
+    "emmet.includeLanguages": {
+        "django-html": "html"
+    }
+}
