@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+nav {
+    
+    display: flex;
+    justify-content: center;
+    background-color: #444;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #555;
+}
+
+section {
+    display: none;
+    padding: 20px;
+}
+button {
+    color: crimson;
+    padding: 10px;
+    font-size: 16px;
+    margin: 0 auto; /* Canh giữa theo chiều ngang */
+    display: block; /* Chuyển thành phần tử block để margin:auto hoạt động */
+}
