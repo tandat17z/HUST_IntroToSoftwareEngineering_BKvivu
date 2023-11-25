@@ -30,7 +30,7 @@ def login(request):
         tk.save()
         redirect_url = reverse('home', args=[username])
         return redirect(redirect_url)
-    else:
+    elif login_name:
       username = login_name
       psw = request.POST.get('password')
       tks = TaiKhoan.objects.filter(username = username)

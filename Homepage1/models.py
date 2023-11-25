@@ -1,6 +1,6 @@
 import os
 from django.db import models
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -11,6 +11,7 @@ def image_upload_path(instance, filename):
     new_filename = f"{username}.{ext}"  # Đặt tên mới
 
     return os.path.join('avatar_user/', new_filename)
+
 
 class TaiKhoan(models.Model):
     VAITRO = [
