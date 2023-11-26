@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
@@ -36,29 +37,35 @@ def loginPage(request):
                 'password2': password2,
             }
             form = UserCreationForm(data)
-            if form.is_valid:
+            if form.is_valid and password1 == password2:
                 # form.save()
                 psw = password1
                 hashed_psw = make_password(psw)
-                acc = Account.objects.create(username=rgt_username, password=hashed_psw, raw_password=psw, role=role)
-                #Tạo model(Sharer/ Manager) tương ứng
-                if role == 'Sharer':
-                    sharer = Sharer.objects.create(account=acc, name=name)
-                else:
-                    manager = Manager.objects.create(account=acc, name=name)
+                try:
+                    acc = Account.objects.create(username=rgt_username, password=hashed_psw, raw_password=psw, role=role)
+                except:
+                    acc = None # Đăng nhập sai
                     
-                user_logged = authenticate(request, username=rgt_username, password=psw)
-                login(request, user_logged)
-                return redirect('homepage:homePage')
-            
+                #Tạo model(Sharer/ Manager) tương ứng
+                if acc:
+                    if role == 'Sharer':
+                        sharer = Sharer.objects.create(account=acc, name=name)
+                    else:
+                        manager = Manager.objects.create(account=acc, name=name)
+                        
+                    user_logged = authenticate(request, username=rgt_username, password=psw)
+                    login(request, user_logged)
+                    return redirect('homepage:homePage')
+            messages.error(request, 'Đăng kí không thành công. Vui lòng thử lại.')
         elif username:
             psw = request.POST.get('password')
             user_logged = authenticate(request, username=username, password=psw)
             if user_logged is not None:
                 login(request, user_logged)
                 return redirect('homepage:homePage')
-            
+            messages.error(request, 'Đăng nhập không thành công. Vui lòng thử lại.')
     context = {
         'form_rgt': CreateAccountForm(),
     }
+    # messages.error(request, 'Đăng nhập')
     return render(request, 'login.html', context)

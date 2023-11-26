@@ -25,14 +25,17 @@
 
         <link rel = "icon" href ="{% static 'images/logo.png' %}" type = "image/x-icon"> 
         <title>BKvivu - nền tảng chia sẻ hàng đầu dành cho sinh viên</title>
-
-        <script>
-            function showAlert() {
-                alert("Xin chào! Đây là một thông báo.");
-            }
-        </script>
+        
     </head>
     <body>
+        {% for message in messages %}
+            <div id="alert-message" js-message="{{message}}"></div>
+        {% endfor %}
+        <script>
+            var message = document.getElementById('alert-message').getAttribute('js-message');
+            alert(message);
+        </script>
+
         <div class="header">
             <div class="left">
                 <a href="" class="logo">
@@ -65,7 +68,7 @@
                 {% endblock %}
             </div>
         </div>
-        
+
         <!-- Slideshow container -->
         <div class="slideshow-container" >
             <div class="mySlides fade">
@@ -440,5 +443,6 @@
         <script src="{% static 'js/header.js' %}"></script>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
     </body>
 </html>
