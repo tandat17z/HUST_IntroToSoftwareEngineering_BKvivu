@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="{% static 'foods.css'%}"></link>
+    <link rel="stylesheet" href="{% static 'tabbar.css'%}">
+    <link rel="stylesheet" href="{% static 'list.css'%}">
+   
+</head>
+<body>
+
+    <header>
+        <h1>Settings</h1>
+    </header>
+
+    <nav>
+        <a href="#general" onclick="showContent('general')">General</a>
+        <a href="#foods" onclick="showContent('foods')">Foods</a>
+        <a href="#bills" onclick="showContent('bills')">Bills</a>
+        <a href="#statistics" onclick="showContent('statistics')">Statistics</a>
+        <a href="#posts" onclick="showContent('posts')">Posts</a>
+    </nav>
+
+    <section id="general">
+        <input type="file" id="imageInput" style="display: none;" onchange="displayImage()">
+        <button onclick="selectImage()">GET Image</button>
+        <div id="output"></div>
+        
+    </section>
+
+    <section id="foods">
+        <div>
+            <button onclick="showDialog()">AddItem</button>
+        </div>
+        <dialog id="myDialog">
+            <p>Customize your food</p>
+            <button onclick="closeDialog()">Close</button>
+        </dialog>
+        <div class="food-grid">
+            <div class="food-item">
+                <img src="https://images2.thanhnien.vn/528068263637045248/2023/5/22/bun-bo-nam-bo-16847360191061617508934.jpeg" alt="Food 1">
+                <p>Món ăn 1</p>
+            </div>
+            <div class="food-item">
+                <img src="https://media-cdn-v2.laodong.vn/Storage/newsportal/2019/2/25/659091/Cac-Mon-An-Cua-Viet--02.jpg" alt="Food2">
+                <p>Món ăn 2</p>
+            </div>
+            <div class="food-item">
+                <img src="https://media.baobinhphuoc.com.vn/Content/UploadFiles/EditorFiles/images/2018/Quy2/12-mon-an-quoc-hon-quoc-tuy-cua-am-thuc-viet-nam-108042018061747.jpg" alt="Food 3">
+                <p>Món ăn 3</p>
+            </div>
+            <div class="food-item">
+                <img src="https://images2.thanhnien.vn/528068263637045248/2023/5/22/bun-bo-nam-bo-16847360191061617508934.jpeg" alt="Food 1">
+                <p>Món ăn 1</p>
+            </div>
+            <div class="food-item">
+                <img src="https://media-cdn-v2.laodong.vn/Storage/newsportal/2019/2/25/659091/Cac-Mon-An-Cua-Viet--02.jpg" alt="Food2">
+                <p>Món ăn 2</p>
+            </div>
+            <div class="food-item">
+                <img src="https://media.baobinhphuoc.com.vn/Content/UploadFiles/EditorFiles/images/2018/Quy2/12-mon-an-quoc-hon-quoc-tuy-cua-am-thuc-viet-nam-108042018061747.jpg" alt="Food 3">
+                <p>Món ăn 3</p>
+            </div>
+            <!-- Thêm các ô và hình ảnh khác tương tự cần thiết -->
+        </div>
+        <!-- Add your breakfast items here -->
+    </section>
+
+    <section id="bills">
+    <ul>
+        <li onclick="showDialog()">Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li>Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+    </ul>
+        <!-- Add your lunch items here -->
+    </section>
+
+    <section id="statistics">
+        <h2>Statistics</h2>
+        <!-- Add your dinner items here -->
+    </section>
+
+    <section id="posts">
+        <h2>Posts</h2>
+        <!-- Add your snack items here -->
+    </section>
+
+    <script>
+        function showContent(sectionId) {
+            // Hide all sections
+            var sections = document.querySelectorAll('section');
+            sections.forEach(function(section) {
+                section.style.display = 'none';
+            });
+
+            // Show the selected section
+            var selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';
+            }
+        }
+    </script>
+    <script>
+        function showDialog() {
+            var dialog = document.getElementById('myDialog');
+            dialog.showModal();
+        }
+
+        function closeDialog() {
+            var dialog = document.getElementById('myDialog');
+            dialog.close();
+        }
+    </script>
+
+    <script>
+        function selectImage() {
+            var imageInput = document.getElementById('imageInput');
+            imageInput.click();
+        }
+
+        function displayImage() {
+            var imageInput = document.getElementById('imageInput');
+            var output = document.getElementById('output');
+
+            if (imageInput.files && imageInput.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    output.innerHTML = '<img src="' + e.target.result + '" alt="Selected Image">';
+                };
+
+                reader.readAsDataURL(imageInput.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -12,6 +12,7 @@ def image_upload_path(instance, filename):
 
     return os.path.join('avatar', role , new_filename)
     
+    
 # Create your models here.---------------------------------------------------
 class Account(User):
     ROLES = [
@@ -27,6 +28,7 @@ class Account(User):
     def __str__(self):
         return f"{self.username}"
     
+
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
     name = models.CharField(max_length=50)
@@ -42,3 +44,10 @@ class Manager(models.Model):
 
     def __str__(self):
         return f"{self.account.username}"
+    
+class Product(models.Model):
+    pass
+
+class Post(models.Model):
+    # account = 
+    pass

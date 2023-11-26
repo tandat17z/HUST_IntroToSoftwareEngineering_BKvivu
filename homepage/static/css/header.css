@@ -18,7 +18,7 @@ button{
     display: flex;
 
 }
-.header .left .logo img, .header .right .img-user{
+.header .left .logo img{
     width: 70px;
     height: 60px;
     border-radius: 15px;
@@ -57,7 +57,9 @@ button{
 .header .right{
     display: flex;
     margin-right: 50px;
+    justify-content: center;
 }
+
 .header .right a{
     float: left;
     /* color: black; */
@@ -299,7 +301,13 @@ display: table;
 }
 
 .header .right .img-user{
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
+    margin-top: -10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+.header .right .logo-user{
+    display: flex;
+    /* justify-content: center; */
 }

@@ -20,14 +20,15 @@
     </div>
     <!--Top navbar -->
     <div class="topnav">
-        <div class="logo-home">
+        <a href="{% url 'homepage:homePage' %}" class="logo-home">
             <div class="logo">
+
             </div>
             <div class="app-name">
                 <h4>BKvivu</h4>
                 <span class="">Nền tảng chia sẻ dịch vụ hàng đầu</span>
             </div>
-        </div>
+        </a>
         <div class="option">
             <a href="#my-profile" class="my-profile">
                 <div>
@@ -36,7 +37,7 @@
                 </div>
             </a>
 
-            <a href="#settings" class="setting">
+            <a href="{% url 'settingspage:settingsPage' %}" class="setting">
                 <div >
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
