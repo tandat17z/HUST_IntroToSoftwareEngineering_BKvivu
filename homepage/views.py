@@ -33,7 +33,7 @@ def loginPage(request):
             name = request.POST.get('name')
             data = {
                 'username': rgt_username,
-                'password1': password1, 
+                'password1': password1,
                 'password2': password2,
             }
             form = UserCreationForm(data)
@@ -45,14 +45,14 @@ def loginPage(request):
                     acc = Account.objects.create(username=rgt_username, password=hashed_psw, raw_password=psw, role=role)
                 except:
                     acc = None # Đăng nhập sai
-                    
+
                 #Tạo model(Sharer/ Manager) tương ứng
                 if acc:
-                    if role == 'Sharer':
+                    if role == 'sharer':
                         sharer = Sharer.objects.create(account=acc, name=name)
                     else:
                         manager = Manager.objects.create(account=acc, name=name)
-                        
+
                     user_logged = authenticate(request, username=rgt_username, password=psw)
                     login(request, user_logged)
                     return redirect('homepage:homePage')

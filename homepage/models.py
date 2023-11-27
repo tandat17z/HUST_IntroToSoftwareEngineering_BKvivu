@@ -5,14 +5,14 @@ import django.db.models.deletion
 
 def image_upload_path(instance, filename):
     """Hàm callback để đặt tên cho tệp hình ảnh được tải lên."""
-    username = instance.username 
-    role = instance.role 
+    username = instance.username
+    role = instance.role
     ext = filename.split('.')[-1]  # Lấy phần mở rộng của tệp
     new_filename = f"{username}.{ext}"  # Đặt tên mới
 
     return os.path.join('avatar', role , new_filename)
-    
-    
+
+
 # Create your models here.---------------------------------------------------
 class Account(User):
     ROLES = [
@@ -27,7 +27,8 @@ class Account(User):
 
     def __str__(self):
         return f"{self.username}"
-    
+
+
 
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
@@ -35,7 +36,7 @@ class Sharer(models.Model):
 
     def __str__(self):
         return f"{self.account.username}"
-    
+
 
 class Manager(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
@@ -44,10 +45,10 @@ class Manager(models.Model):
 
     def __str__(self):
         return f"{self.account.username}"
-    
+
 class Product(models.Model):
     pass
 
 class Post(models.Model):
-    # account = 
+    # account =
     pass

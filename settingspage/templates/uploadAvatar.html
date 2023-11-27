@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'uploadAvatar.css'%}">
+    <title>Upload Avatar</title>
+</head>
+<body>
+    <div class="upload-avatar">
+        <h3>Cập nhật ảnh đại diện</h3>
+        <form action="{% url 'settingspage:changeAvatar'%}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.avatar}}
+            <input type="submit" value="Cập nhật">
+        </form>
+    </div>
+</body>
+</html>
