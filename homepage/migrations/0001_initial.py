@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('user_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
                 ('role', models.CharField(choices=[('sharer', 'Người chia sẻ'), ('manager', 'Người quản lý')], max_length=10)),
-                ('avatar', models.ImageField(default='default.jpg', upload_to=homepage.models.image_upload_path)),
+                ('avatar', models.ImageField(default='default.jpg', upload_to=homepage.models.img_path_avt)),
             ],
             options={
                 'verbose_name': 'user',
