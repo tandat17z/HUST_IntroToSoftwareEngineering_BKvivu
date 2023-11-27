@@ -48,7 +48,7 @@ def loginPage(request):
                     
                 #Tạo model(Sharer/ Manager) tương ứng
                 if acc:
-                    if role == 'Sharer':
+                    if role == 'sharer':
                         sharer = Sharer.objects.create(account=acc, name=name)
                     else:
                         manager = Manager.objects.create(account=acc, name=name)

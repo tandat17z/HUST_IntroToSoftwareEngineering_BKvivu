@@ -1,18 +1,42 @@
 import os
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 import django.db.models.deletion
+from django.utils import timezone
 
-def image_upload_path(instance, filename):
-    """Hàm callback để đặt tên cho tệp hình ảnh được tải lên."""
+
+# Xử lý hình ảnh --------------------------------------------------
+def img_path_avt(instance, filename):
     username = instance.username 
     role = instance.role 
     ext = filename.split('.')[-1]  # Lấy phần mở rộng của tệp
     new_filename = f"{username}.{ext}"  # Đặt tên mới
+    return os.path.join(role, username , new_filename)
 
-    return os.path.join('avatar', role , new_filename)
+def imgs_path(instance, filename):
+    post_name = str(instance.post)
+    username = str(instance.post.account)
+    role = instance.post.account.role
+    return os.path.join(role, username , 'posts', post_name, filename)
     
-    
+
+def img_path_bill(instance, filename):
+    provider_name = str(instance.provider)
+    sharer_name = str(instance.sharer)
+    time = instance.time
+    ext = filename.split('.')[-1]  # Lấy phần mở rộng của tệp
+    new_filename = f"{time}_{sharer_name}.{ext}"  # Đặt tên mới
+    return os.path.join('manager', provider_name, 'bills', new_filename)
+
+def img_path_product(instance, filename):
+    username = instance.provider.account.username
+    product_name = instance.name 
+    ext = filename.split('.')[-1]  # Lấy phần mở rộng của tệp
+    new_filename = f"{product_name}.{ext}"  # Đặt tên mới
+    return os.path.join('manager', username, 'products', new_filename)
+
+
 # Create your models here.---------------------------------------------------
 class Account(User):
     ROLES = [
@@ -21,33 +45,97 @@ class Account(User):
     ]
     raw_password = models.CharField(max_length=50, null=True)
     role = models.CharField(max_length=10, choices=ROLES)
-    avatar = models.ImageField(upload_to=image_upload_path, default='default.jpg')
-    # class Meta:
-    #     db_table = 'auth_user'
+    avatar = models.ImageField(upload_to=img_path_avt, default='default.jpg')
 
+    def save(self, *args, **kwargs):
+        # Kiểm tra sự thay đổi và xóa hình ảnh cũ
+        if self.pk:
+            old_instance = Account.objects.get(pk=self.pk)
+            if old_instance.avatar != self.avatar:
+                if old_instance.avatar:
+                    old_instance.avatar.delete(save=False)
+        super(Account, self).save(*args, **kwargs)
+    
     def __str__(self):
         return f"{self.username}"
     
-
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField(verbose_name='fullname', max_length=50)
 
     def __str__(self):
-        return f"{self.account.username}"
+        return f"{self.account}"
     
-
 class Manager(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
     name = models.CharField(max_length=50)
-    address = models.CharField(max_length=200, null=True)
+    address = models.TextField(null=True)
 
     def __str__(self):
-        return f"{self.account.username}"
-    
+        return f"{self.account}"
+      
 class Product(models.Model):
-    pass
+    TYPES = [
+        ('food', 'Đồ ăn'),
+        ('service', 'Dịch vụ khác'),
+
+    ]
+    provider = models.ForeignKey(Manager, on_delete=models.CASCADE)
+    name = models.TextField()
+    type = models.CharField(max_length=10, choices=TYPES)
+    price = models.IntegerField(default=0)
+    img = models.ImageField(upload_to=img_path_product, default='default.jpg')
+    describe = models.TextField(null=True)
+    like = models.IntegerField(default=0)
+    dislike = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.provider}_{self.name}"
+
+class Bill(models.Model):
+    sharer = models.ForeignKey(Sharer, on_delete=models.SET_NULL, null=True, verbose_name='Người mua') 
+    provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
+    time = models.DateTimeField(default=timezone.datetime.now())
+    price = models.IntegerField(default=0)
+    img = models.ImageField(upload_to=img_path_bill, null=True, blank=True)
+    status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.provider}_{self.sharer}_" + datetime.strftime(self.time, "%Y-%m-%d %H:%M:%S")
+    
+class Order(models.Model):
+    bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.product.name}_{self.bill}"
+
 
 class Post(models.Model):
-    # account = 
-    pass
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    title = models.TextField()
+    content = models.TextField()
+    time = models.DateTimeField(default=timezone.datetime.now())
+    location = models.TextField()
+    provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
+    like = models.IntegerField(default=0)
+    dislike = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.account}_{self.title}"
+
+class Image(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
+    img = models.ImageField(upload_to=imgs_path) 
+
+    def __str__(self):
+        return f"{self.post}"
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=django.db.models.deletion.CASCADE)
+    content = models.TextField()
+    like = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.post}"
