@@ -18,7 +18,7 @@ img{
     border-radius: 20px;
     bottom: 35px;
     right: 35px;
-    z-index: 10;
+    z-index: 100;
 }
 .chat-link{
     text-decoration: none;
@@ -64,6 +64,7 @@ img{
 }
 .logo-home {
     display: flex;
+    text-decoration: none;
 }
 .logo{
     width: 50px;
@@ -236,7 +237,7 @@ img{
 .buttom-profile .menu{
     width: 59%;
     max-height: 500px;
-    padding: 10px;
+    padding: 10px 10px 30px;
     margin: 10px;
     background-color: antiquewhite;
     border-radius: 20px;
@@ -575,28 +576,28 @@ img{
   }
 
   .wave#wave1 {
-    z-index: 1000;
+    z-index: 50;
     opacity: 1;
     bottom: 0;
     animation: animateWaves 4s linear infinite;
   }
 
   .wave#wave2 {
-    z-index: 999;
+    z-index: 49;
     opacity: 0.5;
     bottom: 10px;
     animation: animate 4s linear infinite !important;
   }
 
   .wave#wave3 {
-    z-index: 1000;
+    z-index: 50;
     opacity: 0.2;
     bottom: 15px;
     animation: animateWaves 3s linear infinite;
   }
 
   .wave#wave4 {
-    z-index: 999;
+    z-index: 49;
     opacity: 0.7;
     bottom: 20px;
     animation: animate 3s linear infinite;
