@@ -15,13 +15,19 @@ from homepage.models import *
 def profilePage(request):
     if not request.user.is_authenticated:
         return redirect('homepage:loginPage')
-    
-    account = Account.objects.get(user_ptr=request.user)
+
+    acc = Account.objects.get(user_ptr=request.user)
+    if acc.role == "sharer":
+        accuser = Sharer.objects.get(account = acc)
+    else:
+        accuser = Manager.objects.get(account=acc)
     context = {
-        'account': account,
+        'account': acc,
+        'accuser': accuser
     }
     return render(request, 'profile.html', context)
 
+# Log out button
 def logout_view(request):
     if not request.user.is_authenticated:
         return redirect('homepage:loginPage')

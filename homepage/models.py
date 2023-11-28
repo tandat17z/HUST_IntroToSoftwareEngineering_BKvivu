@@ -8,8 +8,8 @@ from django.utils import timezone
 
 # Xử lý lưu trữ hình ảnh --------------------------------------------------
 def img_path_avt(instance, filename):
-    username = instance.username 
-    role = instance.role 
+    username = instance.username
+    role = instance.role
     ext = filename.split('.')[-1]  # Lấy phần mở rộng của tệp
     new_filename = f"{username}.{ext}"  # Đặt tên mới
     return os.path.join(role, username , new_filename)
@@ -19,7 +19,7 @@ def imgs_path(instance, filename):
     username = str(instance.post.account)
     role = instance.post.account.role
     return os.path.join(role, username , 'posts', post_name, filename)
-    
+
 
 def img_path_bill(instance, filename):
     provider_name = str(instance.provider)
@@ -31,7 +31,7 @@ def img_path_bill(instance, filename):
 
 def img_path_product(instance, filename):
     username = instance.provider.account.username
-    product_name = instance.name 
+    product_name = instance.name
     ext = filename.split('.')[-1]  # Lấy phần mở rộng của tệp
     new_filename = f"{product_name}.{ext}"  # Đặt tên mới
     return os.path.join('manager', username, 'products', new_filename)
@@ -55,17 +55,17 @@ class Account(User):
                 if old_instance.avatar:
                     old_instance.avatar.delete(save=False)
         super(Account, self).save(*args, **kwargs)
-    
+
     def __str__(self):
         return f"{self.username}"
-    
+
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
     name = models.CharField(verbose_name='fullname', max_length=50)
 
     def __str__(self):
         return f"{self.account}"
-    
+
 class Manager(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
     name = models.CharField(max_length=50)
@@ -73,7 +73,7 @@ class Manager(models.Model):
 
     def __str__(self):
         return f"{self.account}"
-      
+
 class Product(models.Model):
     TYPES = [
         ('food', 'Đồ ăn'),
@@ -93,7 +93,7 @@ class Product(models.Model):
         return f"{self.provider}_{self.name}"
 
 class Bill(models.Model):
-    sharer = models.ForeignKey(Sharer, on_delete=models.SET_NULL, null=True, verbose_name='Người mua') 
+    sharer = models.ForeignKey(Sharer, on_delete=models.SET_NULL, null=True, verbose_name='Người mua')
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
     time = models.DateTimeField(default=timezone.datetime.now())
     price = models.IntegerField(default=0)
@@ -102,7 +102,7 @@ class Bill(models.Model):
 
     def __str__(self):
         return f"{self.provider}_{self.sharer}_" + datetime.strftime(self.time, "%Y-%m-%d %H:%M:%S")
-    
+
 class Order(models.Model):
     bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
@@ -127,7 +127,7 @@ class Post(models.Model):
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
-    img = models.ImageField(upload_to=imgs_path) 
+    img = models.ImageField(upload_to=imgs_path)
 
     def __str__(self):
         return f"{self.post}"
