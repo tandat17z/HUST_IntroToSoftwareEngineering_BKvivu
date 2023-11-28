@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 app_name = 'settingspage'
 urlpatterns = [
     path('', views.settingsPage, name='settingsPage'),
-    path('uploadavatar/', views.uploadAvatar, name='uploadAvatar'),
-    path('loading', views.changeAvatar, name= "changeAvatar" ),
+    path('general/', views.generalPage, name='gerenalPage'),
+    path('posts/', views.postPage, name='postPage'),
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_URL)

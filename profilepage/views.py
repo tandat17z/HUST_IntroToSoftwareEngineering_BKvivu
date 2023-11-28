@@ -17,13 +17,10 @@ def profilePage(request):
         return redirect('homepage:loginPage')
 
     acc = Account.objects.get(user_ptr=request.user)
-    if acc.role == "sharer":
-        accuser = Sharer.objects.get(account = acc)
-    else:
-        accuser = Manager.objects.get(account=acc)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     context = {
-        'account': acc,
-        'accuser': accuser
+        'acc': acc,
+        'user': user,
     }
     return render(request, 'profile.html', context)
 

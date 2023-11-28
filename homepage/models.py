@@ -8,10 +8,11 @@ from django.utils import timezone
 
 # Xử lý lưu trữ hình ảnh --------------------------------------------------
 def img_path_avt(instance, filename):
-    username = instance.username
-    role = instance.role
+    acc = instance.account
+    username = acc.username
+    role = acc.role
     ext = filename.split('.')[-1]  # Lấy phần mở rộng của tệp
-    new_filename = f"{username}.{ext}"  # Đặt tên mới
+    new_filename = f"avatar.{ext}"  # Đặt tên mới
     return os.path.join(role, username , new_filename)
 
 def imgs_path(instance, filename):
@@ -45,34 +46,58 @@ class Account(User):
     ]
     raw_password = models.CharField(max_length=50, null=True)
     role = models.CharField(max_length=10, choices=ROLES)
-    avatar = models.ImageField(upload_to=img_path_avt, default='default.png')
-
-    def save(self, *args, **kwargs):
-        # Kiểm tra sự thay đổi và xóa hình ảnh cũ
-        if self.pk:
-            old_instance = Account.objects.get(pk=self.pk)
-            if old_instance.avatar != self.avatar:
-                if old_instance.avatar:
-                    old_instance.avatar.delete(save=False)
-        super(Account, self).save(*args, **kwargs)
+    # avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
 
     def __str__(self):
         return f"{self.username}"
+    
 
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
     name = models.CharField(verbose_name='fullname', max_length=50)
+    avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
 
     def __str__(self):
         return f"{self.account}"
+    def save(self, *args, **kwargs):
+        # Kiểm tra và xóa ảnh cũ (nếu có)
+        if self.pk:
+            try:
+                old_instance = Sharer.objects.get(pk=self.pk)
+                check = True
+            except:
+                check = False
+
+            if check and old_instance.avatar.name != 'noavatar.png':
+                if old_instance.avatar:
+                    old_instance.avatar.delete(save=False)
+        # Gọi hàm save của lớp cha (object)
+        super().save(*args, **kwargs)
 
 class Manager(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
     name = models.CharField(max_length=50)
+    avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
+
     address = models.TextField(null=True)
+    bio = models.TextField(max_length=1500, null = True)
 
     def __str__(self):
         return f"{self.account}"
+    
+    def save(self, *args, **kwargs):
+        # Kiểm tra và xóa ảnh cũ (nếu có)
+        if self.pk:
+            try:
+                old_instance = Manager.objects.get(pk=self.pk)
+                check = True
+            except:
+                check = False
+            if check and old_instance.avatar.name != 'noavatar.png':
+                if old_instance.avatar:
+                        old_instance.avatar.delete(save=False)
+        # Gọi hàm save của lớp cha (object)
+        super().save(*args, **kwargs)
 
 class Product(models.Model):
     TYPES = [
@@ -109,8 +134,7 @@ class Order(models.Model):
     quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.product.name}_{self.bill}"
-
+        return f"{self.product}_{self.bill}"
 
 class Post(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)

@@ -10,4 +10,4 @@ from .models import *
 
 # Create your views here.
 def postsPage(request):
-    return HttpResponse("Đây là trang bài viết")
+    return render(request, 'index.html')

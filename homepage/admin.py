@@ -3,7 +3,7 @@ from .models import *
 
 # Register your models here.
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('username', 'raw_password', 'role', 'avatar')
+    list_display = ('username', 'raw_password', 'role')
 
 class SharerAdmin(admin.ModelAdmin):
     list_display = ('account', 'name')

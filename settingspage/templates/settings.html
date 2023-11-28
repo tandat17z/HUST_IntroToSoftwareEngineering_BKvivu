@@ -12,22 +12,30 @@
 </head>
 <body>
 
+    {% for message in messages %}
+        <div id="alert-message" js-message="{{message}}"></div>
+    {% endfor %}
+    <script>
+        var message = document.getElementById('alert-message').getAttribute('js-message');
+        alert(message);
+    </script>
+
     <header>
         <h1>Settings</h1>
     </header>
 
     <nav>
-        <a href="#general" onclick="showContent('general')">General</a>
+        <a href="{% url 'settingspage:gerenalPage' %}" onclick="">General</a>
         <a href="#foods" onclick="showContent('foods')">Foods</a>
         <a href="#bills" onclick="showContent('bills')">Bills</a>
         <a href="#statistics" onclick="showContent('statistics')">Statistics</a>
-        <a href="#posts" onclick="showContent('posts')">Posts</a>
+        <a href="{% url 'settingspage:postPage' %}" onclick="">Posts</a>
     </nav>
 
+    {% block general%} {% endblock %}
+    {% block post%} {% endblock %}
     <section id="general">
-        <input type="file" id="imageInput" style="display: none;" onchange="displayImage()">
-        <button onclick="selectImage()">GET Image</button>
-        <div id="output"></div>
+        
     </section>
 
     <section id="foods">
@@ -94,6 +102,12 @@
     <section id="posts">
         <h2>Posts</h2>
         <!-- Add your snack items here -->
+        <form action=" " metho="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form_post.as_p}}
+            {{form_img.as_p}}
+            <button type="submit"> Submit</button>
+        </form>
     </section>
 
     <script>

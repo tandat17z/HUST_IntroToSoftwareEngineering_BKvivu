@@ -13,8 +13,12 @@ from .forms import *
 def homePage(request):
     if not request.user.is_authenticated:
         return redirect('homepage:loginPage')
+    
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     context = {
-        'account': Account.objects.get(user_ptr=request.user),
+        'acc': acc,
+        'user': user,
     }
     return render(request, 'homepage.html', context)
 
@@ -22,7 +26,6 @@ def loginPage(request):
     if request.user.is_authenticated:
         return redirect('homepage:homePage')
     
-
     if request.method == 'POST':
         rgt_username = request.POST.get('rgt_username')
         username = request.POST.get('username')
@@ -63,6 +66,7 @@ def loginPage(request):
                 login(request, user_logged)
                 return redirect('homepage:homePage')
             messages.error(request, 'Đăng nhập không thành công. Vui lòng thử lại.')
+    
     context = {
         'form_rgt': CreateAccountForm(),
     }
@@ -71,12 +75,12 @@ def loginPage(request):
 
 def registerPage(request):
     if request.user.is_authenticated:
-        acc=Account.objects.get(username=request.user.username)
+        acc = Account.objects.get(username=request.user.username)
         if acc.role == "sharer" :
-            if request.method=="POST":
+            if request.method == "POST":
                 name = request.POST.get('name')
                 sharer = Sharer.objects.create(account = acc, name = name)
-                form = CreateSharerForm(request.POST, request.FILES, instance=sharer)
+                form = CreateSharerForm(request.POST, instance=sharer)
                 if form.is_valid():
                     # Thực hiện thay đổi avatar
                     sharer = form.save(commit=False)
@@ -91,7 +95,7 @@ def registerPage(request):
                 name = request.POST.get('name')
                 address = request.POST.get('address')
                 manager = Manager.objects.create(account = acc, name = name, address=address)
-                form = CreateManagerForm(request.POST, request.FILES, instance=manager)
+                form = CreateManagerForm(request.POST, instance=manager)
                 if form.is_valid():
                     # Thực hiện thay đổi avatar
                     manager = form.save(commit=False)

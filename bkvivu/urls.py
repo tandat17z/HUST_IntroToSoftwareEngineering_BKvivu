@@ -20,8 +20,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from profilepage import views as profileViews
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('logout/', profileViews.logout_view, name = 'logout'),
     path('homepage/', include('homepage.urls')),
     path('postspage/', include('postspage.urls')),
     path('profile/', include('profilepage.urls')),
