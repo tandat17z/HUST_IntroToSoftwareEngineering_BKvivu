@@ -22,6 +22,8 @@ def homePage(request):
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('homepage:homePage')
+    
+
     if request.method == 'POST':
         rgt_username = request.POST.get('rgt_username')
         username = request.POST.get('username')
@@ -69,3 +71,4 @@ def loginPage(request):
     }
     # messages.error(request, 'Đăng nhập')
     return render(request, 'login.html', context)
+

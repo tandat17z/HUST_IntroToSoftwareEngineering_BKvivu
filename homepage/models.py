@@ -6,7 +6,7 @@ import django.db.models.deletion
 from django.utils import timezone
 
 
-# Xử lý hình ảnh --------------------------------------------------
+# Xử lý lưu trữ hình ảnh --------------------------------------------------
 def img_path_avt(instance, filename):
     username = instance.username
     role = instance.role
@@ -133,9 +133,11 @@ class Image(models.Model):
         return f"{self.post}"
 
 class Comment(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
     post = models.ForeignKey(Post, on_delete=django.db.models.deletion.CASCADE)
     content = models.TextField()
     like = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.post}"
+
