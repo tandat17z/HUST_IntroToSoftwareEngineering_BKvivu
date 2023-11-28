@@ -125,7 +125,7 @@
             <div class="list-menu">
                 <div class="products-list">
                     <!-- Product list-->
-                    {% if user %}
+                    {% if user.account.role == 'manager' %}
                         {% for product in user.product_set.all %}
                         {% comment %} Product {% endcomment %}
                             <div class="product">
@@ -166,8 +166,8 @@
         </div>
         <div class="list-contents">
 
-            {% if user %}
-                {% for posts in user.post_set.all %}
+            {% if acc %}
+                {% for posts in acc.post_set.all %}
                     <!-- Post # -->
                     <div class="posts">
                         <div class="top-posts">
