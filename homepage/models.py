@@ -70,6 +70,7 @@ class Manager(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
     name = models.CharField(max_length=50)
     address = models.TextField(null=True)
+    bio = models.TextField(max_length=1500, null = True)
 
     def __str__(self):
         return f"{self.account}"
