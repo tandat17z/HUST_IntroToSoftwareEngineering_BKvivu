@@ -18,7 +18,6 @@ def homePage(request):
     }
     return render(request, 'homepage.html', context)
 
-
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('homepage:homePage')
@@ -29,10 +28,10 @@ def loginPage(request):
         username = request.POST.get('username')
 
         if rgt_username:  #nếu đăng kí (register)
+            email =  request.POST.get('rgt_email')
             password1 =  request.POST.get('rgt_psw')
             password2 =  request.POST.get('rgt_repsw')
             role = request.POST.get('role')
-            name = request.POST.get('name')
             data = {
                 'username': rgt_username,
                 'password1': password1,
@@ -43,21 +42,19 @@ def loginPage(request):
                 # form.save()
                 psw = password1
                 hashed_psw = make_password(psw)
-                try:
-                    acc = Account.objects.create(username=rgt_username, password=hashed_psw, raw_password=psw, role=role)
-                except:
-                    acc = None # Đăng nhập sai
-
+                acc = Account.objects.create(
+                    username=rgt_username, 
+                    email=email, 
+                    password=hashed_psw, 
+                    raw_password=psw, 
+                    role=role
+                )
+                
                 #Tạo model(Sharer/ Manager) tương ứng
                 if acc:
-                    if role == 'sharer':
-                        sharer = Sharer.objects.create(account=acc, name=name)
-                    else:
-                        manager = Manager.objects.create(account=acc, name=name)
-
                     user_logged = authenticate(request, username=rgt_username, password=psw)
                     login(request, user_logged)
-                    return redirect('homepage:homePage')
+                    return redirect('homepage:registerPage')
             messages.error(request, 'Đăng kí không thành công. Vui lòng thử lại.')
         elif username:
             psw = request.POST.get('password')
@@ -72,3 +69,36 @@ def loginPage(request):
     # messages.error(request, 'Đăng nhập')
     return render(request, 'login.html', context)
 
+def registerPage(request):
+    if request.user.is_authenticated:
+        acc=Account.objects.get(username=request.user.username)
+        if acc.role == "sharer" :
+            if request.method=="POST":
+                name = request.POST.get('name')
+                sharer = Sharer.objects.create(account = acc, name = name)
+                form = CreateSharerForm(request.POST, request.FILES, instance=sharer)
+                if form.is_valid():
+                    # Thực hiện thay đổi avatar
+                    sharer = form.save(commit=False)
+                    sharer.save()
+                
+                    return redirect('homepage:homePage')
+            context = {
+                'form' :  CreateSharerForm(),
+            }
+        else:
+            if request.method=="POST":
+                name = request.POST.get('name')
+                address = request.POST.get('address')
+                manager = Manager.objects.create(account = acc, name = name, address=address)
+                form = CreateManagerForm(request.POST, request.FILES, instance=manager)
+                if form.is_valid():
+                    # Thực hiện thay đổi avatar
+                    manager = form.save(commit=False)
+                    manager.save()
+                    return redirect('homepage:homePage')
+            context = {
+                'form' :  CreateManagerForm(),
+            }
+
+    return render(request, 'register.html', context)

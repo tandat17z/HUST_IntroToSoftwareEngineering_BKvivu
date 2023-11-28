@@ -45,7 +45,7 @@ class Account(User):
     ]
     raw_password = models.CharField(max_length=50, null=True)
     role = models.CharField(max_length=10, choices=ROLES)
-    avatar = models.ImageField(upload_to=img_path_avt, default='default.jpg')
+    avatar = models.ImageField(upload_to=img_path_avt, default='default.png')
 
     def save(self, *args, **kwargs):
         # Kiểm tra sự thay đổi và xóa hình ảnh cũ
