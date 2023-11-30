@@ -1,0 +1,12 @@
+{% extends "settings.html" %}
+{% load static %}
+
+{% block post%}
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form_post.as_p}}
+    <hr>
+    {{form_img.as_p}}
+    <button type="submit"> Submit</button>
+</form>
+ {% endblock %}

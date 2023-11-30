@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang bài viết</title>
+  <link rel="stylesheet" href="{% static 'css/style.css'%}">
+  <script src="https://kit.fontawesome.com/5045ba31f9.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="menu">
+      <!-- Sidebar -->
+      <a href="\homepage"><img src="{% static 'img/logo.jpeg'%}" alt="logo"></a>
+      <i class="fas fa-home"> Home</i>
+      <i class="fa-solid fa-magnifying-glass">  Find</i>
+      <i class="fa-solid fa-circle-plus"> Create</i>
+      <i class="fa-solid fa-user">  User</i>   
+      <i class="fas fa-bell"> Notification</i> 
+      <i class="fas fa-cog">  Settings</i> 
+    </div>
+
+    <!-- Content  -->
+    <div class="content">
+      <!-- Post -->
+      <div class="post">
+        <ul class="post-list">
+          <li>
+            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+            <h2>Nhà hàng lẩu</h2>
+            <h3>Time: 10:00</h3>
+            <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
+            <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+              Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết. Món ăn này cũng rất đa dạng về hương vị, tùy theo sở thích của từng người. Có thể kể đến một số loại lẩu phổ biến ở Việt Nam như lẩu thập cẩm, lẩu Thái, lẩu dê, lẩu bò,...
+              Lẩu không chỉ là món ăn ngon mà còn là một nét đẹp văn hóa của người Việt Nam. Món ăn này mang đến cho người thưởng thức cảm giác ấm cúng, sum vầy bên gia đình và bạn bè.
+            </p>
+
+            <div class="post-photo">
+              <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="post-photo">
+              <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="post-photo">
+              <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="post-photo">
+            </div>
+            
+            <div class="post-actions">
+              <i class="far fa-thumbs-up"></i> 
+              <i class="far fa-comment"></i>
+              <i class="fas fa-share"></i>
+            </div>
+
+            <div class="comment">
+              <img src="{% static 'img/user2.jpg'%}" alt="" class="avatar-user"> 
+              <input type="text" placeholder="Viết bình luận ...">
+            </div>
+          </li>
+
+          <li>
+            <img src="{% static 'img/post2b.jpg'%}" alt="User 2" class="avatar">
+            <h2>Quán thịt nướng</h2>
+            <h3>Time: 11:00</h3>
+
+            <p>Thịt nướng là một món ăn phổ biến ở nhiều quốc gia trên thế giới, trong đó có Việt Nam. Món ăn này được làm từ các loại thịt như thịt lợn, thịt bò, thịt gà,... được tẩm ướp gia vị và nướng trên bếp than hoặc lò nướng.
+              Thịt nướng có hương vị thơm ngon, đậm đà, phần thịt bên ngoài chín vàng, bên trong mềm ngọt. Món ăn này thường được ăn kèm với các loại rau củ như rau sống, dưa chuột, cà chua,... và nước chấm như nước mắm, tương ớt,...
+              Thịt nướng là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết. Món ăn này cũng rất đa dạng về cách chế biến, tùy theo sở thích của từng người. Có thể kể đến một số loại thịt nướng phổ biến ở Việt Nam như thịt nướng xiên, thịt nướng tảng, thịt nướng kiểu Hàn Quốc,...
+              Thịt nướng không chỉ là món ăn ngon mà còn là một nét đẹp văn hóa của người Việt Nam. Món ăn này mang đến cho người thưởng thức cảm giác ấm cúng, sum vầy bên gia đình và bạn bè.
+            </p>
+
+            <div class="post-photo">
+              <img src="{% static 'img/post2a.jpg'%}" alt="Post 2" class="post-photo">
+              <img src="{% static 'img/post2b.jpg'%}" alt="Post 2" class="post-photo">
+              <img src="{% static 'img/post2c.jpg'%}" alt="Post 2" class="post-photo">
+            </div>
+            
+            <div class="post-actions">
+              <i class="far fa-thumbs-up"></i> 
+              <i class="far fa-comment"></i>
+              <i class="fas fa-share"></i>
+            </div>
+
+            <div class="comment">
+              <img src="{% static 'img/user2.jpg'%}" alt="" class="avatar-user"> 
+              <input type="text" placeholder="Viết bình luận ...">
+            </div>
+          </li>
+
+          <li>
+            <img src="{% static 'img/post3c.jpg'%}" alt="User 3" class="avatar">
+            <h2>Cửa hàng đồ ăn nhanh</h2>
+            <h3>Time: 12:15</h3>
+
+            <p>Đồ ăn nhanh là những món ăn được chế biến nhanh chóng và thường được phục vụ tại chỗ hoặc mang đi. Đồ ăn nhanh thường có hương vị thơm ngon, hấp dẫn và giá cả phải chăng, vì vậy rất được nhiều người ưa chuộng.
+              Một số món đồ ăn nhanh phổ biến ở Việt Nam bao gồm:
+              * Hamburger: Món ăn này bao gồm bánh mì kẹp thịt bò, phô mai, rau củ và nước sốt.
+              * Gà rán: Món ăn này được làm từ thịt gà được tẩm ướp gia vị và chiên giòn.
+              * Pizza: Món ăn này được làm từ lớp đế bánh, nhân thịt, rau củ và nước sốt.
+              * Sandwich: Món ăn này bao gồm bánh mì kẹp thịt, phô mai, rau củ và nước sốt.
+              Tuy nhiên, đồ ăn nhanh cũng có một số hạn chế về mặt dinh dưỡng. Đồ ăn nhanh thường chứa nhiều chất béo, đường, muối và calo, có thể gây ra các vấn đề sức khỏe nếu ăn quá nhiều.
+              Để hạn chế những tác động tiêu cực của đồ ăn nhanh, bạn nên ăn đồ ăn nhanh một cách hợp lý, kết hợp với chế độ ăn uống cân bằng và lối sống lành mạnh.
+            </p>
+
+            <div class="post-photo">
+              <img src="{% static 'img/post3a.jpg'%}" alt="Post 3" class="post-photo">
+              <img src="{% static 'img/post3b.jpg'%}" alt="Post 3" class="post-photo">
+              <img src="{% static 'img/post3c.jpg'%}" alt="Post 3" class="post-photo">
+            </div>
+            
+            <div class="post-actions">
+              <i class="far fa-thumbs-up"></i> 
+              <i class="far fa-comment"></i>
+              <i class="fas fa-share"></i>
+            </div>
+
+            <div class="comment">
+              <img src="{% static 'img/user2.jpg'%}" alt="" class="avatar-user"> 
+              <input type="text" placeholder="Viết bình luận ...">
+            </div>
+          </li>
+        </ul>
+        
+      </div>
+      
+    </div>
+
+    <!-- Chat -->
+    <div class="chat">
+      <div class="chat-header">
+        <h3>Chat</h3>
+        <a href="/profile"><img src="{% static 'img/user2.jpg'%}" alt=""></a>
+      </div>
+      <ul class="chat-list">
+        <div class="new-chat">
+          <h3>Message</h3>
+          <i class="fa-solid fa-circle-plus"></i>
+        </div>
+        <li>
+          <img src="{% static 'img/user1.jpg'%}" alt="User 1">
+          <span>Nhà hàng lẩu</span>
+        </li>
+        <li>
+          <img src="{% static 'img/post2b.jpg'%}" alt="User 3">
+          <span>Quán thịt nướng</span>
+        </li>
+        <li>
+          <img src="{% static 'img/post3c.jpg'%}" alt="User 1b">
+          <span>Cửa hàng đồ ăn nhanh</span>
+        </li>
+        <li>
+          <img src="{% static 'img/user3.jpg'%}" alt="User 3">
+          <span>Quán lẩu ếch</span>
+        </li>
+        <li>
+          <img src="{% static 'img/post2a.jpg'%}" alt="User 3">
+          <span>Đồ ăn ngon</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</body>
+</html>
+
+
+
+
+

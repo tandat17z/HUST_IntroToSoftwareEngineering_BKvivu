@@ -1,0 +1,16 @@
+body{
+    margin: 0;
+}
+
+.upload-avatar{
+    display: flex;
+    width: 500px;
+    padding: 50px;
+    margin: 200px auto 0;
+    flex-direction: column;
+    justify-content: center;
+    background-color: aquamarine;
+}
+.upload-avatar h3, .upload-avatar form{
+    text-align: center;
+}

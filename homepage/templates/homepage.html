@@ -1,0 +1,10 @@
+{% extends "base/main.html" %}
+{% load static %}
+
+{% block info_user%}
+<a href="{% url 'profilepage:profilePage' %}" class="logo-user">
+    <p style="font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
+    <img class="img-user" src = "{{user.avatar.url}}"/>
+</a>
+
+{% endblock %}
