@@ -36,9 +36,27 @@ section {
     padding: 20px;
 }
 button {
-    color: crimson;
+    color: #3498db;
     padding: 10px;
     font-size: 16px;
+    border-radius: 25px;
+    border : 2px solid #3498db;
     margin: 0 auto; /* Canh giữa theo chiều ngang */
     display: block; /* Chuyển thành phần tử block để margin:auto hoạt động */
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+button:hover{
+    background-color: #3498db;
+    color: #fff;
+}
+dialog {
+    
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }

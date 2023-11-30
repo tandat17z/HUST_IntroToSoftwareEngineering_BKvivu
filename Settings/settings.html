@@ -5,12 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
     <link rel="stylesheet" href="foods.css"></link>
-    <link rel="stylesheet" href="tabbar.css">
-    <link rel="stylesheet" href="list.css">
-   
+    <link rel="stylesheet" href="tabbar.css"></link>
+    <link rel="stylesheet" href="list.css"></link>
+    <style>
+        #myDialogAddItem {
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px; /* Đặt chiều rộng tối đa */
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        textarea,
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px; /* Tăng khoảng cách giữa input file và các label khác */
+        }
+    </style>
 </head>
 <body>
+    <div>
+        <dialog id="myDialogAddItem">
+            <p style="text-align: center;">Add Item</p>
+            <label for="text">Name : </label>
+            <textarea id="nameAddItem" placeholder="Fill your name"></textarea>
+            <label for="text">Describe : </label>
+            <textarea id="describeAddItem" placeholder="Fill your describe"></textarea>
+            <label for="price">Price : </label>
+            <textarea name="" id="" placeholder="Fill your price"></textarea>
+            <label for="image">Image : </label>
+            <input type="file" id="imageAddItem" accept="image/*">
+            <div style="display: flex; justify-content: space-between;">
+                <button onclick="addItem()">Add</button> 
+                <button onclick="closeDialogAddItem()">Close</button>
+            </div>
+        </dialog>
 
+        <dialog id="myDialogChangeItem">
+            <p style="text-align: center;">Add Item</p>
+            <label for="text">Name : </label>
+            <textarea id="nameAddItem" placeholder="Fill your name"></textarea>
+            <label for="text">Describe : </label>
+            <textarea id="describeAddItem" placeholder="Fill your describe"></textarea>
+            <label for="price" >Price : </label>
+            <textarea id="priceAddItem" name="" placeholder="Fill your price"></textarea>
+            <label for="image">Image : </label>
+            <input type="file" id="imageAddItem" accept="image/*">
+            <div style="display: flex; justify-content: space-between;">
+                <button>Update</button>
+                <button>Delete</button>
+                <button onclick="closeDialogChangeItem()">Close</button> 
+            </div>
+        </dialog>
+
+        <dialog id="myDialogBill">
+            <p>Sữa chua trân châu hạ long : 1</p>
+            <p>Kem tuyết : 2</p>
+            <p>Hướng dương : 1</p>
+            <p>Time : 12:01 29/11/2023</p>
+            <p>Total money : 100000đ</p>
+            <img src="https://inkythuatso.com/uploads/thumbnails/800/2023/03/hinh-anh-chuyen-tien-thanh-cong-vi-momo-1-07-12-32-36.jpg" height="250px" width="220px" alt="ảnh thanh toán">
+            <div style="display: flex;">
+                <button>Accept</button>
+                <button>Decline</button>
+                <button onclick="closeDialogBill()">Close</button>
+            </div>
+            
+        </dialog>
+
+    </div>
     <header>
         <h1>Settings</h1>
     </header>
@@ -27,64 +103,95 @@
         <input type="file" id="imageInput" style="display: none;" onchange="displayImage()">
         <button onclick="selectImage()">GET Image</button>
         <div id="output"></div>
-        
     </section>
 
     <section id="foods">
         <div>
-            <button onclick="showDialog()">AddItem</button>
+            <button onclick="showDialogAddItem()">AddItem</button>
         </div>
-        <dialog id="myDialog">
-            <p>Customize your food</p>
-            <button onclick="closeDialog()">Close</button>
-        </dialog>
         <div class="food-grid">
             <div class="food-item">
                 <img src="https://images2.thanhnien.vn/528068263637045248/2023/5/22/bun-bo-nam-bo-16847360191061617508934.jpeg" alt="Food 1">
-                <p>Món ăn 1</p>
+                <div>
+                    <p>Món ăn 1</p>
+                    <p>Đây là đặc sản của Việt Nam, món ăn truyền thống lâu đời mang những nét ẩm thực đặc sắc nhất, niềm tự hào của dân tộc</p>
+                    <p style="color:red">20000đ</p>
+                    <button onclick="showDialogChangeItem()">Change</button>
+                </div>
             </div>
             <div class="food-item">
                 <img src="https://media-cdn-v2.laodong.vn/Storage/newsportal/2019/2/25/659091/Cac-Mon-An-Cua-Viet--02.jpg" alt="Food2">
-                <p>Món ăn 2</p>
+                <div>
+                    <p>Món ăn 1</p>
+                    <p>Đây là đặc sản của Việt Nam, món ăn truyền thống lâu đời mang những nét ẩm thực đặc sắc nhất, niềm tự hào của dân tộc</p>
+                    <p style="color:red">20000đ</p>
+                    <button onclick="showDialogChangeItem()">Change</button>
+                </div>
             </div>
             <div class="food-item">
                 <img src="https://media.baobinhphuoc.com.vn/Content/UploadFiles/EditorFiles/images/2018/Quy2/12-mon-an-quoc-hon-quoc-tuy-cua-am-thuc-viet-nam-108042018061747.jpg" alt="Food 3">
-                <p>Món ăn 3</p>
+                <div>
+                    <p>Món ăn 1</p>
+                    <p>Đây là đặc sản của Việt Nam, món ăn truyền thống lâu đời mang những nét ẩm thực đặc sắc nhất, niềm tự hào của dân tộc</p>
+                    <p style="color:red">20000đ</p>
+                    <button onclick="showDialogChangeItem()">Change</button>
+                </div>
             </div>
             <div class="food-item">
                 <img src="https://images2.thanhnien.vn/528068263637045248/2023/5/22/bun-bo-nam-bo-16847360191061617508934.jpeg" alt="Food 1">
-                <p>Món ăn 1</p>
+                <div>
+                    <p>Món ăn 1</p>
+                    <p>Đây là đặc sản của Việt Nam, món ăn truyền thống lâu đời mang những nét ẩm thực đặc sắc nhất, niềm tự hào của dân tộc</p>
+                    <p style="color:red">20000đ</p>
+                    <button onclick="showDialogChangeItem()">Change</button>
+                </div>
             </div>
             <div class="food-item">
                 <img src="https://media-cdn-v2.laodong.vn/Storage/newsportal/2019/2/25/659091/Cac-Mon-An-Cua-Viet--02.jpg" alt="Food2">
-                <p>Món ăn 2</p>
+                <div>
+                    <p>Món ăn 1</p>
+                    <p>Đây là đặc sản của Việt Nam, món ăn truyền thống lâu đời mang những nét ẩm thực đặc sắc nhất, niềm tự hào của dân tộc</p>
+                    <p style="color:red">20000đ</p>
+                    <button onclick="showDialogChangeItem()">Change</button>
+                </div>
             </div>
             <div class="food-item">
                 <img src="https://media.baobinhphuoc.com.vn/Content/UploadFiles/EditorFiles/images/2018/Quy2/12-mon-an-quoc-hon-quoc-tuy-cua-am-thuc-viet-nam-108042018061747.jpg" alt="Food 3">
-                <p>Món ăn 3</p>
+                <div>
+                    <p>Món ăn 1</p>
+                    <p>Đây là đặc sản của Việt Nam, món ăn truyền thống lâu đời mang những nét ẩm thực đặc sắc nhất, niềm tự hào của dân tộc</p>
+                    <p style="color:red">20000đ</p>
+                    <button onclick="showDialogChangeItem()">Change</button>
+                </div>
             </div>
             <!-- Thêm các ô và hình ảnh khác tương tự cần thiết -->
         </div>
         <!-- Add your breakfast items here -->
     </section>
 
+
+
+
     <section id="bills">
     <ul>
-        <li onclick="showDialog()">Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
+        <li onclick="showDialogBill()">Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
     </ul>
         <!-- Add your lunch items here -->
     </section>
+    
+
+
 
     <section id="statistics">
         <h2>Statistics</h2>
@@ -93,10 +200,10 @@
 
     <section id="posts">
         <h2>Posts</h2>
-        <!-- Add your snack items here -->
     </section>
 
     <script>
+     
         function showContent(sectionId) {
             // Hide all sections
             var sections = document.querySelectorAll('section');
@@ -112,15 +219,56 @@
         }
     </script>
     <script>
-        function showDialog() {
-            var dialog = document.getElementById('myDialog');
+        function accept() {
+            
+        }
+
+        function decline() {
+
+        }
+
+        function closeDialogBill() {
+            var dialog = document.getElementById('myDialogBill');
+            dialog.close();
+        }
+        function showDialogBill() {
+            var dialog = document.getElementById('myDialogBill');
             dialog.showModal();
         }
 
-        function closeDialog() {
-            var dialog = document.getElementById('myDialog');
+        function showDialogAddItem() {
+            var dialog = document.getElementById('myDialogAddItem');
+            dialog.showModal();
+        }
+        function closeDialogAddItem() {
+            var dialog = document.getElementById('myDialogAddItem');
             dialog.close();
         }
+        function updateItem() {
+
+        }
+        function deleteItem() {
+
+        }
+           
+        function addItem() {
+            var image = document.getElementById("imageAddItem").value;
+            var name = document.getElementById("nameAddItem").value;
+            var price = document.getElementById("priceAddItem").value;
+            var describe = document.getElementById("describeAddItem").value;
+            alert(name + " " + describe);
+
+            // add data to database, database -> view
+        }
+        function showDialogChangeItem() {
+            var dialog = document.getElementById('myDialogChangeItem');
+            dialog.showModal();
+        }
+        function closeDialogChangeItem() {
+            var dialog = document.getElementById('myDialogChangeItem');
+            dialog.close();
+        }
+        
     </script>
 
     <script>
