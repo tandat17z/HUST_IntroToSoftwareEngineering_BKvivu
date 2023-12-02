@@ -50,7 +50,7 @@ class Account(User):
 
     def __str__(self):
         return f"{self.username}"
-    
+
 
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
@@ -84,7 +84,7 @@ class Manager(models.Model):
 
     def __str__(self):
         return f"{self.account}"
-    
+
     def save(self, *args, **kwargs):
         # Kiểm tra và xóa ảnh cũ (nếu có)
         if self.pk:
@@ -103,7 +103,6 @@ class Product(models.Model):
     TYPES = [
         ('food', 'Đồ ăn'),
         ('service', 'Dịch vụ khác'),
-
     ]
     provider = models.ForeignKey(Manager, on_delete=models.CASCADE)
     name = models.TextField()

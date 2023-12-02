@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
+from django.views import View
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
@@ -43,6 +44,25 @@ def postPage(request):
         'form_img': form_img,
     }
     return render(request, 'post.html', context)
+
+class CreateProduct(View):
+    def get(self, request):
+        form_product = CreateProductForm()
+        return render(request, 'product.html', {'form_product':form_product})
+    def post(self, request):
+        acc = Account.objects.get(user_ptr=request.user)
+        if acc.role == 'sharer':
+            return HttpResponse("Bạn cần là người quản lý để thực hiện")
+        else:
+            user = Manager.objects.get(account = acc)
+            newProduct = Product.objects.create(provider = user)
+            form_product = CreateProductForm(request.POST, request.FILES, instance= newProduct)
+            if form_product.is_valid():
+                product = form_product.save(commit= False) # Đối tượng mô hình k đưa vào cơ sở dữ liệu
+                product.save()
+                messages.success(request, "Thêm sản phẩm thành công")
+            return render(request, 'product.html', {'form_product':form_product})
+
 
 def generalPage(request):
     acc = Account.objects.get(user_ptr=request.user)
