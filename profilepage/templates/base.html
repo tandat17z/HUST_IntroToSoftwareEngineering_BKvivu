@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://kit.fontawesome.com/bc4d8a1311.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+</head>
+<body>
+    <!-- Chat logo -->
+    <div class="chatbox">
+        <a href="https://chat.openai.com/" target="_blank" class="chat-link">
+            <div class="chat-label">
+                <i class="fa-solid fa-message"></i>
+                <span>CSKH</span>
+            </div>
+        </a>
+    </div>
+    <!--Top navbar -->
+    <div class="topnav">
+        <a href="{% url 'homepage:homePage' %}" class="logo-home">
+            <div class="logo">
+
+            </div>
+            <div class="app-name">
+                <h4>BKvivu</h4>
+                <span class="">Nền tảng chia sẻ dịch vụ hàng đầu</span>
+            </div>
+        </a>
+        <div class="option">
+            <a href="#my-profile" class="my-profile">
+                <div>
+                <i class="fa-solid fa-user"></i>
+                <span>My Profile</span>
+                </div>
+            </a>
+
+            <a href="{% url 'settingspage:settingsPage' %}" class="setting">
+                <div >
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+                </div>
+            </a>
+
+            <a href="logout/" class="log-out">
+                <div >
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Log out</span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+<!-- Info profile -->
+    <div class="top-profile">
+        <div class="avatar-name">
+            <div class="avatar">
+                <img src = "{{ user.avatar.url}}" alt="">
+            </div>
+            <div class="name">
+                <h1 id="name-profile">{{ user.name }}</h2>
+                <div class="rated">
+                    <h4 id="point-rate">4.5</h4>
+                    <h4 id="point-max">/ 5</h4>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+            </div>
+        </div>
+        <div class="info-profile">
+            <div class="contacts-vote">
+                <div class="contacts-list">
+                    <a target="_blank" href="https://www.facebook.com/pbtruong.03" class="contact">
+                        <div class="icon-contact"><i class="fa-brands fa-facebook"></i></div>
+                    </a>
+                    <a href="#website" class="contact">
+                        <div class="icon-contact"><i class="fa-solid fa-globe"></i></div>
+                    </a>
+                    <a href="tel:18008055" class="contact">
+                        <div class="icon-contact"><i class="fa-solid fa-phone"></i></div>
+                    </a>
+                </div>
+                <a href="#vote" class="vote-profile">
+                    <div class="votestar">
+                        <i class="fa-solid fa-marker"></i>
+                        <span>Đánh giá</span>
+                    </div>
+                </a>
+            </div>
+            <div class="address-info">
+                <a href="#map">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <h4>{{ user.address }}</h4>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--  buttom-profile of manager account-->
+    {% if acc.role == 'manager' %}
+        {% block buttom_profile %}
+        {% endblock buttom_profile %}
+    {% endif %}
+    <!-- Contents -->
+    <div class="contents">
+        <div class="top-contents">
+            <div class="top-contents-left">
+                <i class="fa-solid fa-newspaper"></i>
+                <h1>Bài viết</h1>
+            </div>
+            <div class="top-contents-right">
+
+            </div>
+        </div>
+        <div class="list-contents">
+
+            {% if acc %}
+                {% for posts in acc.post_set.all %}
+                    <!-- Post # -->
+                    <div class="posts">
+                        <div class="top-posts">
+                            <div class="left">
+                                <div class="left-avatar avatar">
+                                    <img src = "{{ user.avatar.url }}" alt="">
+                                </div>
+                                <div class="left-name-time">
+                                    <div class="name">
+                                        <h4>{{ user.name }}</h4>
+                                    </div>
+                                    <div class="time">
+                                        <span> {{ posts.time }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right">
+
+                            </div>
+                        </div>
+                        <div class="content-post">
+                            <div class="text-title">
+                                <h3>{{ posts.title }}</h3>
+                            </div>
+                            <div class="text">
+                                <p>{{ posts.content }}</p>
+                            </div>
+                            <div class="images">
+                                {% for image in posts.image_set.all %}
+                                    <img src="{{ image.img.url }}" alt="">
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="bottom-posts">
+                            <a href="#like" class="like-posts">
+                                <div class="like-btn">
+                                    <i class="fa-solid fa-heart"></i>
+                                    <span>Thích</span>
+                                </div>
+                            </a>
+                            <div class="cmt-posts">
+                                <i class="fa-solid fa-comment"></i>
+                                <form action="#submitcmt" method="POST">
+                                    <textarea class="comment"> Type your comment here.</textarea>
+                                    <input type="submit" name="submit" value="Send">
+                                </form>
+                            </div>
+                            <a href="#share" class="share-posts">
+                                <div class="share-btn">
+                                    <i class="fa-solid fa-share"></i>
+                                    <span>Share</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h4>Lỗi tài khoản âhah</h4>
+            {% endif %}
+            <!-- End listpost -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="waves">
+          <div class="wave" id="wave1"></div>
+          <div class="wave" id="wave2"></div>
+          <div class="wave" id="wave3"></div>
+          <div class="wave" id="wave4"></div>
+        </div>
+        <ul class="social-icon">
+          <li class="social-icon__item"><a class="social-icon__link" href="#">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a></li>
+          <li class="social-icon__item"><a class="social-icon__link" href="#">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a></li>
+          <li class="social-icon__item"><a class="social-icon__link" href="#">
+              <ion-icon name="logo-linkedin"></ion-icon>
+            </a></li>
+          <li class="social-icon__item"><a class="social-icon__link" href="#">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a></li>
+        </ul>
+        <ul class="menu">
+          <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
+          <li class="menu__item"><a class="menu__link" href="#">About</a></li>
+          <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
+          <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
+          <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
+
+        </ul>
+        <p>&copy;2023 BKvivu | BaoDungDatDatThanhTruong</p>
+    </footer>
+
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
