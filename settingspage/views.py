@@ -9,12 +9,19 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from homepage.models import *
 from .forms import *
+from .urls import *
 
 
 
 # Create your views here.
 def settingsPage(request):
-    return render(request, 'settings.html')
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    context = {
+        'acc' : acc,
+        'user' : user
+    }
+    return render(request, 'settings.html', context)
 
 def postPage(request):
     acc = Account.objects.get(user_ptr=request.user)
@@ -45,10 +52,22 @@ def postPage(request):
     }
     return render(request, 'post.html', context)
 
+
+#####-------- Sản phẩm -------######
+# Quản lý Sản phẩm
+def ProductManager(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    context = {
+        'acc' : acc,
+        'user' : user
+    }
+    return render(request, 'product.html', context)
+#Tạo sản phẩm mới
 class CreateProduct(View):
     def get(self, request):
         form_product = CreateProductForm()
-        return render(request, 'product.html', {'form_product':form_product})
+        return render(request, 'addproduct.html', {'form_product':form_product})
     def post(self, request):
         acc = Account.objects.get(user_ptr=request.user)
         if acc.role == 'sharer':
@@ -61,7 +80,20 @@ class CreateProduct(View):
                 product = form_product.save(commit= False) # Đối tượng mô hình k đưa vào cơ sở dữ liệu
                 product.save()
                 messages.success(request, "Thêm sản phẩm thành công")
-            return render(request, 'product.html', {'form_product':form_product})
+            return redirect('settingspage:product')
+
+#Xóa Sản phẩm
+def deleteProduct(request, product_id):
+    try:
+        product = Product.objects.get(pk = product_id)
+        product.delete()
+        messages.success(request, "Đã xóa sản phẩm")
+    except:
+        messages.error(request, "Thao tác lỗi")
+    return redirect('settingspage:product')
+
+# Sửa sản phẩm
+
 
 
 def generalPage(request):
