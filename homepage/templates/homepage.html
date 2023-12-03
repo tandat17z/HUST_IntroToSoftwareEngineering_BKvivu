@@ -8,3 +8,30 @@
 </a>
 
 {% endblock %}
+
+{% block tab_shop %}
+    {% for shop in top_shops %}
+    <button class = "tablinks {% if forloop.counter == 1 %}active{% endif %}" onclick="openCity(event, 'top{{ forloop.counter }}')">
+        <div class="number">
+            <h2>{{ forloop.counter }}</h2>
+        </div>
+        <a href="">
+            <img src="{{shop.avatar.url}}" alt="logo_shop">
+        </a>    
+        <div class="stars">
+            <p>{{shop.rank}}/5 <span><img src="{% static 'images/star.png' %}" alt=""></span></p>
+            <h2>{{shop.name}}</h2>
+        </div>
+    </button>
+    {% endfor %}
+
+{% endblock tab_shop %}
+
+{% block tab_content %}
+    {% for shop in top_shops %}
+    <div id="top{{ forloop.counter }}" class="tabcontent" {% if forloop.counter == 1 %} style="display: block;" {% endif %}>
+        <img src="{{ shop.avatar.url}}" alt="">
+    </div>
+    {% endfor %}
+    
+{% endblock tab_content %}

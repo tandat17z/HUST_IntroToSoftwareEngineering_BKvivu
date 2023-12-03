@@ -82,6 +82,9 @@ class Manager(models.Model):
     address = models.TextField(null=True)
     bio = models.TextField(max_length=1500, null = True)
 
+    num_stars = models.IntegerField(default=0)
+    num_votes = models.IntegerField(default=0)
+    rank = models.FloatField(default=0)
     def __str__(self):
         return f"{self.account}"
     
@@ -96,6 +99,12 @@ class Manager(models.Model):
             if check and old_instance.avatar.name != 'noavatar.png':
                 if old_instance.avatar:
                         old_instance.avatar.delete(save=False)
+
+        # tự động tính rank = star/ vote
+        if self.num_votes > 0:
+            self.rank = round(self.num_stars / self.num_votes, 2)
+        else:
+            self.rank = 0
         # Gọi hàm save của lớp cha (object)
         super().save(*args, **kwargs)
 
