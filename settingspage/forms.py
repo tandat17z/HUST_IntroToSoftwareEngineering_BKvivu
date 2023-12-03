@@ -16,6 +16,11 @@ class CreatePostForm(forms.ModelForm):
         model = Post
         fields = ('title', 'content', 'location', 'provider')
 
+class CreateProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('name', 'type', 'price', 'img',)
+
 class CreateImgForm(forms.ModelForm):
     class Meta:
         model = Image
