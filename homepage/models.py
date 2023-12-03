@@ -50,7 +50,7 @@ class Account(User):
 
     def __str__(self):
         return f"{self.username}"
-
+    
 
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
@@ -82,9 +82,12 @@ class Manager(models.Model):
     address = models.TextField(null=True)
     bio = models.TextField(max_length=1500, null = True)
 
+    num_stars = models.IntegerField(null=True, default=0)
+    num_votes = models.IntegerField(null=True, default=0)
+    rank = models.FloatField(null=True, default=0)
     def __str__(self):
         return f"{self.account}"
-
+    
     def save(self, *args, **kwargs):
         # Kiểm tra và xóa ảnh cũ (nếu có)
         if self.pk:
@@ -96,6 +99,12 @@ class Manager(models.Model):
             if check and old_instance.avatar.name != 'noavatar.png':
                 if old_instance.avatar:
                         old_instance.avatar.delete(save=False)
+
+        # tự động tính rank = star/ vote
+        if self.num_votes > 0:
+            self.rank = round(self.num_stars / self.num_votes, 2)
+        else:
+            self.rank = 0
         # Gọi hàm save của lớp cha (object)
         super().save(*args, **kwargs)
 
@@ -103,6 +112,7 @@ class Product(models.Model):
     TYPES = [
         ('food', 'Đồ ăn'),
         ('service', 'Dịch vụ khác'),
+
     ]
     provider = models.ForeignKey(Manager, on_delete=models.CASCADE)
     name = models.TextField()
@@ -163,4 +173,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.post}"
-

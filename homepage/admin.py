@@ -9,7 +9,7 @@ class SharerAdmin(admin.ModelAdmin):
     list_display = ('account', 'name')
 
 class ManagerAdmin(admin.ModelAdmin):
-    list_display = ('account', 'name', 'address')
+    list_display = ('account', 'name', 'address', 'rank')
 
 class BillAmin(admin.ModelAdmin):
     list_display = ('__str__', 'time', 'status')
