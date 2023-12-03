@@ -8,7 +8,9 @@ urlpatterns = [
     path('', views.settingsPage, name='settingsPage'),
     path('general/', views.generalPage, name='gerenalPage'),
     path('posts/', views.postPage, name='postPage'),
-    path('product/', views.CreateProduct.as_view(), name='productPage'),
+    path('product/', views.ProductManager, name='product'),
+    path('products/add', views.CreateProduct.as_view(), name='addProduct'),
+    path('product/delete/<int:product_id>', views.deleteProduct, name='deleteProduct'),
 
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_URL)

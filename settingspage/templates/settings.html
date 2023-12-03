@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="{% static 'foods.css'%}"></link>
     <link rel="stylesheet" href="{% static 'tabbar.css'%}">
     <link rel="stylesheet" href="{% static 'list.css'%}">
-
+    <link rel="stylesheet" href="{% static 'product.css'%}">
+    <script src="https://kit.fontawesome.com/bc4d8a1311.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -29,7 +30,7 @@
 
     <nav>
         <a href="{% url 'settingspage:gerenalPage' %}" onclick="">General</a>
-        <a href="{% url 'settingspage:productPage' %}" onclick="showContent('foods')">Foods</a>
+        <a href="{% url 'settingspage:product' %}" onclick="showContent('products')">Products</a>
         <a href="#bills" onclick="showContent('bills')">Bills</a>
         <a href="#statistics" onclick="showContent('statistics')">Statistics</a>
         <a href="{% url 'settingspage:postPage' %}" onclick="">Posts</a>
@@ -37,48 +38,11 @@
 
     {% block general%} {% endblock %}
     {% block post%} {% endblock %}
-    {% block product %}{% endblock product %}
+    {% block addproduct %}{% endblock addproduct %}
     <section id="general">
 
     </section>
-
-    <section id="foods">
-        <div>
-            <button onclick="showDialog()">AddItem</button>
-        </div>
-        <dialog id="myDialog">
-            <p>Customize your food</p>
-            <button onclick="closeDialog()">Close</button>
-        </dialog>
-        <div class="food-grid">
-            <div class="food-item">
-                <img src="https://images2.thanhnien.vn/528068263637045248/2023/5/22/bun-bo-nam-bo-16847360191061617508934.jpeg" alt="Food 1">
-                <p>Món ăn 1</p>
-            </div>
-            <div class="food-item">
-                <img src="https://media-cdn-v2.laodong.vn/Storage/newsportal/2019/2/25/659091/Cac-Mon-An-Cua-Viet--02.jpg" alt="Food2">
-                <p>Món ăn 2</p>
-            </div>
-            <div class="food-item">
-                <img src="https://media.baobinhphuoc.com.vn/Content/UploadFiles/EditorFiles/images/2018/Quy2/12-mon-an-quoc-hon-quoc-tuy-cua-am-thuc-viet-nam-108042018061747.jpg" alt="Food 3">
-                <p>Món ăn 3</p>
-            </div>
-            <div class="food-item">
-                <img src="https://images2.thanhnien.vn/528068263637045248/2023/5/22/bun-bo-nam-bo-16847360191061617508934.jpeg" alt="Food 1">
-                <p>Món ăn 1</p>
-            </div>
-            <div class="food-item">
-                <img src="https://media-cdn-v2.laodong.vn/Storage/newsportal/2019/2/25/659091/Cac-Mon-An-Cua-Viet--02.jpg" alt="Food2">
-                <p>Món ăn 2</p>
-            </div>
-            <div class="food-item">
-                <img src="https://media.baobinhphuoc.com.vn/Content/UploadFiles/EditorFiles/images/2018/Quy2/12-mon-an-quoc-hon-quoc-tuy-cua-am-thuc-viet-nam-108042018061747.jpg" alt="Food 3">
-                <p>Món ăn 3</p>
-            </div>
-            <!-- Thêm các ô và hình ảnh khác tương tự cần thiết -->
-        </div>
-        <!-- Add your breakfast items here -->
-    </section>
+{% comment %} Quản lý sản phẩm {% endcomment %}
 
     <section id="bills">
     <ul>
