@@ -85,6 +85,7 @@ class Manager(models.Model):
     num_stars = models.IntegerField(null=True, default=0)
     num_votes = models.IntegerField(null=True, default=0)
     rank = models.FloatField(null=True, default=0)
+    
     def __str__(self):
         return f"{self.account}"
     
@@ -123,7 +124,7 @@ class Product(models.Model):
     like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
     time = models.DateTimeField(default=timezone.datetime.now())
-    
+
     def __str__(self):
         return f"{self.provider}_{self.name}"
 
