@@ -72,9 +72,7 @@
                         </div>
                     </a>
                 </div>
-                {% block info_user %}
-
-                {% endblock %}
+                {% block info_user %} {% endblock %}
             </div>
         </div>
 
@@ -113,64 +111,108 @@
         </div>
         
         <div id="comment">
-            <h2>BÀI VIẾT TIÊU BIỂU</h2>
+            <h2 id="header">BÀI VIẾT TIÊU BIỂU</h2>
             <div id="comment-body">
                 <div class="prev">
                     <a href="#">
                         <img src="{% static 'images/prev.png' %}" alt="" width="50px">
                     </a>
                 </div>
-                <ul id="list-comment">
+                <ul class="post-list">
                     <li class="item">
-                        1
-                        <!-- <div class="avatar">
-                            <img src="images/saleoff.png" alt="">
-                            <div class="infor">
-                                <div class="name">Lê Tấn Đạt</div>
-                                <div class="stars">
-                                    <span>
-                                        <img src="images/star.png" alt="">
-                                    </span>
-                                    <span>
-                                        <img src="images/star.png" alt="">
-                                    </span>
-                                    <span>
-                                        <img src="images/star.png" alt="">
-                                    </span>
-                                    <span>
-                                        <img src="images/star.png" alt="">
-                                    </span>
-                                    <span>
-                                        <img src="images/star.png" alt="">
-                                    </span>
-                                </div>
-                                <div class="bottomline">
-                                    <div class="time">11:40 PM</div>
-                                    <a href="" class="location"><i class="fa fa-fw fa-location-arrow"></i>Nhà hàng tandat17z</a>
-                                </div>
-                            </div>
+                        <div class="info">
+                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                            <h2>Nhà hàng lẩu</h2>
+                            <h3>Time: 10:00</h3>
                         </div>
-                        <div class="image">
-                            <img src="images/img1.jpg" alt="">
-                            <img src="images/img1.jpg" alt="">
+                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
+                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
+                        </p>
+
+                        <div class="post-photo">
+                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
                         </div>
-                        <div class="text">
-                            <h3 class="title">Buổi tối thật tuyệt</h3>
-                            <p>
-                                As a website or application developer, one of the essential elements of navigation is the “Next” and “Previous” buttons.
-                                These buttons allow users to easily move from one page to another and are particularly useful for pagination or image sliders.
-                                In this tutorial, we’ll take a look at how to create these buttons with CSS.
-                            </p>
-                        </div> -->
+
+                        <div class="post-actions">
+                            <i class="far fa-thumbs-up"></i> 
+                            <i class="far fa-comment"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
                     </li>
                     <li class="item">
-                        2
+                        <div class="info">
+                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                            <h2>Nhà hàng lẩu</h2>
+                            <h3>Time: 10:00</h3>
+                        </div>
+                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
+                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
+                        </p>
+
+                        <div class="post-photo">
+                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        </div>
+
+                        <div class="post-actions">
+                            <i class="far fa-thumbs-up"></i> 
+                            <i class="far fa-comment"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
                     </li>
                     <li class="item">
-                        3
+                        <div class="info">
+                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                            <h2>Nhà hàng lẩu</h2>
+                            <h3>Time: 10:00</h3>
+                        </div>
+                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
+                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                        </p>
+
+                        <div class="post-photo">
+                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        </div>
+
+                        <div class="post-actions">
+                            <i class="far fa-thumbs-up"></i> 
+                            <i class="far fa-comment"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
                     </li>
                     <li class="item">
-                        4
+                        <div class="info">
+                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                            <h2>Nhà hàng lẩu</h2>
+                            <h3>Time: 10:00</h3>
+                        </div>
+                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
+                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
+                        </p>
+
+                        <div class="post-photo">
+                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        </div>
+
+                        <div class="post-actions">
+                            <i class="far fa-thumbs-up"></i> 
+                            <i class="far fa-comment"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
                     </li>
                 </ul>
                 <div class="next">
@@ -183,12 +225,7 @@
     
         <div id="saleoff">
             <div class="box-left">
-                <!-- <h1>
-                    <span>GIAM GIA LEN DEN</span>
-                    <span>45%</span>
-                </h1> -->
                 {% block products %}{% endblock products %}
-                
             </div>
             <div class="box-right">
                 <div class="search">

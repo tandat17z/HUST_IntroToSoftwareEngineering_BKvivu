@@ -69,8 +69,8 @@ function openCity(evt, cityName) {
 // Phan comment
 const next = document.querySelector('#comment .next')
 const prev = document.querySelector('#comment .prev')
-const comment = document.querySelector('#list-comment')
-const commentItem = document.querySelectorAll('#list-comment .item')
+const comment = document.querySelector('.post-list')
+const commentItem = document.querySelectorAll('.post-list .item')
 
 var translateY = 0
 var count = commentItem.length
@@ -78,12 +78,12 @@ var count = commentItem.length
 next.addEventListener('click', function (event) {
     event.preventDefault()
     if( count == 1){
-        translateY += 1200
+        translateY += 1500
         comment.style.transform = `translateY(${translateY}px`
         count = commentItem.length
     }
     else{
-        translateY += -400
+        translateY += -500
         comment.style.transform = `translateY(${translateY}px`
         count --
     }
@@ -92,12 +92,12 @@ next.addEventListener('click', function (event) {
 prev.addEventListener('click', function (event) {
     event.preventDefault()
     if( count == 4){
-        translateY += -1200
+        translateY += -1500
         comment.style.transform = `translateY(${translateY}px`
         count = 1
     }
     else{
-        translateY += 400
+        translateY += 500
         comment.style.transform = `translateY(${translateY}px`
         count ++
     }
