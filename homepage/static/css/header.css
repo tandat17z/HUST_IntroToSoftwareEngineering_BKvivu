@@ -5,34 +5,35 @@ button{
 .header{
     width: 100%;
     display: flex;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin-top: 5px;
+    margin-bottom: 10px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 .header .left{
-    margin-left: 50px;
+    width: 400px;
+    margin-left:30px;
 }
 .header .left .logo{
     display: flex;
-
 }
 .header .left .logo img{
-    width: 70px;
+    width: 60px;
     height: 60px;
     border-radius: 15px;
 }
 
 .header .left .logo .description {
     margin: auto 0px auto 10px;
+    font-size: 18px;
 }
 .header .description h2, .header .description p{
     margin: 0px;
 }
 
 .header .center{
-    width: 30%;
+    width: 400px;
 }
 .header .center form{
     display: flex;
@@ -43,12 +44,12 @@ button{
     width: 90%;
     padding: 10px;
     border-radius: 10px 0px 0px 10px;
-    font-size: 16px;
+    font-size: 18px;
     border-right: none;
     margin-right: 0px;
 }
 .header .center button{
-    font-size: 20px;
+    font-size: 18px; 
     border-radius: 0px 10px 10px 0px;
     padding: 0px 15px;
     background-color: #fff;
@@ -62,7 +63,6 @@ button{
 
 .header .right a{
     float: left;
-    /* color: black; */
     width: 130px;
     text-align: center;
     padding: 14px 10px 10px 0px;
@@ -76,15 +76,15 @@ button{
     width: 130px;
     flex-direction: column;
     background-color: #f1f1f1;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.226);
     z-index: 1;
 }
 .header .right .subnav a {
     /* display: block; */
-    color: black;
+    color: rgb(0, 0, 0);
     width: 100%;
     padding: 12px 20px;
-    font-size: 16px;
+    font-size: 18px;
     text-align: left;
 }
 .header .right a:hover {
@@ -161,7 +161,7 @@ button{
     margin-left: 25px;
     padding: 5px 15px 5px 15px;
     border-radius: 15px;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
 }
 .header .right .login button:hover {
@@ -169,31 +169,28 @@ button{
     box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
-
-
-
 /* --------------- signup -------------- */
 .header .right .sign-up-btn {
-    background-color: #04AA6D;
+    background-color: #3aa86c;
     border: none;
     cursor: pointer;
-    width: 200px;
+    width: 200px;   
     color: white;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
-    padding: 9px 20px 9px 20px;
+    padding: 12px 20px 10px 20px;
     border-radius: 15px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
 }
 .header .right .sign-up-btn:hover{
-    transform: translateY(-3px);
+    transform: translateY(-5px);
     box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
 }
 /* Full-width input fields */
 #-box-signup input[type=text], #-box-signup input[type=password] {
 width: 100%;
-padding: 15px;
-margin: 5px 0 22px 0;
+padding: 10px;
+margin: 0px 0 22px 0;
 display: inline-block;
 border: none;
 background: #f1f1f1;
@@ -223,12 +220,12 @@ outline: none;
     width: 100px;
     opacity: 0.8;
     background-color: #f44336;
-}
+}   
 #-box-signup .signupbtn {
     width: 100px;
     opacity: 0.9;
     font-weight: bold;
-    background-color: #04AA6D;
+    background-color: #0fed9c;
 }
 
 /* Float cancel and signup buttons and add an equal width */
