@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block info_user%}
-<a href="{% url 'profilepage:profilePage' %}" class="logo-user">
+<a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user">
     <p style="font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
     <img class="img-user" src = "{{user.avatar.url}}"/>
 </a>
@@ -17,7 +17,7 @@
         </div>
         <a href="">
             <img src="{{shop.avatar.url}}" alt="logo_shop">
-        </a>    
+        </a>
         <div class="stars">
             <p>{{shop.rank}}/5 <span><img src="{% static 'images/star.png' %}" alt=""></span></p>
             <h2>{{shop.name}}</h2>
@@ -33,7 +33,7 @@
         <img src="{{ shop.avatar.url}}" alt="">
     </div>
     {% endfor %}
-    
+
 {% endblock tab_content %}
 
 {% block products %}
@@ -47,7 +47,7 @@
             <p>Tandat17z restaurant</p>
             <p class="location">-- Thanh Xuân --</p>
         </div>
-        
+
     </div>
     <hr>
     <div class="cost">

@@ -127,7 +127,7 @@ def generalPage(request):
             #Trả về trang cá nhân
             messages.success(request, 'Thông tin đã được cập nhật')
 
-    form_general = UpdateSharerForm() if acc.role == 'sharer' else UpdateManagerForm()
+    form_general = UpdateSharerForm(instance= user) if acc.role == 'sharer' else UpdateManagerForm(instance=user)
 
     context = {
         'form_gerenal': form_general,
