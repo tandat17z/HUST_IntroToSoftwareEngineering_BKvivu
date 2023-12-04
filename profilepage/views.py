@@ -12,11 +12,11 @@ from homepage.models import *
 
 
 # Create your views here.
-def profilePage(request):
+def profilePage(request, acc_id):
     if not request.user.is_authenticated:
         return redirect('homepage:loginPage')
 
-    acc = Account.objects.get(user_ptr=request.user)
+    acc = Account.objects.get(pk=acc_id)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     context = {
         'acc': acc,
