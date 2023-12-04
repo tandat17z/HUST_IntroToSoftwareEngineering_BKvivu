@@ -39,19 +39,18 @@
 {% block products %}
 {% for item in list_items %}
 <div class="post">
-    <img class="img-food" src="{% static 'images/food.jpg' %}" alt="">
+    <img class="img-food" src="{{ item.img.url }}" alt="">
     <div class="info">
-        <img class="img-avt" src="{% static 'images/logo.jpg'%}" alt="">
+        <img class="img-avt" src="{{ item.provider.avatar.url }}" alt="">
         <div class="text">
-            <h3>Sơn hào hải vị</h3>
-            <p>Tandat17z restaurant</p>
-            <p class="location">-- Thanh Xuân --</p>
+            <h3>{{item.name}}</h3>
+            <p>{{ item.provider.name}}</p>
         </div>
 
     </div>
     <hr>
     <div class="cost">
-        <button>25.000 VND</button>
+        <button>{{item.price}} VND</button>
     </div>
 </div>
 {% endfor %}
