@@ -1,4 +1,4 @@
-{% extends "settingspage/basest.html" %}
+{% extends "settingspage/base.html" %}
 
 {% block product %}
 
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div class="action-product">
-                            <a href="#" class="edit-product">
+                            <a href="{% url 'settingspage:editProduct' product.id %}" class="edit-product">
                                 <div>
                                     <i class="fa-solid fa-pen"></i>
                                 </div>

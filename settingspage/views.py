@@ -66,7 +66,7 @@ def ProductManager(request):
 #Tạo sản phẩm mới
 class CreateProduct(View):
     def get(self, request):
-        form_product = CreateProductForm()
+        form_product = ProductForm()
         return render(request, 'addproduct.html', {'form_product':form_product})
     def post(self, request):
         acc = Account.objects.get(user_ptr=request.user)
@@ -75,7 +75,7 @@ class CreateProduct(View):
         else:
             user = Manager.objects.get(account = acc)
             newProduct = Product.objects.create(provider = user)
-            form_product = CreateProductForm(request.POST, request.FILES, instance= newProduct)
+            form_product = ProductForm(request.POST, request.FILES, instance= newProduct)
             if form_product.is_valid():
                 product = form_product.save(commit= False) # Đối tượng mô hình k đưa vào cơ sở dữ liệu
                 product.save()
@@ -93,7 +93,20 @@ def deleteProduct(request, product_id):
     return redirect('settingspage:product')
 
 # Sửa sản phẩm
-
+class editProduct(View):
+    def get(self, request, product_id):
+        _product = Product.objects.get(pk = product_id)
+        pform = ProductForm(instance= _product)
+        return render(request, 'addproduct.html', {'form_product': pform})
+    def post(sefl, request, product_id):
+        _product = Product.objects.get(pk = product_id)
+        pform = ProductForm(request.POST, request.FILES, instance = _product)
+        if pform.is_valid():
+            pform.save()
+            messages.success(request, "Đã lưu thay đổi")
+        else :
+            messages.error(request, "Thực hiện bị lỗi")
+        return redirect('settingspage:product')
 
 
 def generalPage(request):
