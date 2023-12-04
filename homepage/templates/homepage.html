@@ -15,7 +15,7 @@
         <div class="number">
             <h2>{{ forloop.counter }}</h2>
         </div>
-        <a href="">
+        <a href="{% url 'profilepage:profilePage' shop.account.id%}">
             <img src="{{shop.avatar.url}}" alt="logo_shop">
         </a>
         <div class="stars">
