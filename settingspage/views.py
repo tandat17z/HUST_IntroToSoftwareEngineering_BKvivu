@@ -67,7 +67,12 @@ def ProductManager(request):
 class CreateProduct(View):
     def get(self, request):
         form_product = ProductForm()
-        return render(request, 'addproduct.html', {'form_product':form_product})
+        acc = Account.objects.get(user_ptr=request.user)
+        context = {
+            'acc' : acc,
+            'form_product':form_product
+        }
+        return render(request, 'addproduct.html', context)
     def post(self, request):
         acc = Account.objects.get(user_ptr=request.user)
         if acc.role == 'sharer':
