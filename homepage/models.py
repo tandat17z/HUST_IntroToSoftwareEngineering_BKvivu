@@ -122,7 +122,8 @@ class Product(models.Model):
     describe = models.TextField(null=True)
     like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
-
+    time = models.DateTimeField(default=timezone.datetime.now())
+    
     def __str__(self):
         return f"{self.provider}_{self.name}"
 
