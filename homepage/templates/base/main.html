@@ -22,7 +22,8 @@
         <link rel="stylesheet" href="{% static 'css/footer.css'%}"></link>
 
         <!-- js -->
-
+        
+        <script src="https://kit.fontawesome.com/f7ff863b9b.js" crossorigin="anonymous"></script>
         <link rel = "icon" href ="{% static 'images/logo.png' %}" type = "image/x-icon"> 
         <title>BKvivu - nền tảng chia sẻ hàng đầu dành cho sinh viên</title>
         
@@ -62,6 +63,14 @@
                         <a href="">Dịch vụ</a>
                         <a href="">Bài chia sẻ</a>
                     </div>
+                </div>
+                <div class="setting_icon">
+                    <a href="{% url 'settingspage:settingsPage' %}" class="setting">
+                        <div >
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                        </div>
+                    </a>
                 </div>
                 {% block info_user %}
 
