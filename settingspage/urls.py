@@ -9,7 +9,7 @@ urlpatterns = [
     path('general/', views.generalPage, name='gerenalPage'),
     path('posts/', views.postPage, name='postPage'),
     path('product/', views.ProductManager, name='product'),
-    path('products/add', views.CreateProduct.as_view(), name='addProduct'),
+    path('product/add', views.CreateProduct.as_view(), name='addProduct'),
     path('product/delete/<int:product_id>', views.deleteProduct, name='deleteProduct'),
     path('product/edit/<int:product_id>', views.editProduct.as_view(), name='editProduct'),
 

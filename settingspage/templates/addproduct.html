@@ -1,6 +1,10 @@
 {% extends "settingspage/base.html" %}
 {% load static %}
 
+{% block link_profile %}
+    "{% url 'profilepage:profilePage' acc.id%}"
+{% endblock link_profile %}
+
 {% block addproduct%}
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
