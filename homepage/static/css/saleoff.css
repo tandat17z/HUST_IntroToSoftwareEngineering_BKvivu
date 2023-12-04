@@ -11,6 +11,9 @@
     text-align: center;
     min-height: 322px;
     overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
 }
 
 /* #saleoff .box-left h1{
@@ -24,25 +27,27 @@
     color: orange;
     font-size: 120px;
 } */
-.proposal{
+/* .proposal{
     display: flex;
     width: 100%;
     height: 100%;
 
     justify-content:space-around;
     align-items: center;
-}
+} */
 
-.proposal img{
+/* .proposal img{
     width: 25%;
     margin: 0px 30px;
     border-radius: 35px;
-}
+} */
 .post{
     background-color: #fff;
     width: 260px;
     height:270px;
     border-radius: 35px;
+    margin-bottom: 30px;
+    margin-left: 60px;
 }
 .post .img-food{
     margin: 0px;

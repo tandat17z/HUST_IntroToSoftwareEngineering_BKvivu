@@ -18,11 +18,12 @@ def homePage(request):
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
 
     top_shops = Manager.objects.filter(rank__isnull=False).order_by('-rank')[:5]
-
+    list_items = Product.objects.order_by('-time')[:15]
     context = {
         'acc': acc,
         'user': user,
         'top_shops': top_shops,
+        'list_items': list_items,
     }
     return render(request, 'homepage.html', context)
 
