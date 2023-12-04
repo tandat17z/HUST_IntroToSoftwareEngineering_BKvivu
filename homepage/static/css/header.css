@@ -49,7 +49,7 @@ button{
     margin-right: 0px;
 }
 .header .center button{
-    font-size: 18px; 
+    font-size: 18px;
     border-radius: 0px 10px 10px 0px;
     padding: 0px 15px;
     background-color: #fff;
@@ -136,14 +136,14 @@ button{
     color: #0e6252;
 }
 
-.header .right .login input:focus, 
+.header .right .login input:focus,
 .header .right .login input:valid {
     box-shadow: none;
     outline: none;
     background-position: 0 0;
 }
 
-.header .right .login input:focus::-webkit-input-placeholder, 
+.header .right .login input:focus::-webkit-input-placeholder,
 .header .right .login input:valid::-webkit-input-placeholder {
     color: #1abc9c;
     font-size: 11px;
@@ -174,7 +174,7 @@ button{
     background-color: #3aa86c;
     border: none;
     cursor: pointer;
-    width: 200px;   
+    width: 200px;
     color: white;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
     padding: 12px 20px 10px 20px;
@@ -220,7 +220,7 @@ outline: none;
     width: 100px;
     opacity: 0.8;
     background-color: #f44336;
-}   
+}
 #-box-signup .signupbtn {
     width: 100px;
     opacity: 0.9;
