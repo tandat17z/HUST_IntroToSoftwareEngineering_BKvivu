@@ -15,13 +15,7 @@ from .urls import *
 
 # Create your views here.
 def settingsPage(request):
-    acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-    context = {
-        'acc' : acc,
-        'user' : user
-    }
-    return render(request, 'settings.html', context)
+    return redirect('settingspage:gerenalPage')
 
 def postPage(request):
     acc = Account.objects.get(user_ptr=request.user)
@@ -49,6 +43,7 @@ def postPage(request):
     context = {
         'form_post': form_post,
         'form_img': form_img,
+        'acc': acc,
     }
     return render(request, 'post.html', context)
 
@@ -100,9 +95,15 @@ def deleteProduct(request, product_id):
 # Sửa sản phẩm
 class editProduct(View):
     def get(self, request, product_id):
+        acc = Account.objects.get(user_ptr=request.user)
+        user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
         _product = Product.objects.get(pk = product_id)
         pform = ProductForm(instance= _product)
-        return render(request, 'addproduct.html', {'form_product': pform})
+        context = {
+            'form_product': pform,
+            'acc': acc, 
+        }
+        return render(request, 'addproduct.html', context)
     def post(sefl, request, product_id):
         _product = Product.objects.get(pk = product_id)
         pform = ProductForm(request.POST, request.FILES, instance = _product)
@@ -136,5 +137,6 @@ def generalPage(request):
 
     context = {
         'form_gerenal': form_general,
+        'acc': acc,
     }
     return render(request, 'general.html', context)
