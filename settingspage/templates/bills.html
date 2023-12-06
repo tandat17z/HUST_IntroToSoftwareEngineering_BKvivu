@@ -1,22 +1,6 @@
 {% extends "settings.html" %}
 {% load static %}
 
-<!-- {% block bill %} -->
-    <!-- <label for="">Name : </label>
-    <p>{{bill.sharer.name}}</p>
-    <label for="">Time : </label>
-    <p>{{bill.time}}</p>
-    <label for="">Price : </label>
-    <p>{{bill.price}}</p>
-    <label for="">Image : </label>
-    <img src="{{bill.img.url}}" alt="bill">
-    <div style="display: flex;">
-        <button>Accept</button>
-        <button>Decline</button>
-        <button onclick="closeDialogBill()">Close</button>
-    </div> -->
-<!-- {% endblock %} -->
-
 {% block bills%}
 <ul>
     {% for bill in bills %}
