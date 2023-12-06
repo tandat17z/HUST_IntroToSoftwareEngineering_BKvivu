@@ -133,24 +133,20 @@ def statisticsPage(request):
     return render(request, 'statistics.html')
 
 def viewBill(request, billId):
-    if request.method == 'POST' : 
-        bill = Bill.objects.get(pk = billId)
-        sharer = Sharer.objects.get(pk = bill.sharer_id)
-        return render(request, "bill.html", {"bill" : bill, "sharer" : sharer})
-def accept(request, billId2):
-    if request.method == 'POST':
-        bill = Bill.objects.get(pk = billId2)
-        bill.status = "Accept"
-        bill.delete()
-        messages.success('Accept', request)
-        redirect('settingspage:billsPage')
-def decline(request, billId2):
-    if request.method == 'POST':
-        bill = Bill.objects.get(pk = billId2)
-        bill.status = "Decline"
-        bill.delete()
-        messages.success('Decline', request)
-        redirect('settingspage:billsPage')
+    if request.method == 'GET' : 
+        bill = Bill.objects.get(id = billId)
+        # sharer = Sharer.objects.get(id = bill.sharer_id)
+        return render(request, "bill.html", {"bill" : bill})
+def accept(request, billId, billId2):
+    bill = Bill.objects.get(pk = billId2)
+    bill.status = "Accept"
+    bill.delete()
+    return redirect('settingspage:billsPage')
+def decline(request,billId, billId2):
+    bill = Bill.objects.get(pk = billId2)
+    bill.status = "Decline"
+    bill.delete()
+    return redirect('settingspage:billsPage')
 def deleteProduct(request, productId):
     product = Product.objects.get(id = productId)
     try : 

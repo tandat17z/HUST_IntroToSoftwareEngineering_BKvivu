@@ -124,6 +124,7 @@ class Bill(models.Model):
     price = models.IntegerField(default=0)
     img = models.ImageField(upload_to=img_path_bill, null=True, blank=True)
     status = models.CharField(max_length=200, default="None")
+    # status = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.provider}_{self.sharer}_" + datetime.strftime(self.time, "%Y-%m-%d %H:%M:%S")
 
