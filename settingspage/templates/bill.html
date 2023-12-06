@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>Bill</title>
+    </head>
+    <body>
+        <dialog>
+            <label for="">Name : </label>
+            <p>{{sharer.name}}</p>
+            <label for="">Time : </label>
+            <p>{{bill.time}}</p>
+            <label for="product">Product : </label>
+            {% for order in bill.order_set.all %}
+                <p>{{order.product}} : {{order.quantity}}</p>
+            {% endfor %}
+            <label for="">Price : </label>
+            <p>{{bill.price}}</p>
+            <label for="">Image : </label>
+            <img src="{{bill.img.url}}" alt="bill">
+            <div style="display: flex;">
+                <a href="{% url 'settingsPage:accept' bill.id %}">Accept</a>
+                <a href="{% url 'settingsPage:decline' bill.id %}">Decline</a>
+            </div>
+        </dialog>
+    </body>
+</html>
+    

@@ -6,11 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
     <link rel="stylesheet" href="{% static 'foods.css'%}"></link>
-    <link rel="stylesheet" href="{% static 'tabbar.css'%}">
-    <link rel="stylesheet" href="{% static 'list.css'%}">
-
+    <link rel="stylesheet" href="{% static 'tabbar.css'%}"></link>
+    <link rel="stylesheet" href="{% static 'list.css'%}"></link>
+    <link rel="stylesheet" href="{% static 'dialog.css'%}"></link>
+    <style>
+        #myDialogAddItem {
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px; /* Đặt chiều rộng tối đa */
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
+    <div>
+        <dialog id="myDialogAddItem">
+            {% block formAdd %}
+            {% endblock %}
+        </dialog>
+
+        <dialog id="myDialogChangeItem">
+            {% block formChange %}
+            {% endblock %}
+        </dialog>
+
+        <dialog id="myDialogBill">
+        </dialog>
+
+    </div>
 
     {% for message in messages %}
         <div id="alert-message" js-message="{{message}}"></div>
@@ -21,76 +49,33 @@
     </script>
 
     <header>
+        <button></b><a href="{% url 'profilepage:profilePage' %}">Back</a></button>
         <h1>Settings</h1>
     </header>
 
     <nav>
         <a href="{% url 'settingspage:gerenalPage' %}" onclick="">General</a>
-        <a href="#foods" onclick="showContent('foods')">Foods</a>
-        <a href="#bills" onclick="showContent('bills')">Bills</a>
-        <a href="#statistics" onclick="showContent('statistics')">Statistics</a>
+        <a href="{% url 'settingspage:foodsPage' %}" onclick="">Foods</a>
+        <a href="{% url 'settingspage:billsPage' %}" onclick="">Bills</a>
+        <a href="{% url 'settingspage:statisticsPage' %}" onclick="">Statistics</a>
         <a href="{% url 'settingspage:postPage' %}" onclick="">Posts</a>
     </nav>
 
     {% block general%} {% endblock %}
     {% block post%} {% endblock %}
+    {% block foods%} {% endblock %}
+    {% block statistics%} {% endblock %}
+    {% block bills%} {% endblock %}
     <section id="general">
         
     </section>
 
     <section id="foods">
-        <div>
-            <button onclick="showDialog()">AddItem</button>
-        </div>
-        <dialog id="myDialog">
-            <p>Customize your food</p>
-            <button onclick="closeDialog()">Close</button>
-        </dialog>
-        <div class="food-grid">
-            <div class="food-item">
-                <img src="https://images2.thanhnien.vn/528068263637045248/2023/5/22/bun-bo-nam-bo-16847360191061617508934.jpeg" alt="Food 1">
-                <p>Món ăn 1</p>
-            </div>
-            <div class="food-item">
-                <img src="https://media-cdn-v2.laodong.vn/Storage/newsportal/2019/2/25/659091/Cac-Mon-An-Cua-Viet--02.jpg" alt="Food2">
-                <p>Món ăn 2</p>
-            </div>
-            <div class="food-item">
-                <img src="https://media.baobinhphuoc.com.vn/Content/UploadFiles/EditorFiles/images/2018/Quy2/12-mon-an-quoc-hon-quoc-tuy-cua-am-thuc-viet-nam-108042018061747.jpg" alt="Food 3">
-                <p>Món ăn 3</p>
-            </div>
-            <div class="food-item">
-                <img src="https://images2.thanhnien.vn/528068263637045248/2023/5/22/bun-bo-nam-bo-16847360191061617508934.jpeg" alt="Food 1">
-                <p>Món ăn 1</p>
-            </div>
-            <div class="food-item">
-                <img src="https://media-cdn-v2.laodong.vn/Storage/newsportal/2019/2/25/659091/Cac-Mon-An-Cua-Viet--02.jpg" alt="Food2">
-                <p>Món ăn 2</p>
-            </div>
-            <div class="food-item">
-                <img src="https://media.baobinhphuoc.com.vn/Content/UploadFiles/EditorFiles/images/2018/Quy2/12-mon-an-quoc-hon-quoc-tuy-cua-am-thuc-viet-nam-108042018061747.jpg" alt="Food 3">
-                <p>Món ăn 3</p>
-            </div>
-            <!-- Thêm các ô và hình ảnh khác tương tự cần thiết -->
-        </div>
+        
         <!-- Add your breakfast items here -->
     </section>
 
     <section id="bills">
-    <ul>
-        <li onclick="showDialog()">Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng A đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng B đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng C đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-        <li>Khách hàng D đã gửi yêu cầu xác nhận thanh toán, ấn vào để xem chi tiết</li>
-    </ul>
         <!-- Add your lunch items here -->
     </section>
 
@@ -111,6 +96,7 @@
     </section>
 
     <script>
+     
         function showContent(sectionId) {
             // Hide all sections
             var sections = document.querySelectorAll('section');
@@ -126,15 +112,56 @@
         }
     </script>
     <script>
-        function showDialog() {
-            var dialog = document.getElementById('myDialog');
+        function accept() {
+            
+        }
+
+        function decline() {
+
+        }
+
+        function closeDialogBill() {
+            var dialog = document.getElementById('myDialogBill');
+            dialog.close();
+        }
+        function showDialogBill() {
+            var dialog = document.getElementById('myDialogBill');
             dialog.showModal();
         }
 
-        function closeDialog() {
-            var dialog = document.getElementById('myDialog');
+        function showDialogAddItem() {
+            var dialog = document.getElementById('myDialogAddItem');
+            dialog.showModal();
+        }
+        function closeDialogAddItem() {
+            var dialog = document.getElementById('myDialogAddItem');
             dialog.close();
         }
+        function updateItem() {
+
+        }
+        function deleteItem() {
+
+        }
+           
+        function addItem() {
+            var image = document.getElementById("imageAddItem").value;
+            var name = document.getElementById("nameAddItem").value;
+            var price = document.getElementById("priceAddItem").value;
+            var describe = document.getElementById("describeAddItem").value;
+            alert(name + " " + describe);
+
+            // add data to database, database -> view
+        }
+        function showDialogChangeItem() {
+            var dialog = document.getElementById('myDialogChangeItem');
+            dialog.showModal();
+        }
+        function closeDialogChangeItem() {
+            var dialog = document.getElementById('myDialogChangeItem');
+            dialog.close();
+        }
+        
     </script>
 
     <script>

@@ -1,0 +1,43 @@
+{% extends "settings.html" %}
+{% load static %}
+{% block formAdd %}
+    <form method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{formAdd.as_p}}
+        <div style="display: flex;">
+            <button>Add</button>
+            <button onclick="closeDialogAddItem()">Close</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block formChange %}
+    <button onclick="closeDialogChangeItem()">Close</button>
+{% endblock %}
+
+{% block foods%}
+<div>
+    <button onclick="showDialogAddItem()">AddProduct</button>
+</div>
+<div class="food-grid">
+    {% for product in products %} 
+        <div class="food-item">
+            <img src="{{product.img.url}}" alt="{{product.name}}">
+            <div>
+                <p>{{product.name}}</p>
+                <p>{{product.describe}}</p>
+                <p style="color: red;">{{product.price}}</p>
+                <div style="display: flex, ">
+                    <a href="{% url 'settingspage:changeProduct' product.id %}"><button>Change</button></a>
+                    <a href="{% url 'settingspage:deleteProduct' product.id %}"><button>Delete</button></a>
+                </div>
+                
+                <!-- <button onclick="showDialogChangeItem()">Change</button> -->
+            </div>
+        </div>
+        
+    {% endfor %}
+</div>
+<div>
+</div>
+{% endblock %}

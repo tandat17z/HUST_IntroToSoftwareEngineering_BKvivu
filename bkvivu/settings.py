@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'postspage',
     'profilepage',
     'settingspage',
-
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [

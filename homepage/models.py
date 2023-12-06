@@ -105,7 +105,7 @@ class Product(models.Model):
         ('service', 'Dịch vụ khác'),
 
     ]
-    provider = models.ForeignKey(Manager, on_delete=models.CASCADE)
+    provider = models.ForeignKey(Manager, on_delete=models.CASCADE,)
     name = models.TextField()
     type = models.CharField(max_length=10, choices=TYPES)
     price = models.IntegerField(default=0)
@@ -123,8 +123,7 @@ class Bill(models.Model):
     time = models.DateTimeField(default=timezone.datetime.now())
     price = models.IntegerField(default=0)
     img = models.ImageField(upload_to=img_path_bill, null=True, blank=True)
-    status = models.BooleanField(default=False)
-
+    status = models.CharField(max_length=200, default="None")
     def __str__(self):
         return f"{self.provider}_{self.sharer}_" + datetime.strftime(self.time, "%Y-%m-%d %H:%M:%S")
 
@@ -164,4 +163,5 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.post}"
+    
 

@@ -1,0 +1,15 @@
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+textarea,
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+input[type="file"] {
+    margin-bottom: 20px; /* Tăng khoảng cách giữa input file và các label khác */
+} 

@@ -20,4 +20,7 @@ class CreateImgForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ('img', )
-
+class CreateAddProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ("type", "name", "describe", "price", "img")

@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Change Product</title>
+        <style>
+            body{
+                align-items: center;
+                background: color(srgb red green blue);
+                margin-left: 600px;
+                background-color: aquamarine;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Change Product</h1>
+        <form method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{formChange.as_p}}
+            <div style="display: flex;">
+                <button>Change</button>
+                <button><a href="{% url 'settingspage:foodsPage'%}">Cancel</a></button>
+            </div>
+        </form>
+    </body>
+</html>
