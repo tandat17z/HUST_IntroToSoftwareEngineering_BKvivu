@@ -24,3 +24,7 @@ class CreateAddProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ("type", "name", "describe", "price", "img")
+        # widgets = [
+        #     'name' : TextArea(attrs={})
+        #     'describe' : TextArea()
+        # ]
