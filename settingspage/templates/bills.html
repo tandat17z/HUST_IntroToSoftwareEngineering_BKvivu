@@ -19,10 +19,20 @@
 
 {% block bills%}
 <ul>
+    <li>
+        Model Bill chưa có dữ liệu nên chưa hiện thị giao diện
+        <button>Details</button>
+    </li>
+    <li>
+        Model Bill chưa có dữ liệu nên chưa hiện thị giao diện
+        <button>Details</button>
+    </li>
     {% for bill in bills %}
         <li>
             Khách hàng {{bill.sharer.name}} đã gửi yêu cầu xác nhận đơn hàng, ấn vào để xem chi tiết
-            <a href="{ % url 'settingspage:viewBill' bill.id %}">Details</a>
+            <button>
+                <a href="{ % url 'settingspage:viewBill' bill.id %}">Details</a>
+            </button>
         </li>
         
     {% endfor %}
