@@ -84,6 +84,8 @@ class ProductPage(View):
     def get(self, request,*args, **kwargs):
         acc = Account.objects.get(user_ptr=request.user)
         user = Sharer.objects.get(account=acc) if (acc.role == 'sharer') else Manager.objects.get(account=acc)
+        if (acc.role == 'sharer') :
+            return redirect('settingspage:settingsPage')
         products = user.product_set.all()
         formAdd = CreateAddProductForm()
         context = {
@@ -115,6 +117,8 @@ def billsPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     bills = user.bill_set.all()
+    if (acc.role == 'sharer') :
+            return redirect('settingspage:settingsPage')
     context = {
         "bills" : bills,
         "acc" : acc,
@@ -124,6 +128,8 @@ def billsPage(request):
 def statisticsPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    if (acc.role == 'sharer') :
+        return redirect('settingspage:settingsPage')
     return render(request, 'statistics.html')
 
 def viewBill(request, billId):
