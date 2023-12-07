@@ -113,7 +113,6 @@ class Product(models.Model):
     TYPES = [
         ('food', 'Đồ ăn'),
         ('service', 'Dịch vụ khác'),
-
     ]
     provider = models.ForeignKey(Manager, on_delete=models.CASCADE)
     name = models.TextField()
@@ -129,6 +128,9 @@ class Product(models.Model):
         return f"{self.provider}_{self.name}"
 
 class Bill(models.Model):
+    STATUS = [
+        
+    ]
     sharer = models.ForeignKey(Sharer, on_delete=models.SET_NULL, null=True, verbose_name='Người mua')
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
     time = models.DateTimeField(default=timezone.datetime.now())
