@@ -15,11 +15,14 @@ from homepage.models import *
 def profilePage(request, acc_id):
     if not request.user.is_authenticated:
         return redirect('homepage:loginPage')
-
-    acc = Account.objects.get(pk=acc_id)
+    # target_acc , target_user : đối tượng mà mình vào xem trang cá nhân
+    target_acc = Account.objects.get(pk=acc_id)
+    target_user = Sharer.objects.get(account= target_acc) if target_acc.role == 'sharer' else Manager.objects.get(account= target_acc)
+    # acc, user : Bản thân người đang đăng nhập
+    acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     context = {
-        'acc': acc,
+        'target_user': target_user,
         'user': user,
     }
     return render(request, 'profile.html', context)
