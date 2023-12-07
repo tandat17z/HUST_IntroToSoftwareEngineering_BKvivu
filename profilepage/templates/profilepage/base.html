@@ -31,7 +31,7 @@
             </div>
         </a>
         <div class="option">
-            <a href="#my-profile" class="my-profile">
+            <a href="{% url 'profilepage:profilePage' user.account.id%}" class="my-profile">
                 <div>
                 <i class="fa-solid fa-user"></i>
                 <span>My Profile</span>
@@ -44,7 +44,14 @@
                 <span>Settings</span>
                 </div>
             </a>
-
+            <!-- Shopping Cart Icon-->
+            <a href="#shoppingcart" class="log-out">
+                <div>
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Giỏ hàng</span>
+                </div>
+            </a>
+            <!-- Logout -->
             <a href="{% url 'profilepage:logoutPage'%}" class="log-out">
                 <div>
                 <i class="fa-solid fa-right-from-bracket"></i>
@@ -58,10 +65,10 @@
     <div class="top-profile">
         <div class="avatar-name">
             <div class="avatar">
-                <img src = "{{ user.avatar.url}}" alt="">
+                <img src = "{{ target_user.avatar.url}}" alt="">
             </div>
             <div class="name">
-                <h1 id="name-profile">{{ user.name }}</h2>
+                <h1 id="name-profile">{{ target_user.name }}</h2>
                 <div class="rated">
                     <h4 id="point-rate">4.5</h4>
                     <h4 id="point-max">/ 5</h4>
@@ -69,36 +76,13 @@
                 </div>
             </div>
         </div>
-        <div class="info-profile">
-            <div class="contacts-vote">
-                <div class="contacts-list">
-                    <a target="_blank" href="https://www.facebook.com/pbtruong.03" class="contact">
-                        <div class="icon-contact"><i class="fa-brands fa-facebook"></i></div>
-                    </a>
-                    <a href="#website" class="contact">
-                        <div class="icon-contact"><i class="fa-solid fa-globe"></i></div>
-                    </a>
-                    <a href="tel:18008055" class="contact">
-                        <div class="icon-contact"><i class="fa-solid fa-phone"></i></div>
-                    </a>
-                </div>
-                <a href="#vote" class="vote-profile">
-                    <div class="votestar">
-                        <i class="fa-solid fa-marker"></i>
-                        <span>Đánh giá</span>
-                    </div>
-                </a>
-            </div>
-            <div class="address-info">
-                <a href="#map">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <h4>{{ user.address }}</h4>
-                </a>
-            </div>
-        </div>
+    {% if target_user.account.role == "manager" %}
+        {% block infoProfileManager %}
+        {% endblock infoProfileManager %}
+    {% endif %}
     </div>
     <!--  buttom-profile of manager account-->
-    {% if acc.role == 'manager' %}
+    {% if target_user.account.role == "manager" %}
         {% block buttom_profile %}
         {% endblock buttom_profile %}
     {% endif %}
@@ -115,18 +99,18 @@
         </div>
         <div class="list-contents">
 
-            {% if acc %}
-                {% for posts in acc.post_set.all %}
+            {% if target_user.account %}
+                {% for posts in target_user.account.post_set.all %}
                     <!-- Post # -->
                     <div class="posts">
                         <div class="top-posts">
                             <div class="left">
                                 <div class="left-avatar avatar">
-                                    <img src = "{{ user.avatar.url }}" alt="">
+                                    <img src = "{{ target_user.avatar.url }}" alt="">
                                 </div>
                                 <div class="left-name-time">
                                     <div class="name">
-                                        <h4>{{ user.name }}</h4>
+                                        <h4>{{ target_user.name }}</h4>
                                     </div>
                                     <div class="time">
                                         <span> {{ posts.time }}</span>
