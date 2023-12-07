@@ -47,7 +47,7 @@
     </head>
     <body>
             <div class="container">
-        
+                <div>
                 <label for="">Name : </label>
                 <div class="paragraph-container">
                     <p>{{bill.sharer.name}}</p>
@@ -59,7 +59,20 @@
                 <label for="product">Product : </label>
                 <div class="paragraph-container">
                     {% for order in bill.order_set.all %}
-                        <p>{{order.product.name}} : {{order.quantity}}</p>
+                        <div style="color: black;" class="paragraph-container">
+                                <p>
+                                    <img style="height: 3%; width: 5%;" src="{{order.product.img.url}}" alt="">
+                                    {{order.product.name}} - {{order.product.price}}đ
+                                    
+                                    <p style="color: red;">
+                                        x{{order.quantity}}
+                                    </p>
+                                </p>
+                               
+                                   
+                               
+                        </div>
+                        
                     {% endfor %}
                 </div>
                 
@@ -67,7 +80,9 @@
                 <div class="paragraph-container">
                     <p>{{bill.price}}</p>
                 </div>
-                
+                </div>
+                <div>
+             
                 <label for="">Image : </label>
                     {% if bill.img %}
                     <img style="height: 20%; width: 30%; border: blue; justify-content: center;" src="{{bill.img.url}}" alt="bill">
@@ -79,7 +94,8 @@
                     <a  href="{% url 'settingspage:decline' bill.id %}"><button class="btn btn-primary">Decline</button></a>
                     <a  href="{% url 'settingspage:billsPage' %}"><button class="btn btn-primary">Cancel</button></a>
                 </div>
-                  
+  
+            </div>
             </div>
             
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

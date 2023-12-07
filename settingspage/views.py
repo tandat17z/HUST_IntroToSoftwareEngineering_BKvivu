@@ -13,8 +13,10 @@ from .forms import *
 
 # Create your views here.
 def settingsPage(request):
-    return render(request, 'settings.html')
-
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    return render(request, 'settings.html', {'acc' : acc})
+# Post Page
 def postPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
@@ -41,20 +43,14 @@ def postPage(request):
     context = {
         'form_post': form_post,
         'form_img': form_img,
+        'acc' : acc
     }
     return render(request, 'post.html', context)
-def deleteProduct(request, productId):
-    acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account=acc) if acc.role == 'sharer' else Manager.objects.get(account=acc)
-    product = Product.objects.get(id = productId)
-    product.delete()
-    messages.success(message='Xóa sản phẩm thành công', request=request)
-    redirect("settingspage:foodsPage")
-# def updateProduct(request, productId):
-#     acc = Account.objects.get(user_ptr=request.user)
-#     user = Sharer.objects.get(account=acc) if acc.role == 'sharer' else Manager.objects.get(account=acc)
-#     product = Product.objects.get(id = productId)
-    
+
+
+
+
+#General Page
 def generalPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
@@ -77,15 +73,19 @@ def generalPage(request):
 
     context = {
         'form_gerenal': form_general,
+        'acc' : acc
     }
     return render(request, 'general.html', context)
 
+
+
+
+
+#Product Page
 class ProductPage(View):
     def get(self, request,*args, **kwargs):
         acc = Account.objects.get(user_ptr=request.user)
         user = Sharer.objects.get(account=acc) if (acc.role == 'sharer') else Manager.objects.get(account=acc)
-        if (acc.role == 'sharer') :
-            return redirect('settingspage:settingsPage')
         products = user.product_set.all()
         formAdd = CreateAddProductForm()
         context = {
@@ -112,47 +112,14 @@ class ProductPage(View):
     def dispatch(self, request, *args, **kwargs):
         # Additional common logic can go here before calling get or post
         return super().dispatch(request, *args, **kwargs)
-    
-def billsPage(request):
-    acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-    bills = user.bill_set.all()
-    if (acc.role == 'sharer') :
-            return redirect('settingspage:settingsPage')
-    context = {
-        "bills" : bills,
-        "acc" : acc,
-        "user" : user,
-    }
-    return render(request, "bills.html", context)
-def statisticsPage(request):
-    acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-    if (acc.role == 'sharer') :
-        return redirect('settingspage:settingsPage')
-    return render(request, 'statistics.html')
-
-def viewBill(request, billId):
-    if request.method == 'GET' : 
-        bill = Bill.objects.get(id = billId)
-        # sharer = Sharer.objects.get(id = bill.sharer_id)
-        return render(request, "bill.html", {"bill" : bill})
-def accept(request, billId):
-    bill = Bill.objects.get(pk = billId)
-    bill.status = "Accept"
-    bill.delete()
-    return redirect('settingspage:billsPage')
-def decline(request,billId):
-    bill = Bill.objects.get(pk = billId)
-    bill.status = "Decline"
-    bill.delete()
-    return redirect('settingspage:billsPage')
 def deleteProduct(request, productId):
     product = Product.objects.get(id = productId)
     try : 
         product.delete()
+        messages.success(message='Xóa sản phẩm thành công', request=request)
         return redirect('settingspage:foodsPage')
     except:
+        messages.error(message='Xóa sản phẩm thất bại', request=request)
         return redirect('settingspage:foodsPage')
 class ChangeProduct(View):
     def get(self, request, productId):
@@ -168,6 +135,59 @@ class ChangeProduct(View):
         if form.is_valid : 
             newProduct = form.save(commit=False)
             newProduct.save()
+            messages.success(message='Cập nhật sản phẩm thành công', request=request)
             return redirect('settingspage:foodsPage')
         else :
+            messages.success(message='Cập nhật sản phẩm thất bại', request=request)
             return redirect('settingspage:foodsPage')
+        
+
+
+
+#Bill Page
+def billsPage(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    bills = user.bill_set.all()
+    context = {
+        "bills" : bills,
+        "acc" : acc,
+        "user" : user,
+    }
+    return render(request, "bills.html", context)
+
+
+def viewBill(request, billId):
+    if request.method == 'GET' : 
+        bill = Bill.objects.get(id = billId)
+        return render(request, "bill.html", {"bill" : bill})
+def accept(request, billId):
+    try :
+        bill = Bill.objects.get(pk = billId)
+        bill.status = "Accept"
+        bill.delete()
+        messages.success(message='Accept', request=request)
+        return redirect('settingspage:billsPage')
+    except : 
+        messages.success(message='Error happened, try again', request=request)
+        return redirect('settingspage:billsPage')
+def decline(request,billId):
+    try : 
+        bill = Bill.objects.get(pk = billId)
+        bill.status = "Decline"
+        bill.delete()
+        messages.success(message='Decline', request=request)
+        return redirect('settingspage:billsPage')
+    except :
+        messages.success(message='Error happened, try again', request=request)
+        return redirect('settingspage:billsPage')
+
+
+
+
+
+#Sattistics Page
+def statisticsPage(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    return render(request, 'statistics.html', {'acc' : acc})

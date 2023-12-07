@@ -75,9 +75,11 @@
 
     <nav>
         <a href="{% url 'settingspage:gerenalPage' %}" onclick="">General</a>
+        {% if acc.role == 'manager' %} 
         <a href="{% url 'settingspage:foodsPage' %}" onclick="">Product</a>
-        <a href="{% url 'settingspage:billsPage' %}" onclick="">Bills</a>
         <a href="{% url 'settingspage:statisticsPage' %}" onclick="">Statistics</a>
+        <a href="{% url 'settingspage:billsPage' %}" onclick="">Bills</a>
+        {% endif %}
         <a href="{% url 'settingspage:postPage' %}" onclick="">Posts</a>
     </nav>
 
