@@ -50,7 +50,7 @@ class Account(User):
 
     def __str__(self):
         return f"{self.username}"
-    
+
 
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
@@ -85,10 +85,10 @@ class Manager(models.Model):
     num_stars = models.IntegerField(null=True, default=0)
     num_votes = models.IntegerField(null=True, default=0)
     rank = models.FloatField(null=True, default=0)
-    
+
     def __str__(self):
         return f"{self.account}"
-    
+
     def save(self, *args, **kwargs):
         # Kiểm tra và xóa ảnh cũ (nếu có)
         if self.pk:
@@ -175,3 +175,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.post}"
+
+
+# vote_profile_model
+class StarVote(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    manager = models.ForeignKey(Manager, on_delete=models.CASCADE)
+    stars = models.IntegerField(default=0)
