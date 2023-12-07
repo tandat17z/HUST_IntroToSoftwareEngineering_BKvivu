@@ -1,14 +1,46 @@
 {% extends "profilepage/base.html" %}
 
+
+{% comment %} Info profile manager {% endcomment %}
+    {% block infoProfileManager %}
+    <div class="info-profile">
+        <div class="contacts-vote">
+            <div class="contacts-list">
+                <a target="_blank" href="https://www.facebook.com/pbtruong.03" class="contact">
+                    <div class="icon-contact"><i class="fa-brands fa-facebook"></i></div>
+                </a>
+                <a href="#website" class="contact">
+                    <div class="icon-contact"><i class="fa-solid fa-globe"></i></div>
+                </a>
+                <a href="tel:18008055" class="contact">
+                    <div class="icon-contact"><i class="fa-solid fa-phone"></i></div>
+                </a>
+            </div>
+            <a href="#vote" class="vote-profile">
+                <div class="votestar">
+                    <i class="fa-solid fa-marker"></i>
+                    <span>Đánh giá</span>
+                </div>
+            </a>
+        </div>
+        <div class="address-info">
+            <a href="#map">
+                <i class="fa-solid fa-location-dot"></i>
+                <h4>{{ target_user.address }}</h4>
+            </a>
+        </div>
+    </div>
+    {% endblock infoProfileManager %}
+
+<!--  buttom-profile -->
     {% block buttom_profile %}
-    <!--  buttom-profile -->
     <div class="buttom-profile">
         <div class="bio">
             <div class="bio-title">
                 <h3>Mô tả</h3>
             </div>
             <div class="bio-content">
-                <p>{{ user.bio }}</p>
+                <p>{{ target_user.bio }}</p>
             </div>
         </div>
         <div class="menu">
@@ -29,8 +61,8 @@
             <div class="list-menu">
                 <div class="products-list">
                     <!-- Product list-->
-                    {% if user.account.role == 'manager' %}
-                        {% for product in user.product_set.all %}
+                    {% if target_user.account.role == 'manager' %}
+                        {% for product in target_user.product_set.all %}
                         {% comment %} Product {% endcomment %}
                             <div class="product">
                                 <div class="product-img">
