@@ -5,7 +5,7 @@
 <ul>
     {% for bill in bills %}
         <li>
-            Khách hàng {{bill.sharer.name}} va {{bill.id}} đã gửi yêu cầu xác nhận đơn hàng, ấn vào để xem chi tiết
+            Khách hàng <i style="color: red;">{{bill.sharer.name}}</i> đã gửi yêu cầu xác nhận đơn hàng, ấn vào để xem chi tiết
                 <a style="text-decoration: none;" href="{% url 'settingspage:viewBill' bill.id %}"><button>Details</button></a>
         </li>
         

@@ -137,13 +137,13 @@ def viewBill(request, billId):
         bill = Bill.objects.get(id = billId)
         # sharer = Sharer.objects.get(id = bill.sharer_id)
         return render(request, "bill.html", {"bill" : bill})
-def accept(request, billId, billId2):
-    bill = Bill.objects.get(pk = billId2)
+def accept(request, billId):
+    bill = Bill.objects.get(pk = billId)
     bill.status = "Accept"
     bill.delete()
     return redirect('settingspage:billsPage')
-def decline(request,billId, billId2):
-    bill = Bill.objects.get(pk = billId2)
+def decline(request,billId):
+    bill = Bill.objects.get(pk = billId)
     bill.status = "Decline"
     bill.delete()
     return redirect('settingspage:billsPage')

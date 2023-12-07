@@ -69,12 +69,14 @@
                 </div>
                 
                 <label for="">Image : </label>
-                    {% if bill.img.url %}
-                    <img style="height: 500px; width: 500px; border: blue; justify-content: center;" src="{{bill.img.url}}" alt="bill">
+                    {% if bill.img %}
+                    <img style="height: 20%; width: 30%; border: blue; justify-content: center;" src="{{bill.img.url}}" alt="bill">
+                    {% else %}
+                    <p>Khách hàng chưa cung cấp ảnh</p>
                     {% endif %}
                 <div style="display: flex; text-align: center; align-items: center; justify-content: space-evenly; ">
-                    <a  href="{% url 'settingspage:accept' bill.id bill.id%}"><button class="btn btn-primary">Accept</button></a>
-                    <a  href="{% url 'settingspage:decline' bill.id bill.id%}"><button class="btn btn-primary">Decline</button></a>
+                    <a  href="{% url 'settingspage:accept' bill.id %}"><button class="btn btn-primary">Accept</button></a>
+                    <a  href="{% url 'settingspage:decline' bill.id %}"><button class="btn btn-primary">Decline</button></a>
                     <a  href="{% url 'settingspage:billsPage' %}"><button class="btn btn-primary">Cancel</button></a>
                 </div>
                   
