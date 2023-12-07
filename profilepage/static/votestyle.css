@@ -1,0 +1,61 @@
+/* Css rated */
+.rated{
+    display: flex;
+}
+#point-rate, #point-max{
+    font-size: 24px;
+    font-weight: 400;
+    display: inline;
+}
+.rated i{
+    font-size: 20px;
+    color: yellow;
+    margin: auto 0;
+}
+#votestar{
+    display: none;
+}
+
+#buttonvote{
+    padding: 10px 20px;
+    margin: auto 5px;
+    background-color: rgb(170, 186, 204);
+    border: 1px solid green;
+    border-radius: 20px;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+#buttonvote div{
+    height: 100%;
+    margin: auto;
+}
+
+/* Css vote */
+#voteProfile{
+    margin: auto 0;
+    display: none;
+}
+#voteProfile {
+    font-size: 20px;
+    color: black;
+    margin: auto 0;
+}
+
+.starsvote label{
+    color: #ffe400;
+}
+
+.starsvote input{
+    display: none;
+}
+
+.starsvote input+label{
+    cursor: pointer;
+}
+.starsvote input:checked+label~label{
+    color: #838383;
+}
+.starsvote label:active{
+    transform: scale(0.8);
+    transition: 0.3s ease;
+}

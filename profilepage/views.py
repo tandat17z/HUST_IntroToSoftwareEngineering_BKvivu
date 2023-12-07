@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 
@@ -26,6 +26,31 @@ def profilePage(request, acc_id):
         'user': user,
     }
     return render(request, 'profile.html', context)
+
+#vote Profile manager
+def voteProfile(request,acc_id):
+    if request.method == 'POST':
+        try:
+            acc = Account.objects.get(user_ptr=request.user)
+            target_user=Manager.objects.get(account= acc_id)
+            stars = request.POST.get("rate")
+            # Lấy hoặc tạo một đối tượng StarVote dựa trên account_id và manager_id
+            star_vote, created = StarVote.objects.get_or_create(
+                account = acc,
+                manager = target_user,
+                defaults={'stars': stars}  # Điền vào giá trị mặc định cho số sao nếu đối tượng chưa tồn tại
+            )
+            if not created:
+            # Đối tượng đã tồn tại, bạn có thể thực hiện các thay đổi tùy thuộc vào trường hợp của bạn
+                star_vote.stars = stars
+                star_vote.save()
+            target_user.save() #Cập nhật rank cho người quản lý
+            messages.success(request, "Đánh giá thành công !")
+        except:
+            messages.error(request, "Đánh giá không thành công !")
+    else:
+        messages.warning(request,"lỗi")
+    return redirect('profilepage:profilePage', acc_id=acc_id)
 
 # Log out button
 def logout_view(request):

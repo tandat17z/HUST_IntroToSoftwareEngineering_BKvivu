@@ -1,5 +1,46 @@
 {% extends "profilepage/base.html" %}
 
+{% comment %} Vote block {% endcomment %}
+{% block rateProfile %}
+    <div class="rated">
+        <h4 id="point-rate">4.5</h4>
+        <h4 id="point-max">/ 5</h4>
+        <i class="fa-solid fa-star"></i>
+        {% comment %} if profile view not my profile then can vote {% endcomment %}
+        {% if target_user.account.id != user.account.id %}
+            <button id="buttonvote" onclick="viewVote()">
+                <div>
+                    <i class="fa-solid fa-marker"></i>
+                    <span>Đánh giá</span>
+                </div>
+            </button>
+        {% endif %}
+    </div>
+    {% if target_user.account.id != user.account.id %}
+        <div id="voteProfile">
+            <form action="{% url 'profilepage:voteProfile' target_user.account.id%}" method="post">
+                {% csrf_token %}
+                <div class="starsvote">
+                    <input type="radio" id="one" name="rate" value="1">
+                    <label for="one" class="fa-solid fa-star"></label>
+                    <input type="radio" id="two" name="rate" value="2">
+                    <label for="two" class="fa-solid fa-star"></label>
+                    <input type="radio" id="three" name="rate" value="3">
+                    <label for="three" class="fa-solid fa-star"></label>
+                    <input type="radio" id="four" name="rate" value="4">
+                    <label for="four" class="fa-solid fa-star"></label>
+                    <input type="radio" id="five" name="rate" value="5">
+                    <label for="five" class="fa-solid fa-star"></label>
+                </div>
+                <input type="submit" value="Gửi">
+            </form>
+
+            <button class="closed-vote"onclick="viewVote()">
+                <i class="fa-regular fa-circle-xmark"></i>
+            </button>
+        </div>
+    {% endif %}
+{% endblock rateProfile %}
 
 {% comment %} Info profile manager {% endcomment %}
     {% block infoProfileManager %}
@@ -16,12 +57,7 @@
                     <div class="icon-contact"><i class="fa-solid fa-phone"></i></div>
                 </a>
             </div>
-            <a href="#vote" class="vote-profile">
-                <div class="votestar">
-                    <i class="fa-solid fa-marker"></i>
-                    <span>Đánh giá</span>
-                </div>
-            </a>
+
         </div>
         <div class="address-info">
             <a href="#map">
