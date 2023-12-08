@@ -3,6 +3,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 import django.db.models.deletion
+from django.db.models import Avg
 from django.utils import timezone
 
 
@@ -82,12 +83,19 @@ class Manager(models.Model):
     address = models.TextField(null=True)
     bio = models.TextField(max_length=1500, null = True)
 
-    num_stars = models.IntegerField(null=True, default=0)
-    num_votes = models.IntegerField(null=True, default=0)
-    rank = models.FloatField(null=True, default=0)
+    #x num_stars = models.IntegerField(null=True, default=0)
+    #x rank = models.FloatField(null=True, default=0)
+
+    num_votes = models.IntegerField(null=True, default=0) #tổng số lượt đánh giá
+    avgStar = models.FloatField(default=0.0) #Số sao đánh giá trung bình của cửa hàng
 
     def __str__(self):
         return f"{self.account}"
+    # Hàm cập nhật đánh giá trung bình sau mỗi lượt đánh giá
+    def updateAvgStar(self):
+        self.num_votes = self.starvote_set.count()
+        avg_star = StarVote.objects.filter(manager=self).aggregate(Avg('stars'))['stars__avg']
+        self.avgStar = avg_star if avg_star else 0.0
 
     def save(self, *args, **kwargs):
         # Kiểm tra và xóa ảnh cũ (nếu có)
@@ -101,11 +109,14 @@ class Manager(models.Model):
                 if old_instance.avatar:
                         old_instance.avatar.delete(save=False)
 
-        # tự động tính rank = star/ vote
-        if self.num_votes > 0:
-            self.rank = round(self.num_stars / self.num_votes, 2)
-        else:
-            self.rank = 0
+        #x tự động tính rank = star/ vote
+        #x if self.num_votes > 0:
+        #x     self.rank = round(self.num_stars / self.num_votes, 2)
+        #x else:
+        #x     self.rank = 0
+
+        # Gọi hàm tính sao trung bình để cập nhật avgStar
+        self.updateAvgStar()
         # Gọi hàm save của lớp cha (object)
         super().save(*args, **kwargs)
 
@@ -182,3 +193,5 @@ class StarVote(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     manager = models.ForeignKey(Manager, on_delete=models.CASCADE)
     stars = models.IntegerField(default=0)
+    def __str__(self):
+        return f"{self.account} Voted For {self.manager}"

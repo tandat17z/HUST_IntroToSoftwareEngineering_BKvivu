@@ -2,15 +2,24 @@
 .rated{
     display: flex;
 }
+.rated h4 {
+    margin: 0;
+}
 #point-rate, #point-max{
     font-size: 24px;
     font-weight: 400;
     display: inline;
+    margin: auto 0;
+}
+#num-vote{
+    font-style: italic;
+    font-weight: 400;
+    margin: auto 0;
 }
 .rated i{
     font-size: 20px;
     color: yellow;
-    margin: auto 0;
+    margin: auto 5px;
 }
 #votestar{
     display: none;
@@ -41,6 +50,10 @@
     margin: auto 0;
 }
 
+.starsvote {
+    margin: 0 3px;
+}
+
 .starsvote label{
     color: #ffe400;
 }
@@ -58,4 +71,17 @@
 .starsvote label:active{
     transform: scale(0.8);
     transition: 0.3s ease;
+}
+
+.submit-closed{
+    display: flex;
+    justify-content: space-between;
+}
+.closed-vote{
+    margin: auto 3px;
+}
+.submit-closed input{
+    background-color: #7fffd4;
+    padding: 1px 10px;
+    border-radius: 20px;
 }

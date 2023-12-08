@@ -13,11 +13,11 @@ from .forms import *
 def homePage(request):
     if not request.user.is_authenticated:
         return redirect('homepage:loginPage')
-    
+
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
 
-    top_shops = Manager.objects.filter(rank__isnull=False).order_by('-rank')[:5]
+    top_shops = Manager.objects.filter(avgStar__isnull=False).order_by('-avgStar')[:5]
     list_items = Product.objects.order_by('-time')[:15]
     context = {
         'acc': acc,
@@ -30,7 +30,7 @@ def homePage(request):
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('homepage:homePage')
-    
+
     if request.method == 'POST':
         rgt_username = request.POST.get('rgt_username')
         username = request.POST.get('username')
@@ -51,13 +51,13 @@ def loginPage(request):
                 psw = password1
                 hashed_psw = make_password(psw)
                 acc = Account.objects.create(
-                    username=rgt_username, 
-                    email=email, 
-                    password=hashed_psw, 
-                    raw_password=psw, 
+                    username=rgt_username,
+                    email=email,
+                    password=hashed_psw,
+                    raw_password=psw,
                     role=role
                 )
-                
+
                 #Tạo model(Sharer/ Manager) tương ứng
                 if acc:
                     user_logged = authenticate(request, username=rgt_username, password=psw)
@@ -71,7 +71,7 @@ def loginPage(request):
                 login(request, user_logged)
                 return redirect('homepage:homePage')
             messages.error(request, 'Đăng nhập không thành công. Vui lòng thử lại.')
-    
+
     context = {
         'form_rgt': CreateAccountForm(),
     }
@@ -90,7 +90,7 @@ def registerPage(request):
                     # Thực hiện thay đổi avatar
                     sharer = form.save(commit=False)
                     sharer.save()
-                
+
                     return redirect('homepage:homePage')
             context = {
                 'form' :  CreateSharerForm(),
