@@ -1,10 +1,10 @@
 {% extends "settingspage/base.html" %}
-
+{% load static %}
 {% block product %}
 
     <div class="product-manager">
         <div class="list-product">
-            {% if user.account.role == 'manager' %}
+           
                 {% for product in user.product_set.all %}
                     <div class="product">
                         <div class="right-product">
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 {% endfor %}
-            {% endif %}
+  
         </div>
         <a href="{% url 'settingspage:addProduct'%}" class="add-product">
             <div class="container-add-product">

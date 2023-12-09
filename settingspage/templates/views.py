@@ -2,21 +2,21 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.views import View
-
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from homepage.models import *
 from .forms import *
-from .urls import *
 
 
 
 # Create your views here.
 def settingsPage(request):
-    return redirect('settingspage:gerenalPage')
-
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    return render(request, 'settings.html', {'acc' : acc})
+# Post Page
 def postPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
@@ -43,78 +43,14 @@ def postPage(request):
     context = {
         'form_post': form_post,
         'form_img': form_img,
-        'acc': acc,
+        'acc' : acc
     }
     return render(request, 'post.html', context)
 
 
-#####-------- Sản phẩm -------######
-# Quản lý Sản phẩm
-def ProductManager(request):
-    acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-    context = {
-        'acc' : acc,
-        'user' : user
-    }
-    return render(request, 'product.html', context)
-#Tạo sản phẩm mới
-class CreateProduct(View):
-    def get(self, request):
-        form_product = ProductForm()
-        acc = Account.objects.get(user_ptr=request.user)
-        context = {
-            'acc' : acc,
-            'form_product':form_product
-        }
-        return render(request, 'addproduct.html', context)
-    def post(self, request):
-        acc = Account.objects.get(user_ptr=request.user)
-        if acc.role == 'sharer':
-            return HttpResponse("Bạn cần là người quản lý để thực hiện")
-        else:
-            user = Manager.objects.get(account = acc)
-            newProduct = Product.objects.create(provider = user)
-            form_product = ProductForm(request.POST, request.FILES, instance= newProduct)
-            if form_product.is_valid():
-                product = form_product.save(commit= False) # Đối tượng mô hình k đưa vào cơ sở dữ liệu
-                product.save()
-                messages.success(request, "Thêm sản phẩm thành công")
-            return redirect('settingspage:product')
-
-#Xóa Sản phẩm
-def deleteProduct(request, product_id):
-    try:
-        product = Product.objects.get(pk = product_id)
-        product.delete()
-        messages.success(request, "Đã xóa sản phẩm")
-    except:
-        messages.error(request, "Thao tác lỗi")
-    return redirect('settingspage:product')
-
-# Sửa sản phẩm
-class editProduct(View):
-    def get(self, request, product_id):
-        acc = Account.objects.get(user_ptr=request.user)
-        user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-        _product = Product.objects.get(pk = product_id)
-        pform = ProductForm(instance= _product)
-        context = {
-            'form_product': pform,
-            'acc': acc, 
-        }
-        return render(request, 'addproduct.html', context)
-    def post(sefl, request, product_id):
-        _product = Product.objects.get(pk = product_id)
-        pform = ProductForm(request.POST, request.FILES, instance = _product)
-        if pform.is_valid():
-            pform.save()
-            messages.success(request, "Đã lưu thay đổi")
-        else :
-            messages.error(request, "Thực hiện bị lỗi")
-        return redirect('settingspage:product')
 
 
+#General Page
 def generalPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
@@ -133,13 +69,80 @@ def generalPage(request):
             #Trả về trang cá nhân
             messages.success(request, 'Thông tin đã được cập nhật')
 
-    form_general = UpdateSharerForm(instance= user) if acc.role == 'sharer' else UpdateManagerForm(instance=user)
+    form_general = UpdateSharerForm() if acc.role == 'sharer' else UpdateManagerForm()
 
     context = {
         'form_gerenal': form_general,
-        'acc': acc,
+        'acc' : acc
     }
     return render(request, 'general.html', context)
+
+
+
+
+
+#Product Page
+class ProductPage(View):
+    def get(self, request,*args, **kwargs):
+        acc = Account.objects.get(user_ptr=request.user)
+        user = Sharer.objects.get(account=acc) if (acc.role == 'sharer') else Manager.objects.get(account=acc)
+        products = user.product_set.all()
+        formAdd = CreateAddProductForm()
+        context = {
+            "products" : products,
+            "acc" : acc,
+            "user" : user,
+            "formAdd" : formAdd,
+        }
+        return render(request, "foods.html", context)
+    def post(self, request,*args, **kwargs):
+        acc = Account.objects.get(user_ptr=request.user)
+        user = Sharer.objects.get(account=acc) if (acc.role == 'sharer') else Manager.objects.get(account=acc)
+        products = user.product_set.all()
+        newProduct = Product.objects.create(provider = user)
+        form = CreateAddProductForm(request.POST, request.FILES, instance=newProduct)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.save()
+            messages.success(message='Thêm sản phẩm mới thành công', request=request)
+            return redirect("settingspage:foodsPage")
+        else:
+            messages.error(message='Thêm sản phẩm mới thất bại', request=request)  
+            return redirect("settingspage:foodsPage")
+    def dispatch(self, request, *args, **kwargs):
+        # Additional common logic can go here before calling get or post
+        return super().dispatch(request, *args, **kwargs)
+def deleteProduct(request, productId):
+    product = Product.objects.get(id = productId)
+    try : 
+        product.delete()
+        messages.success(message='Xóa sản phẩm thành công', request=request)
+        return redirect('settingspage:foodsPage')
+    except:
+        messages.error(message='Xóa sản phẩm thất bại', request=request)
+        return redirect('settingspage:foodsPage')
+class ChangeProduct(View):
+    def get(self, request, productId):
+        product = Product.objects.get(pk = productId)
+        formChange = CreateAddProductForm(instance=product)
+        context = {
+            'formChange' : formChange
+        }
+        return render(request, 'change_product.html', context)
+    def post(self, request, productId):
+        product = Product.objects.get(id = productId)
+        form = CreateAddProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid : 
+            newProduct = form.save(commit=False)
+            newProduct.save()
+            messages.success(message='Cập nhật sản phẩm thành công', request=request)
+            return redirect('settingspage:foodsPage')
+        else :
+            messages.success(message='Cập nhật sản phẩm thất bại', request=request)
+            return redirect('settingspage:foodsPage')
+        
+
+
 
 #Bill Page
 def billsPage(request):

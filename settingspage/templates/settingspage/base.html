@@ -30,13 +30,18 @@
 
     <nav>
         <a href="{% url 'settingspage:gerenalPage' %}" onclick="">General</a>
+        {% if acc.role == 'manager' %}
         <a href="{% url 'settingspage:product' %}" onclick="showContent('products')">Products</a>
-        <a href="#bills" onclick="showContent('bills')">Bills</a>
-        <a href="#statistics" onclick="showContent('statistics')">Statistics</a>
+        <a href="{% url 'settingspage:billsPage' %}" onclick="">Bills</a>
+        <a href="{% url 'settingspage:statisticsPage' %}" onclick="">Statistics</a>
+        {% endif %}
         <a href="{% url 'settingspage:postPage' %}" onclick="">Posts</a>
     </nav>
-
-    {% block product %}{% endblock product %}
-    {% block addproduct %}{% endblock addproduct %}
+  
+    {% block product %}{% endblock  %}
+    {% block bills %}{% endblock  %}
+    {% block statistics %}{% endblock  %}
+    {% block post %}{% endblock  %}
+    {% block general %}{% endblock  %}
 </body>
 </html>

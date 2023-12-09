@@ -12,6 +12,10 @@ urlpatterns = [
     path('product/add', views.CreateProduct.as_view(), name='addProduct'),
     path('product/delete/<int:product_id>', views.deleteProduct, name='deleteProduct'),
     path('product/edit/<int:product_id>', views.editProduct.as_view(), name='editProduct'),
-
+    path('bills/', views.billsPage, name='billsPage'),
+    path('bills/viewBill/<int:billId>', views.viewBill, name='viewBill'),
+    path('bills/viewBill/<int:billId>/accept/>', views.accept, name='accept'),
+    path('bills/viewBill/<int:billId>/decline/>', views.decline, name='decline'),
+    path('statistics/', views.statisticsPage, name='statisticsPage'),
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_URL)
