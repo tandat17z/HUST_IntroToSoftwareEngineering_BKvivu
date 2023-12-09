@@ -1,0 +1,21 @@
+.container {
+    width: 60%; /* Set the width of the form */
+    padding: 20px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    background-color: aquamarine;
+    text-align: center;
+    align-items: center;
+}
+.paragraph-container {
+    border: 2px solid #ddd; /* Border style */
+    padding: 10px; /* Padding around the content */
+    margin: 10px; /* Margin around the container */
+    border-radius: 8px; /* Border radius for rounded corners */
+    background-color: #f9f9f9; /* Background color */
+}
+
+/* Paragraph style (optional) */
+.paragraph-container p {
+    margin: 0; /* Remove default margin for the paragraph */
+}

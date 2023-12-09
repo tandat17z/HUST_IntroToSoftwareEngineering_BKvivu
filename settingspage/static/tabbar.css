@@ -1,8 +1,10 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
+    margin: 20px auto 0;
     padding: 0;
     background-color: #f4f4f4;
+    align-items: center;
+    justify-content: center;
 }
 
 header {

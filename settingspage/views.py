@@ -77,10 +77,18 @@ class CreateProduct(View):
             newProduct = Product.objects.create(provider = user)
             form_product = ProductForm(request.POST, request.FILES, instance= newProduct)
             if form_product.is_valid():
+                if form_product.cleaned_data['img'].name == 'default.jpg':
+                    messages.error(request, "Thêm sản phẩm thất bại vì thiếu hình ảnh") 
+                    newProduct.delete()
+                    return redirect('settingspage:product')
                 product = form_product.save(commit= False) # Đối tượng mô hình k đưa vào cơ sở dữ liệu
                 product.save()
                 messages.success(request, "Thêm sản phẩm thành công")
+            else:
+                newProduct.delete()
+                messages.error(request, "Thêm sản phẩm thất bại")
             return redirect('settingspage:product')
+
 
 #Xóa Sản phẩm
 def deleteProduct(request, product_id):
@@ -162,7 +170,8 @@ def accept(request, billId):
     try :
         bill = Bill.objects.get(pk = billId)
         bill.status = "Accept"
-        bill.delete()
+        bill.save()
+        # bill.delete()
         messages.success(message='Accept', request=request)
         return redirect('settingspage:billsPage')
     except : 
@@ -172,7 +181,8 @@ def decline(request,billId):
     try : 
         bill = Bill.objects.get(pk = billId)
         bill.status = "Decline"
-        bill.delete()
+        bill.save()
+        # bill.delete()
         messages.success(message='Decline', request=request)
         return redirect('settingspage:billsPage')
     except :

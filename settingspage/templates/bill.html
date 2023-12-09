@@ -68,9 +68,7 @@
                                         x{{order.quantity}}
                                     </p>
                                 </p>
-                               
-                                   
-                               
+                             
                         </div>
                         
                     {% endfor %}
@@ -78,7 +76,7 @@
                 
                 <label for="">Price : </label>
                 <div class="paragraph-container">
-                    <p>{{bill.price}}</p>
+                    <p>{{bill.price}}đ</p>
                 </div>
                 </div>
                 <div>
@@ -90,8 +88,10 @@
                     <p>Khách hàng chưa cung cấp ảnh</p>
                     {% endif %}
                 <div style="display: flex; text-align: center; align-items: center; justify-content: space-evenly; ">
+                    {% if bill.status == "Waiting" %}
                     <a  href="{% url 'settingspage:accept' bill.id %}"><button class="btn btn-primary">Accept</button></a>
                     <a  href="{% url 'settingspage:decline' bill.id %}"><button class="btn btn-primary">Decline</button></a>
+                    {% endif %}
                     <a  href="{% url 'settingspage:billsPage' %}"><button class="btn btn-primary">Cancel</button></a>
                 </div>
   

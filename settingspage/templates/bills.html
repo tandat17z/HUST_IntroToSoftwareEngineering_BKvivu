@@ -2,13 +2,30 @@
 {% load static %}
 
 {% block bills%}
+<div class="container">
 <ul>
     {% for bill in bills %}
         <li>
-            Khách hàng <i style="color: red;">{{bill.sharer.name}}</i> đã gửi yêu cầu xác nhận đơn hàng, ấn vào để xem chi tiết
-                <a style="text-decoration: none;" href="{% url 'settingspage:viewBill' bill.id %}"><button>Details</button></a>
+            <i style="color: red; font-weight: bold; font-size: large;">{{bill.time}}</i>
+            Khách hàng <i style="color: red; font-weight: bold;">{{bill.sharer.name}}</i> đã gửi yêu cầu xác nhận đơn hàng, ấn vào để xem chi tiết &#8681;
+            <p style="font-weight: bold;">Status : 
+
+                <i style="color:red">{{bill.status}}</i>
+                <i>
+                    {% if bill.status == "Accept" %}
+                    &#10004;
+                    {% elif bill.status == "Decline" %}
+                    &#10006;
+                    {% elif bill.status == "Waiting" %}
+                    &#10227;
+                    {% endif %}
+                </i>
+            </p>
+            <a style="text-decoration: none;" href="{% url 'settingspage:viewBill' bill.id %}"><button>Details</button></a>
+
         </li>
         
-    {% endfor %}
+    {% endfor %} 
 </ul>
+</div>
 {% endblock%}
