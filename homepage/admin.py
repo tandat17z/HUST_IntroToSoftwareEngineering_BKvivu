@@ -9,7 +9,7 @@ class SharerAdmin(admin.ModelAdmin):
     list_display = ('account', 'name')
 
 class ManagerAdmin(admin.ModelAdmin):
-    list_display = ('account', 'name', 'address', 'rank')
+    list_display = ('account', 'name', 'address', 'avgStar')
 
 class BillAmin(admin.ModelAdmin):
     list_display = ('__str__', 'time', 'status')
@@ -24,3 +24,4 @@ admin.site.register(Order)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Image)
 admin.site.register(Comment)
+admin.site.register(StarVote)

@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'votestyle.css' %}">
     <script src="https://kit.fontawesome.com/bc4d8a1311.js" crossorigin="anonymous"></script>
+    <script src="{% static 'votescript.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 <body>
@@ -69,11 +71,10 @@
             </div>
             <div class="name">
                 <h1 id="name-profile">{{ target_user.name }}</h2>
-                <div class="rated">
-                    <h4 id="point-rate">4.5</h4>
-                    <h4 id="point-max">/ 5</h4>
-                    <i class="fa-solid fa-star"></i>
-                </div>
+                {% if target_user.account.role == "manager" %}
+                    {% block rateProfile %}
+                    {% endblock rateProfile %}
+                {% endif %}
             </div>
         </div>
     {% if target_user.account.role == "manager" %}

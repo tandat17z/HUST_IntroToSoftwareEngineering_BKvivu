@@ -56,6 +56,7 @@ img{
     height: 80px;
     display: flex;
     justify-content: space-between;
+    background-color: white;
     box-sizing: border-box;
     position: sticky;
     top: 0px;
@@ -79,11 +80,11 @@ img{
 .app-name h4{
     margin: 0;
     font-size: 26px;
-    color: #81d0e9;
+    color: #155069;
     text-shadow: 1px 1px 3px #56a7c9;
 }
 .app-name span{
-    color: #56a7c9;
+    color: #40698e;
     text-shadow: 1px 1px 3px #155069;
 }
 
@@ -101,7 +102,7 @@ img{
     padding: 10px;
 }
 .option a:link, .option a:visited{
-    color: #81d0e9;
+    color: #155069;
     border: 1px solid #86c8cd;
 }
 .option a:hover{
@@ -149,19 +150,6 @@ img{
     margin: 10px 0;
     font-size: 40px;
 }
-.rated{
-
-}
-#point-rate, #point-max{
-    font-size: 24px;
-    font-weight: 400;
-    display: inline;
-}
-.rated i{
-    font-size: 20px;
-    color: yellow;
-}
-
 /* Top profile right */
 .info-profile{
     margin: auto 25px auto 0;
@@ -184,20 +172,6 @@ img{
 }
 .contact i{
     font-size: 30px;
-}
-
-.vote-profile{
-    padding: 10px 20px;
-    margin: 10px 5px;
-    background-color: rgb(170, 186, 204);
-    border: 1px solid green;
-    border-radius: 20px;
-    text-decoration: none;
-    box-sizing: border-box;
-}
-.votestar{
-    height: 100%;
-    margin: auto;
 }
 
 .address-info{
