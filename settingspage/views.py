@@ -17,35 +17,6 @@ from .urls import *
 def settingsPage(request):
     return redirect('settingspage:gerenalPage')
 
-def postPage(request):
-    acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-    if request.method == 'POST':
-        post = Post.objects.create(account = acc)
-        img = Image.objects.create(post = post)
-        form_post= CreatePostForm(request.POST, request.FILES, instance=post)
-        form_img = CreateImgForm(request.POST, request.FILES, instance=img)
-        if form_post.is_valid() and form_img.is_valid() :
-            # Thực hiện thay đổi avatar
-            _post  = form_post.save(commit=False)
-            _post.save()
-
-            _img  = form_img.save(commit=False)
-            _img.save()
-            # newA.avatar: Avatar mới
-            #Trả về trang cá nhân
-            messages.success(request, 'Tạo bài viết thành công')
-        else:
-            messages.error(request, 'Thất bại')
-
-    form_post = CreatePostForm()
-    form_img = CreateImgForm()
-    context = {
-        'form_post': form_post,
-        'form_img': form_img,
-        'acc': acc,
-    }
-    return render(request, 'post.html', context)
 
 
 #####-------- Sản phẩm -------######
@@ -198,3 +169,91 @@ def statisticsPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     return render(request, 'statistics.html', {'acc' : acc})
+
+#Post Page
+def postPage(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    context = {
+        'acc' : acc,
+        'user' : user,
+    }
+    return render(request, 'post.html', context)
+
+def deletePost(request, postId):
+    post = Post.objects.get(id = postId)
+    try: 
+        post.delete()
+        messages.success(request, 'Xóa bài viết thành công')
+        return redirect('settingspage:postPage')
+    except:
+        messages.error(request, 'Xóa bài viết thất bại')
+        return redirect('settingspage:postPage')
+    
+def changePost(request, postId):
+    if request.method == 'GET':
+        post = Post.objects.get(id = postId)
+        img = post.image_set.all()
+        form_post = CreatePostForm(instance=post)
+        form_img = []
+        for i in img : 
+            form_img.append(CreateImgForm(instance=i))
+        context = {
+            'form_post' : form_post,
+            'form_img' : form_img,
+        }
+        return render(request, 'add_post.html', context)
+    elif request.method == 'POST':
+        post = Post.objects.get(id = postId)
+        img = post.image_set.all()
+        form_post = CreatePostForm(request.POST, request.FILES, instance=post)
+        form_img = []
+        for i in img : 
+            form_img.append(CreateImgForm(request.POST, request.FILES, instance=i))
+        if form_post.is_valid : 
+            for form in form_img :
+                if not form.is_valid :
+                    messages.error(request, 'Error')
+                    return redirect('settingspage:postPage')
+
+            newFormPost = form_post.save(commit=False)
+            newFormPost.save()
+            for form in form_img : 
+                newFormImg = form.save(commit=False)
+                newFormImg.save()
+            messages.success(request, 'Success')
+            return redirect('settingspage:postPage')
+        else : 
+            messages.error(request, 'Error')
+            return redirect('settingspage:postPage')
+
+def addPost(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    if request.method == 'POST':
+        post = Post.objects.create(account = acc)
+        img = Image.objects.create(post = post)
+        form_post= CreatePostForm(request.POST, request.FILES, instance=post)
+        form_img = CreateImgForm(request.POST, request.FILES, instance=img)
+        if form_post.is_valid() and form_img.is_valid() :
+            # Thực hiện thay đổi avatar
+            _post  = form_post.save(commit=False)
+            _post.save()
+
+            _img  = form_img.save(commit=False)
+            _img.save()
+            # newA.avatar: Avatar mới
+            #Trả về trang cá nhân
+            messages.success(request, 'Tạo bài viết thành công')
+        else:
+            messages.error(request, 'Thất bại')
+        return redirect('settingspage:postPage')
+
+    form_post = CreatePostForm()
+    form_img = CreateImgForm()
+    context = {
+        'form_post': form_post,
+        'form_img': form_img,
+        'acc': acc,
+    }
+    return render(request, 'add_post.html', context)
