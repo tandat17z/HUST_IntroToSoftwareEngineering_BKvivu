@@ -24,5 +24,9 @@ class ProductForm(forms.ModelForm):
 class CreateImgForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ('img', )
+        fields = ('img',)
+        # widgets = {
+        #     'img' : forms.FileInput(attrs={'class' : '11'})
+        # }
+        
 
