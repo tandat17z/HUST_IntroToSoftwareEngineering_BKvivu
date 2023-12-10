@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.views import View
-
+from django.forms import formset_factory
+from django.forms import modelformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
@@ -10,7 +11,13 @@ from django.contrib.auth.models import User
 from homepage.models import *
 from .forms import *
 from .urls import *
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
+
+
+ImageUploadFormSet = modelformset_factory(Image, CreateImgForm, extra=0, can_delete=True)
 
 
 # Create your views here.
@@ -192,6 +199,8 @@ def deletePost(request, postId):
     
 def changePost(request, postId):
     if request.method == 'GET':
+        acc = Account.objects.get(user_ptr=request.user)
+        user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
         post = Post.objects.get(id = postId)
         img = post.image_set.all()
         form_post = CreatePostForm(instance=post)
@@ -199,8 +208,11 @@ def changePost(request, postId):
         for i in img : 
             form_img.append(CreateImgForm(instance=i))
         context = {
+            'acc' : acc, 
+            'user' : user,
             'form_post' : form_post,
             'form_img' : form_img,
+            'post':post,
         }
         return render(request, 'add_post.html', context)
     elif request.method == 'POST':
@@ -209,7 +221,11 @@ def changePost(request, postId):
         form_post = CreatePostForm(request.POST, request.FILES, instance=post)
         form_img = []
         for i in img : 
-            form_img.append(CreateImgForm(request.POST, request.FILES, instance=i))
+            if i.isDelete == True :
+                i.delete()
+                
+            else :
+                form_img.append(CreateImgForm(request.POST, request.FILES, instance=i))
         if form_post.is_valid : 
             for form in form_img :
                 if not form.is_valid :
@@ -221,39 +237,65 @@ def changePost(request, postId):
             for form in form_img : 
                 newFormImg = form.save(commit=False)
                 newFormImg.save()
+            images = request.FILES.getlist('images')
+            for image in images :
+                img = Image.objects.create(post = post, img = image)
+                img.save()
             messages.success(request, 'Success')
             return redirect('settingspage:postPage')
         else : 
             messages.error(request, 'Error')
             return redirect('settingspage:postPage')
 
+
+
 def addPost(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     if request.method == 'POST':
         post = Post.objects.create(account = acc)
-        img = Image.objects.create(post = post)
-        form_post= CreatePostForm(request.POST, request.FILES, instance=post)
-        form_img = CreateImgForm(request.POST, request.FILES, instance=img)
-        if form_post.is_valid() and form_img.is_valid() :
-            # Thực hiện thay đổi avatar
-            _post  = form_post.save(commit=False)
-            _post.save()
+        form_post = CreatePostForm(request.POST, request.FILES, instance=post)
+        if form_post.is_valid :
+            # try:
+            newPost = form_post.save(commit=False)
+            newPost.save()
+            images = request.FILES.getlist('images')
+            for image in images :
+                img = Image.objects.create(post = post, img = image)
+                img.save()
 
-            _img  = form_img.save(commit=False)
-            _img.save()
-            # newA.avatar: Avatar mới
-            #Trả về trang cá nhân
-            messages.success(request, 'Tạo bài viết thành công')
-        else:
-            messages.error(request, 'Thất bại')
-        return redirect('settingspage:postPage')
+            messages.success(request, 'Success')
+            return redirect('settingspage:postPage')
+            # except: 
+            #     messages.error(request, 'Error')
+            #     return redirect('settingspage:postPage')
+        else :
+            post.delete()
+            messages.error(request, 'Error')
+            return redirect('settingspage:postPage')
+    
 
     form_post = CreatePostForm()
-    form_img = CreateImgForm()
     context = {
         'form_post': form_post,
-        'form_img': form_img,
         'acc': acc,
     }
     return render(request, 'add_post.html', context)
+def deleteImagePost(request, postId, imageId):
+    try:
+        image = Image.objects.get(id = imageId)
+        image.isDelete = True
+        image.save()
+        messages.success(request, 'Success')
+        return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
+    except:
+        messages.error(request, 'Error')
+        return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
+def unQueue(request, postId, imageId):
+    try:
+        image = Image.objects.get(id = imageId)
+        image.isDelete = False
+        image.save()
+        return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
+    except:
+        return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))

@@ -13,7 +13,8 @@ urlpatterns = [
     path('posts/changePost/<int:postId>', views.changePost, name='changePost'),
     path('posts/addPost', views.addPost, name='addPost'),
     path('posts/deletePost/<int:postId>', views.deletePost, name='deletePost'),
-
+    path('posts/changePost/<int:postId>/deleteImagePost/<int:imageId>', views.deleteImagePost, name='deleteImagePost'),
+    path('posts/changePost/<int:postId>/unQueue/<int:imageId>', views.unQueue, name='unQueue'),
     
     path('product/', views.ProductManager, name='product'),
     path('product/add', views.CreateProduct.as_view(), name='addProduct'),
