@@ -253,7 +253,7 @@ def changePost(request, postId):
             for image in images :
                 img = Image.objects.create(post = post, img = image)
                 img.save()
-            messages.success(request, 'Success')
+           
             return redirect('settingspage:postPage')
         else : 
             messages.error(request, 'Error')

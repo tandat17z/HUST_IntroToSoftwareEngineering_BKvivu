@@ -32,14 +32,14 @@
     <form method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
         {{form_post.as_p}}
-        form.instance.id
+     
         {% for form in form_img %}
             <div style="background-color: burlywood;" class="paragraph-container">
           
                 <div style="display: flex;">
                 <img width="100px" height="100px" src="{{form.instance.img.url}}" alt="">
                 <div>
-                    <p style="color: blue; font-weight: bold; ">Change Image : </p>
+                    <p style="color: blue; font-weight: bold; font-size: 30px; ">Change: </p>
                     <input type="file" name="{{form.prefix}}-img" accept="image/*" id="id_{{form.prefix}}-img">
                     
                 </div>
@@ -47,9 +47,9 @@
                 </div>
                 
                 {% if form.instance.isDelete == False%}
-                <a  style="color: red; font-weight: bold; text-decoration: none;" href="{% url 'settingspage:deleteImagePost' post.id form.instance.id %}">Delete</a>
+                <a  style="color: red; font-weight: bold; text-decoration: none; font-size: large;" href="{% url 'settingspage:deleteImagePost' post.id form.instance.id %}">Delete</a>
                 {% else %}
-                <a style="color: red; font-weight: bold; text-decoration: none;" href="{% url 'settingspage:unDelete' post.id form.instance.id %}">Undelete</a>
+                <a style="color: blue; font-weight: bold; text-decoration: none; font-size: large;" href="{% url 'settingspage:unDelete' post.id form.instance.id %}">Undelete</a>
                 {% endif %}
                 
             </div>
