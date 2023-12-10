@@ -27,7 +27,7 @@ def settingsPage(request):
 
 
 #####-------- Sản phẩm -------######
-# Quản lý Sản phẩm
+# ProductPage
 def ProductManager(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
@@ -100,7 +100,7 @@ class editProduct(View):
             messages.error(request, "Thực hiện bị lỗi")
         return redirect('settingspage:product')
 
-
+#generalPage
 def generalPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
@@ -177,6 +177,13 @@ def statisticsPage(request):
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     return render(request, 'statistics.html', {'acc' : acc})
 
+
+
+
+
+
+
+
 #Post Page
 def postPage(request):
     acc = Account.objects.get(user_ptr=request.user)
@@ -205,14 +212,17 @@ def changePost(request, postId):
         img = post.image_set.all()
         form_post = CreatePostForm(instance=post)
         form_img = []
-        for i in img : 
-            form_img.append(CreateImgForm(instance=i))
+        a = 0
+        for i in img :
+            a = a + 1 
+            form_img.append(CreateImgForm(instance=i, prefix=f'form-{a}'))
         context = {
             'acc' : acc, 
             'user' : user,
             'form_post' : form_post,
             'form_img' : form_img,
-            'post':post,
+            'post': post,
+            'img' : img,
         }
         return render(request, 'add_post.html', context)
     elif request.method == 'POST':
@@ -220,12 +230,13 @@ def changePost(request, postId):
         img = post.image_set.all()
         form_post = CreatePostForm(request.POST, request.FILES, instance=post)
         form_img = []
-        for i in img : 
+        a = 0
+        for i in img :
+            a = a+1 
             if i.isDelete == True :
                 i.delete()
-                
             else :
-                form_img.append(CreateImgForm(request.POST, request.FILES, instance=i))
+                form_img.append(CreateImgForm(request.POST, request.FILES, prefix=f'form-{a}', instance=i))
         if form_post.is_valid : 
             for form in form_img :
                 if not form.is_valid :
@@ -235,8 +246,9 @@ def changePost(request, postId):
             newFormPost = form_post.save(commit=False)
             newFormPost.save()
             for form in form_img : 
-                newFormImg = form.save(commit=False)
-                newFormImg.save()
+                newImg = form.save(commit=False)
+                newImg.save()
+
             images = request.FILES.getlist('images')
             for image in images :
                 img = Image.objects.create(post = post, img = image)
@@ -291,7 +303,7 @@ def deleteImagePost(request, postId, imageId):
     except:
         messages.error(request, 'Error')
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
-def unQueue(request, postId, imageId):
+def unDelete(request, postId, imageId):
     try:
         image = Image.objects.get(id = imageId)
         image.isDelete = False

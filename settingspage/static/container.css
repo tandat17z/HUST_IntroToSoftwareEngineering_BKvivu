@@ -4,8 +4,6 @@
     margin: 0 auto;
     border: 1px solid #ddd;
     background-color: aquamarine;
-    text-align: center;
-    align-items: center;
 }
 .paragraph-container {
     border: 2px solid #ddd; /* Border style */
