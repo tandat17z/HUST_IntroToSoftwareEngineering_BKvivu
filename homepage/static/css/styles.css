@@ -10,6 +10,12 @@ body, h1, h2, h3, h4, h5, h6, a, p, button {
 a{
   text-decoration: none;
 }
+.h2-header{ 
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 32px;
+  color: #000;
+}
 /* ---------------slideshow--------------------------------------------------- */
 .slideshow-container{
   max-width: 100%;

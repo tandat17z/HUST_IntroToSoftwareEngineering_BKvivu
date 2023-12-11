@@ -1,8 +1,10 @@
 import os
+from unidecode import unidecode
 from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 import django.db.models.deletion
+from django.db.models import Avg
 from django.utils import timezone
 
 
@@ -50,7 +52,7 @@ class Account(User):
 
     def __str__(self):
         return f"{self.username}"
-    
+
 
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
@@ -75,19 +77,40 @@ class Sharer(models.Model):
         super().save(*args, **kwargs)
 
 class Manager(models.Model):
-    account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
-    name = models.CharField(max_length=50)
-    avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
+    AREA = [
+        ('all', 'All'),
+        ('HaiBaTrung', 'Hai Bà Trưng'),
+        ('ThanhXuan', 'Thanh Xuân'),
+        ('DongDa', 'Đống Đa')
+    ]
 
+    account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
+
+    name = models.CharField(max_length=50)
+    # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
+    name_stripped = models.CharField(max_length=50, null=True)
+    
+    avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
     address = models.TextField(null=True)
+    area = models.CharField(max_length=10, choices=AREA, null=True)
+
     bio = models.TextField(max_length=1500, null = True)
 
-    num_stars = models.IntegerField(null=True, default=0)
-    num_votes = models.IntegerField(null=True, default=0)
-    rank = models.FloatField(null=True, default=0)
-    
+    #x num_stars = models.IntegerField(null=True, default=0)
+    #x rank = models.FloatField(null=True, default=0)
+
+    num_votes = models.IntegerField(null=True, default=0) #tổng số lượt đánh giá
+    avgStar = models.FloatField(default=0.0) #Số sao đánh giá trung bình của cửa hàng
+
+
     def __str__(self):
         return f"{self.account}"
+    
+    # Hàm cập nhật đánh giá trung bình sau mỗi lượt đánh giá
+    def updateAvgStar(self):
+        self.num_votes = self.starvote_set.count()
+        avg_star = StarVote.objects.filter(manager=self).aggregate(Avg('stars'))['stars__avg']
+        self.avgStar = avg_star if avg_star else 0.0
     
     def save(self, *args, **kwargs):
         # Kiểm tra và xóa ảnh cũ (nếu có)
@@ -101,11 +124,18 @@ class Manager(models.Model):
                 if old_instance.avatar:
                         old_instance.avatar.delete(save=False)
 
-        # tự động tính rank = star/ vote
-        if self.num_votes > 0:
-            self.rank = round(self.num_stars / self.num_votes, 2)
-        else:
-            self.rank = 0
+        #x tự động tính rank = star/ vote
+        #x if self.num_votes > 0:
+        #x     self.rank = round(self.num_stars / self.num_votes, 2)
+        #x else:
+        #x     self.rank = 0
+
+        # Gọi hàm tính sao trung bình để cập nhật avgStar
+        self.updateAvgStar()
+
+        # bỏ dấu của name để phục vụ tính năng tìm kiếm
+        if self.name:
+            self.name_stripped = unidecode(self.name)
         # Gọi hàm save của lớp cha (object)
         super().save(*args, **kwargs)
 
@@ -115,7 +145,11 @@ class Product(models.Model):
         ('service', 'Dịch vụ khác'),
     ]
     provider = models.ForeignKey(Manager, on_delete=models.CASCADE)
+
     name = models.TextField()
+    # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
+    name_stripped = models.TextField(max_length=50, null=True)
+
     type = models.CharField(max_length=10, choices=TYPES)
     price = models.IntegerField(default=0)
     img = models.ImageField(upload_to=img_path_product, default='default.jpg')
@@ -126,6 +160,11 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.provider}_{self.name}"
+
+    def save(self, *args, **kwargs):
+        if self.name:
+            self.name_stripped = unidecode(self.name)
+        super().save(*args, **kwargs)
 
 class Bill(models.Model):
     STATUS = [
@@ -153,6 +192,9 @@ class Post(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     title = models.TextField()
     content = models.TextField()
+    # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
+    name_stripped = models.CharField(max_length=50, null=True)
+
     time = models.DateTimeField(default=timezone.datetime.now())
     location = models.TextField()
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
@@ -161,6 +203,10 @@ class Post(models.Model):
 
     def __str__(self):
         return f"{self.account}_{self.title}"
+    
+    def save(self, *args, **kwargs):
+        self.name_stripped = unidecode(self.title) + unidecode(self.content)
+        super().save(*args, **kwargs)
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
@@ -177,3 +223,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.post}"
+
+
+# vote_profile_model
+class StarVote(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    manager = models.ForeignKey(Manager, on_delete=models.CASCADE)
+    stars = models.IntegerField(default=0)
+    def __str__(self):
+        return f"{self.account} Voted For {self.manager}"

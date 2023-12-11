@@ -5,12 +5,6 @@
   margin-top: 50px;
   margin-bottom: 150px;
 }
-#comment #header{ 
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 32px;
-  color: #000;
-}
 
 #comment-body{
   display: flex;

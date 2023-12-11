@@ -1,6 +1,7 @@
 {% extends "base/main.html" %}
 {% load static %}
 
+{% comment %} block của avatar trên header {% endcomment %}
 {% block info_user%}
 <a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user">
     <p style="font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
@@ -9,6 +10,8 @@
 
 {% endblock %}
 
+
+{% comment %} block phần hiển thị top cửa hàng {% endcomment %}
 {% block tab_shop %}
     {% for shop in top_shops %}
     <button class = "tablinks {% if forloop.counter == 1 %}active{% endif %}" onclick="openCity(event, 'top{{ forloop.counter }}')">
@@ -19,7 +22,7 @@
             <img src="{{shop.avatar.url}}" alt="logo_shop">
         </a>
         <div class="stars">
-            <p>{{shop.rank}}/5 <span><img src="{% static 'images/star.png' %}" alt=""></span></p>
+            <p>{{shop.avgStar}}/5 <span><img src="{% static 'images/star.png' %}" alt=""></span></p>
             <h2>{{shop.name}}</h2>
         </div>
     </button>
@@ -27,6 +30,8 @@
 
 {% endblock tab_shop %}
 
+
+{% comment %} block phần hiển thị bài viết tiêu biểu {% endcomment %}
 {% block tab_content %}
     {% for shop in top_shops %}
     <div id="top{{ forloop.counter }}" class="tabcontent" {% if forloop.counter == 1 %} style="display: block;" {% endif %}>
@@ -36,8 +41,25 @@
 
 {% endblock tab_content %}
 
+{% comment %} block hiển thị kết quả tìm kiếm {% endcomment %}
 {% block products %}
-{% for item in list_items %}
+{% for item in searchShop %}
+<div class="post">
+    <img class="img-food" src="{{ item.avatar.url }}" alt="">
+    <div class="info" style="padding-left: 10px;">
+        <div class="text">
+            <h3>{{item.name}}</h3>
+            <p>{{ item.address}}</p>
+        </div>
+
+    </div>
+    <hr>
+    <div class="cost">
+        <button>Tới cửa hàng</button>
+    </div>
+</div>
+{% endfor %}
+{% for item in searchProduct %}
 <div class="post">
     <img class="img-food" src="{{ item.img.url }}" alt="">
     <div class="info">
