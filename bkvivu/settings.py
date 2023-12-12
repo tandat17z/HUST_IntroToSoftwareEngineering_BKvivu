@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
 
 # Application definition
 
@@ -42,7 +44,8 @@ INSTALLED_APPS = [
     'postspage',
     'profilepage',
     'settingspage',
-
+    'bootstrap5',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [

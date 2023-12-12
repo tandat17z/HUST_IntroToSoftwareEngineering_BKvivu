@@ -1,16 +1,40 @@
-{% extends "settings.html" %}
+{% extends "settingspage/base.html" %}
 {% load static %}
 
 {% block post%}
-<form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form_post.as_p}}
-    <hr>
-    {{form_img.as_p}}
-    <div id="children-container">
-        <!-- Placeholder for child forms -->
+<div class="container">
+    <ul>
+        {% for post in acc.post_set.all %}
+            <li>
+            <div style="display: flex;">
+                <div>
+                    <div style="display: block;">
+                        <p style="font-weight: bold; font-size: 30px; color: red;">&#9812;  {{post.title}}</p>
+                        <p style="font-weight: bold; font-size: 20px;"> &#9997; <i>{{user.name}}</i></p>
+                        
+                        <p style="font-weight: bold;">	&#x1F551; {{post.time}}</p>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <p style="font-weight: bold;">&#128077; {{post.like}}</p>
+                        <p style="font-weight: bold;">&#128078; {{post.dislike}}</p>
+                    </div>
+                </div>
+                <hr style="height: 200px; border-left: 2px solid black;">
+                <div style="align-items: center; justify-content: center;">
+                    <a style="text-decoration: none; font-size: 30px; " href="{% url 'settingspage:changePost' post.id %}">&#9998;</a>
+                    <a style="text-decoration: none; font-size: 30px; margin-left: auto;" href="{% url 'settingspage:deletePost' post.id %}">
+                        <div>
+                            <i class="fa-solid fa-trash"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>    
+            </li>
+        {% endfor %} 
+    </ul>
+    <a style="text-decoration: none;" href="{% url 'settingspage:addPost' %}"><button style="font-size: 30px;">&#10010; Tạo bài viết</button></a>
     </div>
-
-    <button type="submit"> Submit</button>
-</form>
  {% endblock %}
+ {% load static %}
+
