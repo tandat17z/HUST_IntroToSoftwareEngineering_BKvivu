@@ -1,0 +1,67 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'container.css'%}">
+    <link rel="stylesheet" href="{% static 'form.css'%}">
+    <style>
+        
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        body {
+            background-color: aquamarine;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: fit-content; /* Set the height of the body to fill the viewport height */
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form_post.as_p}}
+     
+        {% for form in form_img %}
+            <div style="background-color: burlywood;" class="paragraph-container">
+          
+                <div style="display: flex;">
+                <img width="100px" height="100px" src="{{form.instance.img.url}}" alt="">
+                <div>
+                    <p style="color: blue; font-weight: bold; font-size: 30px; ">Change: </p>
+                    <input type="file" name="{{form.prefix}}-img" accept="image/*" id="id_{{form.prefix}}-img">
+                    
+                </div>
+                
+                </div>
+                
+                {% if form.instance.isDelete == False%}
+                <a  style="color: red; font-weight: bold; text-decoration: none; font-size: large;" href="{% url 'settingspage:deleteImagePost' post.id form.instance.id %}">Delete</a>
+                {% else %}
+                <a style="color: blue; font-weight: bold; text-decoration: none; font-size: large;" href="{% url 'settingspage:unDelete' post.id form.instance.id %}">Undelete</a>
+                {% endif %}
+                
+            </div>
+        {% endfor %}
+
+
+        <i>Add image : </i><input type="file" name="images" id="images" multiple>
+        <div style="justify-content: space-around;" >
+            <button class="btn btn-primary">Submit</button>
+            <a class="btn btn-primary" href="{% url 'settingspage:postPage'%}">Cancel</a>
+        </div>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

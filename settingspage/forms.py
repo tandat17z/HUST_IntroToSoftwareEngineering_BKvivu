@@ -19,10 +19,14 @@ class CreatePostForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('name', 'type', 'price', 'img',)
+        fields = ('type', 'name','describe' , 'price', 'img',)
 
 class CreateImgForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ('img', )
+        fields = ('img',)
+        # widgets = {
+        #     'img' : forms.FileInput(attrs={'class' : '11'})
+        # }
+        
 
