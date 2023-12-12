@@ -3,7 +3,13 @@
     - Đăng kí/Đăng nhập
     - Hiển thị top của hàng theo sao
     - Hiển thị product mới theo thời gian
-    - (đang làm) Tìm kiếm sản phẩm/dịch vụ
+    - Tìm kiếm sản phẩm/dịch vụ
 - posts
-- Profile
-- settings -> form chỉnh sửa thông tin + tạo bài viết
+- Profile:
+    - Hiển thị bài viết/ sản phẩm
+    - Vote
+- settings:
+     - Chỉnh sửa thông tin
+     - Tạo sản phẩm
+     - Tạo bài viết
+     - Hiển thị Bill
