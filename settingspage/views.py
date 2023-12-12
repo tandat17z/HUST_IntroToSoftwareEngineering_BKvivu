@@ -298,7 +298,6 @@ def deleteImagePost(request, postId, imageId):
         image = Image.objects.get(id = imageId)
         image.isDelete = True
         image.save()
-        messages.success(request, 'Success')
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
     except:
         messages.error(request, 'Error')
