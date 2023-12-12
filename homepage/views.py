@@ -156,3 +156,6 @@ def registerPage(request):
             }
 
     return render(request, 'register.html', context)
+
+def test(request):
+    return render(request, 'manager.html')
