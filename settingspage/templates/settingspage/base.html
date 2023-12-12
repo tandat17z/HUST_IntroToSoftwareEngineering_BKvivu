@@ -31,13 +31,13 @@
     </header>
 
     <nav>
-        <a href="{% url 'settingspage:gerenalPage' %}" onclick="">General</a>
+        <a href="{% url 'settingspage:gerenalPage'%}">General</a>
         {% if acc.role == 'manager' %}
-        <a href="{% url 'settingspage:product' %}" onclick="showContent('products')">Products</a>
-        <a href="{% url 'settingspage:billsPage' %}" onclick="">Bills</a>
-        <a href="{% url 'settingspage:statisticsPage' %}" onclick="">Statistics</a>
+        <a href="{% url 'settingspage:product'%}">Products</a>
+        <a href="{% url 'settingspage:billsPage'%}">Bills</a>
+        <a href="{% url 'settingspage:statisticsPage'%}">Statistics</a>
         {% endif %}
-        <a href="{% url 'settingspage:postPage' %}" onclick="">Posts</a>
+        <a href="{% url 'settingspage:postPage'%}">Posts</a>
     </nav>
   
     {% block product %}{% endblock  %}

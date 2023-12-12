@@ -5,6 +5,7 @@ ul {
 }
 
 li {
+    display: block;
     cursor: pointer;
     text-align: center;
     background-color: aliceblue;
