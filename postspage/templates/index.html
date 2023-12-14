@@ -10,16 +10,21 @@
 </head>
 
 <body>
+  <!--Header-->
+  <div class="header">
+    <h1>  BKvivu</h1>
+  </div>
+
   <div class="container">
     <div class="menu">
       <!-- Sidebar -->
       <a href="\homepage"><img src="{% static 'img/logo.jpeg'%}" alt="logo"></a>
-      <i class="fas fa-home"> Home</i>
-      <i class="fa-solid fa-magnifying-glass">  Find</i>
-      <i class="fa-solid fa-circle-plus"> Create</i>
+      <i class="fas fa-home"> Post</i>
+      <i class="fa-solid fa-magnifying-glass">  Restaurants</i>
+      {% comment %} <i class="fa-solid fa-circle-plus"> Create</i>
       <i class="fa-solid fa-user">  User</i>   
       <i class="fas fa-bell"> Notification</i> 
-      <i class="fas fa-cog">  Settings</i> 
+      <i class="fas fa-cog">  Settings</i>  {% endcomment %}
     </div>
 
     <!-- Content  -->
@@ -59,47 +64,11 @@
           </div>
         {% endfor %}
       </div>
+
+      <div class="restaurant-list">
         
-      
-
-
-      
-    </div>
-
-    <!-- Chat -->
-    <div class="chat">
-      <div class="chat-header">
-        <h3>Chat</h3>
-        <a href="/profile"><img src="{% static 'img/user2.jpg'%}" alt=""></a>
       </div>
-      <ul class="chat-list">
-        <div class="new-chat">
-          <h3>Message</h3>
-          <i class="fa-solid fa-circle-plus"></i>
-        </div>
-        <li>
-          <img src="{% static 'img/user1.jpg'%}" alt="User 1">
-          <span>Nhà hàng lẩu</span>
-        </li>
-        <li>
-          <img src="{% static 'img/post2b.jpg'%}" alt="User 3">
-          <span>Quán thịt nướng</span>
-        </li>
-        <li>
-          <img src="{% static 'img/post3c.jpg'%}" alt="User 1b">
-          <span>Cửa hàng đồ ăn nhanh</span>
-        </li>
-        <li>
-          <img src="{% static 'img/user3.jpg'%}" alt="User 3">
-          <span>Quán lẩu ếch</span>
-        </li>
-        <li>
-          <img src="{% static 'img/post2a.jpg'%}" alt="User 3">
-          <span>Đồ ăn ngon</span>
-        </li>
-      </ul>
     </div>
-
   </div>
 
 </body>

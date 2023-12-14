@@ -1,164 +1,133 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  .container {
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.header {
+  position: fixed;
     display: flex;
-    height: 100vh;
-  }
-
-  .menu {
-    width: 275px;
-    background-color: gray;
-    color: white;
-    /* font-size: 20px; */
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 0px 0px 50px;
-  }
-
-  .menu img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 30px;
-  }
-
-  .menu i {
-    /* margin-top: 10px; */
-    cursor: pointer;
-    height: 60px;
-    padding: 0 10px 0 0;
-  }
-
-  .content {
-    flex: 1;
-    overflow-y: scroll;
-  }
-
-  .post-content {
-    margin: 15px;
-    padding: 20px 20px 30px 20px;
-    border: 2px solid #ccc;
-    border-radius: 30px;
-  }
-
-  .post-content .sharer-info {
-    padding: 10px;
-  }
-
-  .post-content .provider-info {
-    margin: 10px 10px 0px 10px;
-  }
-
-  .post h3 {
-    font-size: 16px;
-    /* font-weight: bold; */
-    font-weight: lighter;
-    margin-bottom: 5px;
-  }
-
-  .post-content p {
-    padding: 10px;
-    font-size: 16px;
-    line-height: 1.8;
-    text-align: justify;
-  }
-
-  .post-photo {
     width: 100%;
-    height: 200px;
-  }
-
-  .post .post-photo img {
-    width: calc(33% - 8px);
-    height: 200px;
-    border-radius: 10%;
-  }
-
-  .post-actions {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-  }
-
-  .post-actions i {
-    font-size: 15px;
-    cursor: pointer;
-  }
-
-  .post-content .avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    float: left;
-    margin-right: 10px;
-  }
-
-  .comment {
-    padding: 20px 20px 0px 40px;
-  }
-
-  .comment input {
-    display: inline-block; 
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    margin-top: 5px; 
-    padding: 10px; 
-    width: 300px;
-  }
-
-  .chat {
-    width: 350px;
-    background-color: #f0f0f0;
-    overflow-y: scroll;
-  }
-
-  .chat .chat-header {
-    padding: 20px;
-    border-bottom: 2px solid #e0e0e0;
-    font-weight: bold;
-    font-size: 30px;
-    display: flex;
+    height: 80px;
+    background-color: black;
+    color: aliceblue;
     align-items: center;
-    justify-content: space-between;
-  }
+}
 
-  .chat-header img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    float: left;
-    margin-right: 10px;
-  }
+.menu {
+  margin-top: 80px;
+  width: 300px;
+  background-color: gray;
+  color: white;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0px 0px 75px;
+}
 
-  .chat-list {
-    list-style: none;
-  }
+.menu img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 50px;
+}
 
-  .chat .new-chat {
-    display: flex;
-    padding: 20px;
-    justify-content: space-between;
-  }
+.menu i {
+  /* margin-top: 10px; */
+  cursor: pointer;
+  height: 60px;
+  padding: 0 10px 0 0;
+}
 
-  .chat-list li {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    border-bottom: 1px solid #e0e0e0;
-  }
+.content {
+  flex: 1;
+  overflow-y: scroll;
+  margin-top: 80px; 
+  padding: 0 175px;
+}
 
-  .chat-list li img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    margin-right: 15px;
-  }
+.post-list {
+  flex: 1;
+  /* overflow-y: scroll; */
+}
+.post-content {
+  margin: 15px;
+  padding: 20px 20px 30px 20px;
+  border: 2px solid #ccc;
+  border-radius: 30px;
+}
 
-  .chat-list li span {
-    font-size: 16px;
-  }
+.post-content .sharer-info {
+  padding: 10px;
+}
+
+.post-content .provider-info {
+  margin: 10px 10px 0px 10px;
+}
+
+.post h3 {
+  font-size: 16px;
+  /* font-weight: bold; */
+  font-weight: lighter;
+  margin-bottom: 5px;
+}
+
+.post-content p {
+  padding: 10px;
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.post-photo {
+  width: 100%;
+  height: 200px;
+}
+
+.post .post-photo img {
+  width: calc(33% - 8px);
+  height: 200px;
+  border-radius: 10%;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.post-actions i {
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.post-content .avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 10px;
+}
+
+.comment {
+  padding: 20px 20px 0px 40px;
+}
+
+.comment input {
+  display: inline-block; 
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-top: 5px; 
+  padding: 10px; 
+  width: 300px;
+}
+
+/* .restaurant-list {
+  flex: 1;
+  overflow-y: scroll;
+} */
