@@ -12,29 +12,48 @@
 <body>
   <!--Header-->
   <div class="header">
-    <h1>  BKvivu</h1>
+    {% comment %} <div class="logo">BKvivu</div> {% endcomment %}
+    
+    <div class="logo">
+      <img src="{% static 'img/logo.png' %}" alt="" class=""> 
+      <h1>BKvivu</h1>
+      
+    </div>
+
+    <div class="nav">
+        <a href="#">Trang chủ</a>
+        <a href="#">Đăng nhập</a>
+        <a href="#">Đăng ký</a>
+    </div>
   </div>
 
+  <!--container-->
   <div class="container">
-    <div class="menu">
-      <!-- Sidebar -->
+    <!-- Sidebar -->
+    {% comment %} <div class="menu">
       <a href="\homepage"><img src="{% static 'img/logo.jpeg'%}" alt="logo"></a>
       <i class="fas fa-home"> Post</i>
       <i class="fa-solid fa-magnifying-glass">  Restaurants</i>
-      {% comment %} <i class="fa-solid fa-circle-plus"> Create</i>
+      <i class="fa-solid fa-circle-plus"> Create</i>
       <i class="fa-solid fa-user">  User</i>   
       <i class="fas fa-bell"> Notification</i> 
-      <i class="fas fa-cog">  Settings</i>  {% endcomment %}
+      <i class="fas fa-cog">  Settings</i>
+    </div> {% endcomment %}
+
+    <!--sidebar-->
+    <div class="sidebar">
+      <i class="fa-solid fa-pager"> Posts</i>
+      <i class="fa-solid fa-shop">  Restaurants</i>
+      
     </div>
 
     <!-- Content  -->
     <div class="content">
       <!-- Post -->
-      <div class="post-list">
+      {% comment %} <div class="post-list">
         {% for post in posts %}
           <div class="post-container">
             <div class="post-content">
-              {% comment %} <img src="" alt=""> {% endcomment %}
               <div class="sharer-info">
                 <img src="{{post.account.avatar}}" alt="" class="avatar">
                 <h2>{{post.account}}</h2>
@@ -63,12 +82,110 @@
             </div>
           </div>
         {% endfor %}
-      </div>
+      </div> {% endcomment %}
 
-      <div class="restaurant-list">
+      {% comment %} <div class="restaurant-list">
         
+      </div> {% endcomment %}
+
+      <!--Posts-->
+      <div class="col post-list">
+        <div class="post">
+            {% comment %} <div class="user">
+                <img src="user1.jpg" alt="User 1">
+                <div class="info">
+                    <div class="name">User 1</div>
+                    <div class="time">10 phút trước</div>
+                </div>
+            </div>
+            <div class="text">Tôi đã đến nhà hàng Restaurant 1 và thấy rất hài lòng với chất lượng dịch vụ và món ăn. Nhà hàng có không gian rộng rãi, thoáng mát, nhân viên phục vụ nhiệt tình, chu đáo. Món ăn ngon, đa dạng, hợp khẩu vị. Tôi sẽ giới thiệu cho bạn bè và người thân đến ăn thử.</div>
+            <div class="actions">
+                <button>Like</button>
+                <button>Comment</button>
+                <button>Share</button>
+            </div> {% endcomment %}
+          {% for post in posts %}
+            {% comment %} <div class="post-container"> {% endcomment %}
+              <div class="post-content">
+                <div class="sharer-info">
+                  <img src="{{post.account.avatar}}" alt="" class="avatar">
+                  <h2>{{post.account}}</h2>
+                  <h6>Thời gian: {{post.time}}</h6>
+                </div>
+                
+                <div class="provider-info">
+                  <h4>Tên cửa hàng: {{post.provider}}</h4>
+                  <h4>Địa điểm: {{post.location}}</h4>
+                  <h4>Tiêu đề: {{post.title}}</h4>
+                </div>
+
+                <p>{{post.content}}</p>
+
+                <div class="post-actions">
+                  <button><i class="far fa-thumbs-up">  {{post.like}}</i></button> 
+                  {% comment %} <i class="far fa-thumbs-up"> {{post.like}}</i> {% endcomment %}
+                  <i class="far fa-comment"></i>
+                  <i class="fas fa-share"></i>
+                </div>
+
+                <div class="post-comment">
+                  <img src="{% static 'img/user2.jpg'%}" alt="" class="avatar"> 
+                  <input type="text" placeholder="Viết bình luận ...">
+                </div>
+              </div>
+            {% comment %} </div> {% endcomment %}
+          {% endfor %}
+        </div>
+      </div>
+      {% comment %} <div class="col">
+        <div class="post">
+            <div class="user">
+                <img src="restaurant1.jpg" alt="Restaurant 1">
+                <div class="info">
+                    <div class="name">Restaurant 1</div>
+                    <div class="time">2 giờ trước</div>
+                </div>
+            </div>
+            <div class="text">Nhà hàng Restaurant 1 chuyên phục vụ các món ăn truyền thống với nguyên liệu tươi ngon, được chọn lọc kỹ càng. Không gian ấm cúng, phong cách trang trí độc đáo. Chúng tôi cam kết mang lại trải nghiệm ẩm thực tuyệt vời nhất cho quý khách.</div>
+            <div class="actions">
+                <button>Like</button>
+                <button>Comment</button>
+                <button>Share</button>
+            </div>
+        </div>
+      </div> {% endcomment %}
+      <div class="col restaurant-list">
+        <div class="restaurant">
+          {% for manager in managers %}
+            <div class="res-content">
+              <img src="{{manager.avatar}}" alt="" class="avatar">
+              <h2>{{manager.name}}</h2>
+              <i class="fa-solid fa-star">  {{manager.avgStar}}</i>
+              <h3>Địa chỉ: {{manager.address}}</h3>
+            </div>
+          {% endfor%}
+        </div>
       </div>
     </div>
+
+    <script>
+      document.getElementById('like-btn').addEventListener('click', function() {
+          const postId = {{ post.id }};
+          const url = `/like_post/${postId}/`;
+      
+          fetch(url, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': '{{ csrf_token }}',
+              },
+          })
+          .then(response => response.json())
+          .then(data => {
+              document.getElementById('like-count').textContent = data.like_count;
+          });
+      });
+    </script>
   </div>
 
 </body>
