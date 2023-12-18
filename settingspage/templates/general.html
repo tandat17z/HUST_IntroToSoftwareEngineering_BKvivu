@@ -6,6 +6,7 @@
     <form style="margin-left: auto; margin-right: auto;" action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{form_gerenal.as_p}}
+        
         <button type="submit"> Submit</button>
     </form>
 

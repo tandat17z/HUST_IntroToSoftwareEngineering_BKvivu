@@ -1,5 +1,32 @@
 {% extends "settingspage/base.html" %}
 {% load static %}
 {% block statistics %} 
-    
+<canvas id="myChart" style="width:100%;max-width:600px; align-items: center; margin: 0 auto; "></canvas>
+<div style="text-align: center; align-items: center; justify-content: center;" >
+    <p>Doanh thu tính từ đầu năm <i style="color: blue;font-weight: bold;">{{year}}</i> là : <i style="color: red; font-weight: bold;">{{total}}</i></p>
+</div>
+<div id="myData" data-array="{{ monthOfYear }}"></div>
+<script>
+    const xValues = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const yValues = Array(12).fill(0);
+    const barColors = ["red", "green","blue","black","brown", "yellow", "sliver", "purple", "red", "bronze", "lime", "aqua"];
+    var myArray = JSON.parse(document.getElementById('myData').getAttribute('data-array'));
+    new Chart("myChart", {
+    type: "bar",
+    data: {
+        labels: xValues,
+        datasets: [{
+        backgroundColor: barColors,
+        data: myArray
+        }]
+    },
+    options: {
+        legend: {display: false},
+        title: {
+        display: true,
+        text: "Store's monthly revenue",
+        }
+    }
+    });
+</script>
 {% endblock %}

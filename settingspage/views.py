@@ -10,6 +10,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from homepage.models import *
 from .forms import *
+import json
 from .urls import *
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -113,7 +114,7 @@ def generalPage(request):
 
         if form.is_valid():
             # Thực hiện thay đổi avatar
-            newA  =form.save(commit=False)
+            newA = form.save(commit=False)
             newA.save()
             # newA.avatar: Avatar mới
             #Trả về trang cá nhân
@@ -171,11 +172,6 @@ def decline(request,billId):
 
 
 
-#Sattistics Page
-def statisticsPage(request):
-    acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-    return render(request, 'statistics.html', {'acc' : acc})
 
 #Post Page
 def postPage(request):
@@ -303,3 +299,28 @@ def unDelete(request, postId, imageId):
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
     except:
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
+    
+
+
+
+#Sattistics Page
+def statisticsPage(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc) 
+    bills = user.bill_set.all()
+    monthOfYear = [0]*12
+    year = datetime.now().year
+    total = 0
+    for bill in bills : 
+        if bill.status == 'Accept' and bill.time.year == year :
+            month = bill.time.month
+            monthOfYear[month-1] += bill.price
+            total += bill.price
+    listRevenue = json.dumps(monthOfYear)
+    context = {
+        'acc' : acc,
+        'monthOfYear' : listRevenue,
+        'year' : year,
+        'total' : total,
+    }
+    return render(request, 'statistics.html', context)
