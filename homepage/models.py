@@ -197,7 +197,7 @@ class Post(models.Model):
 
     time = models.DateTimeField(default=timezone.datetime.now())
     location = models.TextField()
-    provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
+    provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True, blank=True)
     like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
 

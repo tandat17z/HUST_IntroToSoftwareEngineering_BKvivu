@@ -177,13 +177,6 @@ def statisticsPage(request):
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     return render(request, 'statistics.html', {'acc' : acc})
 
-
-
-
-
-
-
-
 #Post Page
 def postPage(request):
     acc = Account.objects.get(user_ptr=request.user)
