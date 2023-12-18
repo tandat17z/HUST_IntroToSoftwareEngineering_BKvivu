@@ -2,9 +2,19 @@
 {% load static %}
 
 {% block bills%}
+<label for="choices">Select a Choice:</label>
+    <select id="choices" name="choices">
+        <option value="Waiting">Waiting</option>
+        <option value="Accept">Accept</option>
+        <option value="Decline">Decline</option>
+    </select>
+<button id="getDataButton" style="margin-left: 0;">Lọc</button>
+
+
 <div class="container">
 <ul>
     {% for bill in bills %}
+        {% if bill.status == data_from_js %}
         <li>
             <i style="color: red; font-weight: bold; font-size: large;">{{bill.time}}</i>
             Khách hàng <i style="color: red; font-weight: bold;">{{bill.sharer.name}}</i> đã gửi yêu cầu xác nhận đơn hàng, ấn vào để xem chi tiết &#8681;
@@ -22,10 +32,59 @@
                 </i>
             </p>
             <a style="text-decoration: none;" href="{% url 'settingspage:viewBill' bill.id %}"><button>Details</button></a>
-
+            
         </li>
+        {% endif %}
+        
         
     {% endfor %} 
 </ul>
 </div>
+<script>
+    defaultValue = "{{data_from_js}}";
+    var dataSelector = document.getElementById('choices');
+    var defaultOption = dataSelector.querySelector('option[value="' + defaultValue + '"]');
+    if (defaultOption) {
+        defaultOption.selected = true;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+    var getDataButton = document.getElementById('getDataButton');
+
+    getDataButton.addEventListener('click', function() {
+        var dataFromJavaScript = document.getElementById('choices').value;
+        window.location.href = window.location.pathname + '?selectedData=' + encodeURIComponent(dataFromJavaScript);
+        // fetch("{% url 'settingspage:billsPage' %}", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //         'X-CSRFToken': getCookie('csrftoken')
+        //     },
+        //     body: 'data_from_js=' + encodeURIComponent(dataFromJavaScript),
+        // });
+        // .then(response => response.json())
+        // .then(data => {
+        //     // window.location.hred = 'settings/billsPage';
+        // })
+        // .catch(error => console.error('Error:', error));
+
+    });
+
+    // function getCookie(name) {
+    //     var cookieValue = null;
+    //     if (document.cookie && document.cookie !== '') {
+    //         var cookies = document.cookie.split(';');
+    //         for (var i = 0; i < cookies.length; i++) {
+    //             var cookie = cookies[i].trim();
+    //             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+    //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     return cookieValue;
+    // }
+});
+
+</script>
 {% endblock%}

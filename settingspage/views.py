@@ -10,6 +10,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from homepage.models import *
 from .forms import *
+from django.http import JsonResponse
 import json
 from .urls import *
 from django.shortcuts import render, redirect
@@ -130,13 +131,31 @@ def generalPage(request):
 
 #Bill Page
 def billsPage(request):
+    # if request.method == 'POST':
+    #     data_from_js = request.POST.get('data_from_js', '')
+    #     acc = Account.objects.get(user_ptr=request.user)
+    #     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    #     bills = user.bill_set.all()
+        
+    #     context = {
+    #         "bills" : bills,
+    #         "acc" : acc,
+    #         "user" : user,
+    #         "data_from_js" : data_from_js,
+    #     }
+    #     messages.success(request, data_from_js)
+    #     return render(request, "bills.html", context)
+
+        # return JsonResponse({'data_from_js' : data_from_js})
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     bills = user.bill_set.all()
+    selected_data = request.GET.get('selectedData', 'Waiting')
     context = {
         "bills" : bills,
         "acc" : acc,
         "user" : user,
+        "data_from_js" : selected_data,
     }
     return render(request, "bills.html", context)
 
