@@ -2,16 +2,19 @@
 {% load static %}
 
 {% block bills%}
-<label for="choices">Select a Choice:</label>
-    <select id="choices" name="choices">
+<div style="display: flex;">
+<div style="flex:0.15">
+<label for="choices">Select Mode</label>
+    <select id="choices" name="choices" style="height: 50px; width: 70px;">
         <option value="Waiting">Waiting</option>
         <option value="Accept">Accept</option>
         <option value="Decline">Decline</option>
     </select>
-<button id="getDataButton" style="margin-left: 0;">Lọc</button>
+<button id="getDataButton" style="margin-left: 0; height: 50px; width: 50px;">Lọc</button>
+</div>
 
+<div class="container" style="flex:1;">
 
-<div class="container">
 <ul>
     {% for bill in bills %}
         {% if bill.status == data_from_js %}
@@ -87,4 +90,5 @@
 });
 
 </script>
+</div>
 {% endblock%}
