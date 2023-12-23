@@ -122,7 +122,7 @@
                 <p>{{post.content}}</p>
 
                 <div class="post-actions">
-                  <button><i class="far fa-thumbs-up">  {{post.like}}</i></button> 
+                  <button class="like-btn" data-post-id="{{ post.id }}"><i class="far fa-thumbs-up">  {{post.like}}</i></button>
                   {% comment %} <i class="far fa-thumbs-up"> {{post.like}}</i> {% endcomment %}
                   <i class="far fa-comment"></i>
                   <i class="fas fa-share"></i>
@@ -169,22 +169,44 @@
     </div>
 
     <script>
-      document.getElementById('like-btn').addEventListener('click', function() {
-          const postId = {{ post.id }};
-          const url = `/like_post/${postId}/`;
-      
-          fetch(url, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': '{{ csrf_token }}',
-              },
-          })
-          .then(response => response.json())
-          .then(data => {
-              document.getElementById('like-count').textContent = data.like_count;
-          });
-      });
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    const csrftoken = getCookie('csrftoken');
+    
+    document.querySelectorAll('.like-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const postId = this.dataset.postId;
+            const url = `/like_post/`;
+    
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({
+                    'post_id': postId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.textContent = data.like_count;
+            });
+        });
+    });
     </script>
   </div>
 

@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 import django.db.models.deletion
 from django.db.models import Avg
 from django.utils import timezone
-
+import uuid
 
 # Xử lý lưu trữ hình ảnh --------------------------------------------------
 def img_path_avt(instance, filename):
@@ -39,6 +39,8 @@ def img_path_product(instance, filename):
     new_filename = f"{product_name}.{ext}"  # Đặt tên mới
     return os.path.join('manager', username, 'products', new_filename)
 
+def generate_unique_post_id():
+    return str(uuid.uuid4())
 
 # Create your models here.---------------------------------------------------
 class Account(User):
@@ -188,13 +190,16 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.product}_{self.bill}"
 
+
+
+
+
 class Post(models.Model):
+    post_id = models.CharField(max_length=100, unique=True, default=generate_unique_post_id)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     title = models.TextField()
     content = models.TextField()
-    # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
     name_stripped = models.CharField(max_length=50, null=True)
-
     time = models.DateTimeField(default=timezone.datetime.now())
     location = models.TextField()
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
@@ -207,6 +212,40 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         self.name_stripped = unidecode(self.title) + unidecode(self.content)
         super().save(*args, **kwargs)
+    
+    def increase_like(self):
+        self.like += 1
+        self.save()
+    
+    def decrease_like(self):
+        if self.like > 0:
+            self.like -= 1
+            self.save()
+
+# class Post(models.Model):
+#     account = models.ForeignKey(Account, on_delete=models.CASCADE)
+#     title = models.TextField()
+#     content = models.TextField()
+#     # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
+#     name_stripped = models.CharField(max_length=50, null=True)
+
+#     time = models.DateTimeField(default=timezone.datetime.now())
+#     location = models.TextField()
+#     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
+#     like = models.IntegerField(default=0)
+#     dislike = models.IntegerField(default=0)
+
+#     def __str__(self):
+#         return f"{self.account}_{self.title}"
+    
+#     def save(self, *args, **kwargs):
+#         self.name_stripped = unidecode(self.title) + unidecode(self.content)
+#         super().save(*args, **kwargs)
+
+class UserLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    value = models.IntegerField(default=1)
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
