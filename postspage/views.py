@@ -22,6 +22,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
+from django.shortcuts import render, get_object_or_404, redirect
+from homepage.models import Post, Comment
+
 @csrf_exempt
 @login_required
 def like_post(request):
@@ -51,7 +54,14 @@ def like_post(request):
 #     data = {'like_count': post.like}
 #     return JsonResponse(data)
 
-
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    comments = Comment.objects.filter(post=post)
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        Comment.objects.create(account=request.user, post=post, content=content)
+        return redirect('post_detail', post_id=post.id)
+    return render(request, 'post_detail.html', {'post': post, 'comments': comments})
 
 # Create your views here.
 def postsPage(request):
