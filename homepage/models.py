@@ -17,6 +17,14 @@ def img_path_avt(instance, filename):
     new_filename = f"avatar.{ext}"  # Đặt tên mới
     return os.path.join(role, username , new_filename)
 
+def img_path_bank(instance, filename):
+    acc = instance.account
+    username = acc.username
+    role = acc.role
+    ext = filename.split('.')[-1]  # Lấy phần mở rộng của tệp
+    new_filename = f"bank.{ext}"  # Đặt tên mới
+    return os.path.join(role, username , new_filename)
+
 def imgs_path(instance, filename):
     post_name = str(instance.post)
     username = str(instance.post.account)
@@ -95,14 +103,15 @@ class Manager(models.Model):
 
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
 
-    name = models.CharField(max_length=50)
-    # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
-    name_stripped = models.CharField(max_length=50, null=True)
+    name = models.TextField(max_length=50)
+    name_stripped = models.TextField(max_length=50, null=True)# Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
     
     phone = models.CharField(max_length=15, null=True)
-
     avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
-    
+    bank = models.ImageField(upload_to=img_path_bank, default='noavatar.png')
+    facebook_link = models.URLField(max_length=200, blank=True, null=True)
+    website_link = models.URLField(max_length=200, blank=True, null=True)
+
     address = models.TextField(null=True)
     area = models.CharField(max_length=10, choices=AREA, null=True)
     city = models.CharField(max_length=50, null=True)
@@ -138,6 +147,9 @@ class Manager(models.Model):
             if check and old_instance.avatar.name != 'noavatar.png':
                 if old_instance.avatar:
                         old_instance.avatar.delete(save=False)
+            if check and old_instance.bank.name != 'noavatar.png':
+                if old_instance.bank:
+                        old_instance.bank.delete(save=False)
 
         #x tự động tính rank = star/ vote
         #x if self.num_votes > 0:
