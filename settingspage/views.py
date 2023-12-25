@@ -125,7 +125,9 @@ def generalPage(request):
             user.phone = request.POST.get('phone')
             user.address = request.POST.get('address')
             user.bio = request.POST.get('comment')
-            
+            user.t_open = request.POST.get('t_open')
+            user.t_closed = request.POST.get('t_closed')
+
             city_id = request.POST.get('city')
             district_id = request.POST.get('district')
             ward_id = request.POST.get('ward')
@@ -139,7 +141,7 @@ def generalPage(request):
             user.website_link = request.POST.get('website_link')
             user.save()
         messages.success(request, 'Thông tin đã được cập nhật')
-    
+
     context = {
         'role': acc.role,
         'acc': acc,

@@ -13,22 +13,20 @@ from .forms import *
 
 from func.func import *
 
-def searchAndFilter(keyword, type='all', area='all'):
-    searchShop = []
-    searchProduct = []
-    if type == 'all':
-        searchShop = Manager.objects.filter(name_stripped__icontains=keyword)
-        searchProduct = Product.objects.filter(name_stripped__icontains=keyword)
-    elif type == 'product':
-        searchProduct = Product.objects.filter(name_stripped__icontains=keyword)
-    elif type == 'shop':
-        searchShop = Manager.objects.filter(name_stripped__icontains=keyword)
+def searchTag(type):
+    searchShop = Manager.objects.filter(name_stripped__icontains=type)
+    searchProduct = Product.objects.filter(Q(name_stripped__icontains=type) | Q(type__icontains=type))
+    return searchShop, searchProduct
 
-    #Lọc theo khu vực
+def searchAndFilter(keyword, area='all', open="00:00", closed="23:59"):
+    shopOpen = Manager.objects.filter(Q(t_open__gte=open, t_open__lte=closed ) | Q(t_closed__gte=open, t_closed__lte=closed))
+    searchShop = shopOpen.filter(name_stripped__icontains=keyword)
+    searchProduct = Product.objects.filter(name_stripped__icontains=keyword, provider__in=shopOpen)
+
     if area != 'all':
-        searchShop = searchShop.filter(area=area)
+        searchShop = searchShop.filter(ward=area)
         searchProduct = searchProduct.filter(provider__in=searchShop)
-
+    
     return searchShop, searchProduct
 
 
@@ -37,7 +35,6 @@ def homePage(request):
     if not request.user.is_authenticated:
         return redirect('homepage:loginPage')
 
-    area = 'all'
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
 
@@ -46,26 +43,32 @@ def homePage(request):
 
     if request.method == 'POST': # Ở trang thái tìm kiếm sản phẩm, lọc
         if 'bundau' in request.POST:
-            searchShop, searchProduct = searchAndFilter('bun dau', type='all')
+            searchShop, searchProduct = searchTag('bun dau')
         elif 'comrang' in request.POST:
-            searchShop, searchProduct = searchAndFilter('com rang', type='all')
+            searchShop, searchProduct = searchTag('com rang')
         elif 'nemnuong' in request.POST:
-            searchShop, searchProduct = searchAndFilter('nem nuong', type='all')
+            searchShop, searchProduct = searchTag('nem nuong')
         elif 'congvien' in request.POST:
-            searchShop, searchProduct = searchAndFilter('cong vien', type='all')
+            searchShop, searchProduct = searchTag('cong vien')
         elif 'baotang' in request.POST:
-            searchShop, searchProduct = searchAndFilter('bao tang', type='all')
+            searchShop, searchProduct = searchTag('bao tang')
         else:
-            area = request.POST.get('area')
             keyword = request.POST.get('search')
             keyword_stripped = unidecode(keyword)
-            searchShop, searchProduct = searchAndFilter(keyword_stripped, type='all', area=area)
+            city, district, area = getArea(
+                request.POST.get('city'),
+                request.POST.get('district'),
+                request.POST.get('ward')
+            )
+            open = request.POST.get("t_open")
+            closed = request.POST.get("t_closed")
+            print(keyword, "--", area, open, closed)
+            searchShop, searchProduct = searchAndFilter(keyword_stripped, area, open, closed)
     else: # Mặc định trả ra list sản phẩm mới nhất
         searchShop = []
         searchProduct = Product.objects.order_by('-time')[:15]
 
     context = {
-        'form_choose_area': FormSearchChooseArea(initial={'area': area}),
         'acc': acc,
         'user': user,
         'top_shops': top_shops,

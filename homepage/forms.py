@@ -8,10 +8,6 @@ class CreateAccountForm(forms.Form):
     ]
     role = forms.ChoiceField(choices=ROLES)
     # name = forms.CharField(max_length=50, required=False)
-
-class FormSearchChooseArea(forms.Form):
-    AREA = Manager.AREA
-    area = forms.ChoiceField(choices=AREA)
     
 class CreateSharerForm(forms.ModelForm):
     class Meta:

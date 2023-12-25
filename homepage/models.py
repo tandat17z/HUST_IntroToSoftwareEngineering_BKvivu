@@ -94,13 +94,6 @@ class Sharer(models.Model):
         super().save(*args, **kwargs)
 
 class Manager(models.Model):
-    AREA = [
-        ('all', 'All'),
-        ('HaiBaTrung', 'Hai Bà Trưng'),
-        ('ThanhXuan', 'Thanh Xuân'),
-        ('DongDa', 'Đống Đa')
-    ]
-
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
 
     name = models.TextField(max_length=50)
@@ -111,9 +104,10 @@ class Manager(models.Model):
     bank = models.ImageField(upload_to=img_path_bank, default='noavatar.png')
     facebook_link = models.URLField(max_length=200, blank=True, null=True)
     website_link = models.URLField(max_length=200, blank=True, null=True)
+    t_open = models.TimeField(default='0:00')
+    t_closed = models.TimeField(default='23:59')
 
     address = models.TextField(null=True)
-    area = models.CharField(max_length=10, choices=AREA, null=True)
     city = models.CharField(max_length=50, null=True)
     district = models.CharField(max_length=50, null=True)
     ward = models.CharField(max_length=50, null=True)
@@ -169,6 +163,11 @@ class Manager(models.Model):
 class Product(models.Model):
     TYPES = [
         ('food', 'Đồ ăn'),
+        ('bun dau', 'Bún đậu'),
+        ('com rang', 'Cơm rang'),
+        ('nem nuong', 'Nem nướng'),
+        ('cong vien', 'Công viên'),
+        ('bao tang', 'Bảo tàng'),
         ('service', 'Dịch vụ khác'),
     ]
     provider = models.ForeignKey(Manager, on_delete=models.CASCADE)

@@ -1,7 +1,7 @@
 #searching{
     display: flex;
     width: 100%;
-    height: 400px;
+    height: 450px;
     margin: 40px auto 0;
 }
 #searching .box-left{
@@ -129,7 +129,7 @@
     width: 70%;
     height: 35px;
     padding: 7px;
-    border-radius: 13px 0px 0px 13px;
+    border-radius: 13px 13px 13px 13px;
     border-right: none;
 }
 #search{ /* button */
@@ -137,7 +137,7 @@
     height: 35px;
     font-size: 20px;
     background-color: #fff;
-    border-radius: 0px 13px 13px 0px;
+    border-radius: 13px 13px 13px 13px;
 }
 #filter{
     position: absolute;
@@ -177,5 +177,6 @@
 #searching .box-right .filtercontent .searchby button{
     width: 80px;
 }
+
 
 

@@ -154,6 +154,7 @@
     
         <br>
         {% comment %} Phần tìm kiếm ----------------------------------------------------------------- {% endcomment %}
+        <div id="TimKiem"></div>
         <h2 class="h2-header" id="searchhh">TÌM KIẾM</h2>
         <div id="searching">
             <div class="box-left">
@@ -163,13 +164,15 @@
                     <div class="info" style="padding-left: 10px;">
                         <div class="text">
                             <h3>{{item.name}}</h3>
-                            <p>{{ item.address}}</p>
+                            <p>{{ item.district}}-{{item.ward}}</p>
                         </div>
 
                     </div>
                     <hr>
                     <div class="cost">
-                        <button>Tới cửa hàng</button>
+                        <a href="{% url 'profilepage:profilePage' item.account.id%}">
+                            <button>Tới cửa hàng</button>
+                        </a>
                     </div>
                 </div>
                 {% endfor %}
@@ -177,12 +180,13 @@
                 <div class="post">
                     <img class="img-food" src="{{ item.img.url }}" alt="">
                     <div class="info">
-                        <img class="img-avt" src="{{ item.provider.avatar.url }}" alt="">
+                        <a href="{% url 'profilepage:profilePage' item.provider.account.id%}">
+                            <img class="img-avt" src="{{ item.provider.avatar.url }}" alt="">
+                        </a>
                         <div class="text">
                             <h3>{{item.name}}</h3>
-                            <p>{{ item.provider.name}}</p>
+                            <p>Của: {{ item.provider.name}}</p>
                         </div>
-
                     </div>
                     <hr>
                     <div class="cost">
@@ -193,7 +197,7 @@
             </div>
             <div class="box-right">
                 <div class="searchcontent">
-                    <form action="#searchhh" method="POST">
+                    <form action="#TimKiem" method="POST">
                         {% csrf_token %}
                         <button name="bundau" type="submit">Bún đậu</button>
                         <button name="comrang" type="submit">Cơm rang</button>
@@ -203,15 +207,45 @@
                     </form>
                 </div>
                 <div class="search">
-                    <form action="#searchhh" method="POST">
+                    <form action="#TimKiem" method="POST">
                         {% csrf_token %}
                         <input type="text" placeholder="Nay đi đâu ta ..." name="search">
                         <!-- <button id = "filter" type="submit"><i class="fa fa-filter"></i></button> -->
                         <button id = "search" type="submit"><i class="fa fa-search"></i></button>
                         <br>
-                        <h3>Tìm kiếm theo:</h3>
                         <div class="searchby">
-                            {{ form_choose_area }}
+                            <div class="form-group">
+                            <p>Tìm kiếm theo khu vực: </p>
+                            <select class="form-select form-select-sm mb-3" id="city" name="city" aria-label=".form-select-sm">
+                            <option value="" selected>Chọn tỉnh thành</option>           
+                            </select>
+                                        
+                            <select class="form-select form-select-sm mb-3" id="district" name="district" aria-label=".form-select-sm">
+                            <option value="" selected>Chọn quận huyện</option>
+                            </select>
+                            
+                            <select class="form-select form-select-sm" id="ward" name="ward" aria-label=".form-select-sm">
+                            <option value="all" selected>Chọn phường xã</option>
+                            </select>
+                            </div>
+                            <p>Thời điểm mở cửa: </p>
+                            <input class="time"
+                                type="time"
+                                name="t_open"
+                                id="t_open"
+                                class="form-control"
+                                value="00:00"
+                            required
+                            ></input>
+                            <p>Thời điểm đóng cửa: </p>
+                            <input class="time"
+                                type="time"
+                                name="t_closed"
+                                id="t_closed"
+                                class="form-control"
+                                value="23:59"
+                            required
+                            ></input>
                         </div>
                     </form>
                 </div>
