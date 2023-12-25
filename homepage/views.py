@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from .models import *
 from .forms import *
 
+from func.func import *
+
 def searchAndFilter(keyword, type='all', area='all'):
     searchShop = []
     searchProduct = []
@@ -129,33 +131,49 @@ def registerPage(request):
         if acc.role == "sharer" :
             if request.method == "POST":
                 name = request.POST.get('name')
-                sharer = Sharer.objects.create(account = acc, name = name)
-                form = CreateSharerForm(request.POST, instance=sharer)
-                if form.is_valid():
-                    # Thực hiện thay đổi avatar
-                    sharer = form.save(commit=False)
-                    sharer.save()
+                age = request.POST.get('age')
 
-                    return redirect('homepage:homePage')
-            context = {
-                'form' :  CreateSharerForm(),
-            }
+                city_id = request.POST.get('city')
+                district_id = request.POST.get('district')
+                ward_id = request.POST.get('ward')
+
+                print((city_id, district_id, ward_id))
+                city, district, ward = getArea(city_id, district_id, ward_id)
+                print((city, district, ward))
+
+                bio = request.POST.get('comment')
+                sharer = Sharer.objects.create(
+                    account = acc, 
+                    name = name,
+                    city = city, district = district, ward = ward,
+                    age = age,
+                    bio = bio
+                )
+                return redirect('homepage:homePage')
         else:
             if request.method=="POST":
                 name = request.POST.get('name')
-                address = request.POST.get('address')
-                manager = Manager.objects.create(account = acc, name = name, address=address)
-                form = CreateManagerForm(request.POST, instance=manager)
-                if form.is_valid():
-                    # Thực hiện thay đổi avatar
-                    manager = form.save(commit=False)
-                    manager.save()
-                    return redirect('homepage:homePage')
-            context = {
-                'form' :  CreateManagerForm(),
-            }
+                phone = request.POST.get('phone')
 
-    return render(request, 'register.html', context)
+                city_id = request.POST.get('city')
+                district_id = request.POST.get('district')
+                ward_id = request.POST.get('ward')
+                address = request.POST.get('address')
+                city, district, ward = getArea(city_id, district_id, ward_id)
+                
+                bio = request.POST.get('comment')
+                manager = Manager.objects.create(
+                    account = acc, 
+                    name = name, 
+                    phone = phone,
+                    city = city, district = district, ward = ward,
+                    address=address,
+                    bio = bio)
+                return redirect('homepage:homePage')
+        context = {
+            'role' :  acc.role,
+        }
+        return render(request, 'register.html', context)
 
 def test(request):
     return render(request, 'manager.html')

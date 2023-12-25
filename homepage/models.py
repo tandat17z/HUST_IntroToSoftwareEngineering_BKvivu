@@ -59,7 +59,14 @@ class Account(User):
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
     name = models.CharField(verbose_name='fullname', max_length=50)
+    age = models.IntegerField(null = True)
     avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
+
+    city = models.CharField(max_length=50, null=True)
+    district = models.CharField(max_length=50, null=True)
+    ward = models.CharField(max_length=50, null=True)
+
+    bio = models.TextField(max_length=1500, null = True)
 
     def __str__(self):
         return f"{self.account}"
@@ -92,9 +99,15 @@ class Manager(models.Model):
     # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
     name_stripped = models.CharField(max_length=50, null=True)
     
+    phone = models.CharField(max_length=15, null=True)
+
     avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
+    
     address = models.TextField(null=True)
     area = models.CharField(max_length=10, choices=AREA, null=True)
+    city = models.CharField(max_length=50, null=True)
+    district = models.CharField(max_length=50, null=True)
+    ward = models.CharField(max_length=50, null=True)
 
     bio = models.TextField(max_length=1500, null = True)
 
