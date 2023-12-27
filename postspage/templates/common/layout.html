@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>postsPage</title>
+        <link rel="stylesheet" href="{% static 'css/layout.css'%}">
+        <script src="https://kit.fontawesome.com/5045ba31f9.js" crossorigin="anonymous"></script>
+    </head>
+<body>
+    {% comment %}-----------------header-------------------- {% endcomment %}
+    <div class="header">
+        <div class="left">
+            <a href="" class="logo">
+                <img src="{% static 'images/logo.png' %}"  alt="logo">
+                <div class = "description">
+                    <h2>BKvivu</h2>
+                    <p>Nền tảng chia sẻ dịch vụ hàng đầu</p>
+                </div> 
+            </a>
+        </div>
+        
+        <div class="center">
+            <form action = "#searchhh" method = "POST">
+                {% csrf_token %}
+                <input type="text" placeholder="Nay đi đâu ta ..." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+            
+        <div class="right">
+            <div id="-box-nav">
+                <a href="{% url 'postspage:postsPage' %}" id="community"><i class="fa fa-fw fa-users"></i> Cộng đồng</a>
+                <div class="subnav">
+                    <a href="">Dịch vụ</a>
+                    <a href="">Bài chia sẻ</a>
+                </div>
+            </div>
+            <div class="setting_icon">
+                <a href="{% url 'settingspage:settingsPage' %}" class="setting">
+                    <div >
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                    </div>
+                </a>
+            </div>
+            {% block info_user %} {% endblock %}
+        </div>
+    </div>
+    
+    {% comment %} ---------------------container--------------------- {% endcomment %}
+    <div class="container">
+        {% comment %} ----------Sidebar----------- {% endcomment %}
+        <div class="sidebar">
+            <a href="{% url 'postspage:posts' %}"><i class="fa-solid fa-pager"> Posts</i></a>
+            <a href="{% url 'postspage:restaurants' %}"><i class="fa-solid fa-shop"> Restaurants</i></a>
+        </div>
+        
+        {% comment %} ----------content----------- {% endcomment %}
+        <div class="content1">
+            {% block content %} {% endblock %}  
+        </div>  
+        
+        {% comment %} ----------footer----------- {% endcomment %}
+    </div>
+</body>
+</html>

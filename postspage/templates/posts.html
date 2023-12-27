@@ -1,0 +1,86 @@
+{% extends "common/layout.html" %}
+{% load static %}
+{% block content %}
+    <div class="content2">
+        {% comment %} ----------------------Post List---------------------- {% endcomment %}
+        <div class="post-list">
+            {% comment %} {% for post in posts %}
+                <div class="post-content">
+                    <div class="sharer-info">
+                        <img src="{{post.account.avatar}}" alt="" class="avatar">
+                        <h2>{{post.account}}</h2>
+                        <h6>Thời gian: {{post.time}}</h6>
+                    </div>
+                    
+                    <div class="provider-info">
+                        <h4>Tên cửa hàng: {{post.provider}}</h4>
+                        <h4>Địa điểm: {{post.location}}</h4>
+                        <h4>Tiêu đề: {{post.title}}</h4>
+                    </div>
+
+                    <p>{{post.content}}</p>
+
+                    <div class="post-actions">
+                        <i class="far fa-thumbs-up">  {{post.like}}</i>  
+                        <i class="far fa-comment"></i>
+                        <i class="fas fa-share"></i>
+                    </div>
+
+                    <div class="post-comment">
+                        <img src="{% static 'img/user2.jpg'%}" alt="" class="avatar"> 
+                        <input type="text" placeholder="Viết bình luận ...">
+                    </div>
+                </div>
+            {% endfor %} {% endcomment %}
+
+            <div class="user">
+                <img src="user1.jpg" alt="User 1">
+                <div class="info">
+                    <div class="name">User 1</div>
+                    <div class="time">10 phút trước</div>
+                </div>
+            </div>
+            <div class="text">Tôi đã đến nhà hàng Restaurant 1 và thấy rất hài lòng với chất lượng dịch vụ và món ăn. Nhà hàng có không gian rộng rãi, thoáng mát, nhân viên phục vụ nhiệt tình, chu đáo. Món ăn ngon, đa dạng, hợp khẩu vị. Tôi sẽ giới thiệu cho bạn bè và người thân đến ăn thử.</div>
+            <div class="actions">
+                <button>Like</button>
+                <button>Comment</button>
+                <button>Share</button>
+            </div>
+
+            <div class="user">
+                <img src="user1.jpg" alt="User 1">
+                <div class="info">
+                    <div class="name">User 1</div>
+                    <div class="time">10 phút trước</div>
+                </div>
+            </div>
+            <div class="text">Tôi đã đến nhà hàng Restaurant 1 và thấy rất hài lòng với chất lượng dịch vụ và món ăn. Nhà hàng có không gian rộng rãi, thoáng mát, nhân viên phục vụ nhiệt tình, chu đáo. Món ăn ngon, đa dạng, hợp khẩu vị. Tôi sẽ giới thiệu cho bạn bè và người thân đến ăn thử.</div>
+            <div class="actions">
+                <button>Like</button>
+                <button>Comment</button>
+                <button>Share</button>
+            </div>
+
+            <div class="user">
+                <img src="user1.jpg" alt="User 1">
+                <div class="info">
+                    <div class="name">User 1</div>
+                    <div class="time">10 phút trước</div>
+                </div>
+            </div>
+            <div class="text">Tôi đã đến nhà hàng Restaurant 1 và thấy rất hài lòng với chất lượng dịch vụ và món ăn. Nhà hàng có không gian rộng rãi, thoáng mát, nhân viên phục vụ nhiệt tình, chu đáo. Món ăn ngon, đa dạng, hợp khẩu vị. Tôi sẽ giới thiệu cho bạn bè và người thân đến ăn thử.</div>
+            <div class="actions">
+                <button>Like</button>
+                <button>Comment</button>
+                <button>Share</button>
+            </div>
+        </div>
+
+        {% comment %} -------------------------------Searching------------------------------- {% endcomment %}
+        <div class="searching">
+            <label for="search">Search: </label>
+            <input type="search" id="search" name="search" placeholder="Tìm kiếm ở đây..."> 
+            <button type="submit">Tìm kiếm</button>
+        </div> 
+    </div>
+{% endblock %}
