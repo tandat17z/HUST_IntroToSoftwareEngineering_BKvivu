@@ -41,6 +41,7 @@ Dự án cần sử dụng đến nhiều thư viện như:  `folium`, `shapely`
 _Đang phát triển_
 ### Đã hoàn thành
 - HOMEPAGE:
+    - Khi chưa đăng nhập: chỉ hiện slide show + footer không cho sử dụng tính năng nào nữa
     - Đăng kí/Đăng nhập: (ok đã check)
         - Đăng nhập thành công: ok (đã check đăng nhập sai psw, đăng nhập với tk chưa có)
         - Đăng nhập thất bại: (alert) ok
