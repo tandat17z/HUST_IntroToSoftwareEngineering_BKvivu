@@ -9,9 +9,7 @@ from django.contrib.auth.models import User
 from .models import *
 from homepage import models
 
-from homepage.models import Post # them mo hinh Post o homepage.models
-# from homepage.models import Sharer
-from homepage.models import Manager
+from homepage.models import *
 
 
 from django.shortcuts import get_object_or_404

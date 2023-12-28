@@ -15,6 +15,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
+from func.func import *
 
 
 ImageUploadFormSet = modelformset_factory(Image, CreateImgForm, extra=0, can_delete=True)
@@ -107,23 +108,44 @@ def generalPage(request):
 
     if request.method == 'POST':
         if acc.role == 'sharer':
-            form = UpdateSharerForm(request.POST, request.FILES, instance=user)
+            user.name = request.POST.get('name')
+            user.age = request.POST.get('age')
+            user.bio = request.POST.get('comment')
+            
+            city_id = request.POST.get('city')
+            district_id = request.POST.get('district')
+            ward_id = request.POST.get('ward')
+
+            user.city, user.district, user.ward = getArea(city_id, district_id, ward_id)
+
+            user.avatar = request.FILES.get('avatar')
+            user.save()
         else:
-            form = UpdateManagerForm(request.POST, request.FILES, instance=user)
+            user.name = request.POST.get('name')
+            user.phone = request.POST.get('phone')
+            user.address = request.POST.get('address')
+            user.bio = request.POST.get('comment')
+            user.t_open = request.POST.get('t_open')
+            user.t_closed = request.POST.get('t_closed')
 
-        if form.is_valid():
-            # Thực hiện thay đổi avatar
-            newA  =form.save(commit=False)
-            newA.save()
-            # newA.avatar: Avatar mới
-            #Trả về trang cá nhân
-            messages.success(request, 'Thông tin đã được cập nhật')
+            city_id = request.POST.get('city')
+            district_id = request.POST.get('district')
+            ward_id = request.POST.get('ward')
 
-    form_general = UpdateSharerForm(instance= user) if acc.role == 'sharer' else UpdateManagerForm(instance=user)
+            user.city, user.district, user.ward = getArea(city_id, district_id, ward_id)
+
+            user.avatar = request.FILES.get('avatar')
+            user.bank = request.FILES.get('bank')
+
+            user.facebook_link = request.POST.get('facebook_link')
+            user.website_link = request.POST.get('website_link')
+            user.save()
+        messages.success(request, 'Thông tin đã được cập nhật')
 
     context = {
-        'form_gerenal': form_general,
+        'role': acc.role,
         'acc': acc,
+        'user': user,
     }
     return render(request, 'general.html', context)
 
