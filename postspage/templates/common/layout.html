@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>PostsPage</title>
+        {% comment %} <link rel="stylesheet" href="{% static 'css/header.css'%}"> {% endcomment %}
         <link rel="stylesheet" href="{% static 'css/layout.css'%}">
         <link rel="stylesheet" href="{% static 'css/posts.css'%}">
         <link rel="stylesheet" href="{% static 'css/restaurants.css'%}">
@@ -14,7 +15,7 @@
     {% comment %}-----------------header-------------------- {% endcomment %}
     <div class="header">
         <div class="left">
-            <a href="" class="logo">
+            <a href="{% url 'homepage:homePage' %}" class="logo">
                 <img src="{% static 'images/logo.png' %}"  alt="logo">
                 <div class = "description">
                     <h2>BKvivu</h2>
@@ -22,21 +23,13 @@
                 </div> 
             </a>
         </div>
-        
-        <div class="center">
-            <form action = "#searchhh" method = "POST">
-                {% csrf_token %}
-                <input type="text" placeholder="Nay đi đâu ta ..." name="search">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
             
         <div class="right">
             <div id="-box-nav">
-                <a href="{% url 'postspage:postsPage' %}" id="community"><i class="fa fa-fw fa-users"></i> Cộng đồng</a>
+                <a href="" id="community"><i class="fa fa-fw fa-users"></i> Cộng đồng</a>
                 <div class="subnav">
-                    <a href="">Dịch vụ</a>
-                    <a href="">Bài chia sẻ</a>
+                    <a href="{% url 'postspage:restaurants' %}">Cửa hàng</a>
+                    <a href="{% url 'postspage:posts' %}">Bài chia sẻ</a>
                 </div>
             </div>
             <div class="setting_icon">
@@ -47,7 +40,11 @@
                     </div>
                 </a>
             </div>
-            {% block info_user %} {% endblock %}
+            <a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user">
+                <p style="font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
+                <img class="img-user" src = "{{user.avatar.url}}"/>
+            </a>
+            
         </div>
     </div>
     
@@ -66,5 +63,6 @@
         
         {% comment %} ----------footer----------- {% endcomment %}
     </div>
+    <script src="{% static 'js/logged.js' %}"></script>
 </body>
 </html>

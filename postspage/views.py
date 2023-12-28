@@ -71,12 +71,27 @@ def postsPage(request):
 # Posts
 def postsView(request):
     posts = Post.objects.filter().order_by('time')
-    return render(request, 'posts.html', {'posts' : posts})
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+
+    context = {
+        'acc': acc,
+        'user': user,
+        'posts' : posts,
+    }
+    return render(request, 'posts.html', context)
 
 # Restaurants
 def restaurantsView(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     managers = Manager.objects.filter().order_by('name')
-    return render(request, 'restaurants.html', {'managers' : managers})
+    context = {
+        'acc': acc,
+        'user': user,
+        'managers' : managers,
+    }
+    return render(request, 'restaurants.html', context)
 
 def test(request):
     return render(request, 'restaurants.html')

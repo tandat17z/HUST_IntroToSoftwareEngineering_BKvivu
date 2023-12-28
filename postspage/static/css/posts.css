@@ -6,7 +6,9 @@
 /* -----------post-list------------ */
 .post-list{
   flex: 2;
-  padding-top: 30px; 
+  height: 800px;
+  padding-top: 30px;
+  overflow-y: scroll 
 }
 
 ul {

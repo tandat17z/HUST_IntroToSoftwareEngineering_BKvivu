@@ -15,6 +15,7 @@ class BillAmin(admin.ModelAdmin):
     list_display = ('__str__', 'time', 'status')
 class PostAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'time', 'location', 'provider', 'like', 'dislike')
+    
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Sharer, SharerAdmin)
 admin.site.register(Manager, ManagerAdmin)
