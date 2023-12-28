@@ -155,7 +155,9 @@ class Manager(models.Model):
 
         # bỏ dấu của name để phục vụ tính năng tìm kiếm
         if self.name:
-            self.name_stripped = unidecode(self.name)
+            words = unidecode(self.name.lower()).split()
+            self.name_stripped = ' '.join(words)
+        
         # Gọi hàm save của lớp cha (object)
         super().save(*args, **kwargs)
 
@@ -188,7 +190,8 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         if self.name:
-            self.name_stripped = unidecode(self.name)
+            words = unidecode(self.name.lower()).split()
+            self.name_stripped = ' '.join(words)
         super().save(*args, **kwargs)
 
 class Bill(models.Model):
@@ -233,7 +236,8 @@ class Post(models.Model):
         return f"{self.account}_{self.title}"
     
     def save(self, *args, **kwargs):
-        self.name_stripped = unidecode(self.title) + unidecode(self.content)
+        words = unidecode((self.title + self.content).lower()).split()
+        self.name_stripped = ' '.join(words)
         super().save(*args, **kwargs)
     
     def increase_like(self):
@@ -262,7 +266,7 @@ class Post(models.Model):
 #         return f"{self.account}_{self.title}"
     
 #     def save(self, *args, **kwargs):
-#         self.name_stripped = unidecode(self.title) + unidecode(self.content)
+#         self.name_stripped = (unidecode(self.title) + unidecode(self.content)).strip().lower()
 #         super().save(*args, **kwargs)
 
 class UserLike(models.Model):
