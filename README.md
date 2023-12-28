@@ -41,11 +41,12 @@ Dự án cần sử dụng đến nhiều thư viện như:  `folium`, `shapely`
 _Đang phát triển_
 ### Đã hoàn thành
 - HOMEPAGE:
-    - Đăng kí/Đăng nhập:
+    - Đăng kí/Đăng nhập: (ok đã check)
         - Đăng nhập thành công: ok (đã check đăng nhập sai psw, đăng nhập với tk chưa có)
         - Đăng nhập thất bại: (alert) ok
         - Đăng kí: (Đăng kí với mật khẩu ngắn ok - thêm ràng buộc psw)
           - Các trường hợp đã check: đăng nhập với tk đã tạo; psw khác repsw;
+        - Hiệu ứng: Nhập psw >= 8 mới bấm đc (login + register)
     - Hiển thị top của hàng theo sao
     - Hiển thị product mới theo thời gian
     - Tìm kiếm sản phẩm/dịch vụ:
