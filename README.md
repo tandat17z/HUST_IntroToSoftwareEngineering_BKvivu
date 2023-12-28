@@ -41,16 +41,16 @@ Dự án cần sử dụng đến nhiều thư viện như:  `folium`, `shapely`
 _Đang phát triển_
 ### Đã hoàn thành
 - HOMEPAGE:
-    - Khi chưa đăng nhập: chỉ hiện slide show + footer không cho sử dụng tính năng nào nữa
-    - Đăng kí/Đăng nhập: (ok đã check)
-        - Đăng nhập thành công: ok (đã check đăng nhập sai psw, đăng nhập với tk chưa có)
-        - Đăng nhập thất bại: (alert) ok
-        - Đăng kí: (Đăng kí với mật khẩu ngắn ok - thêm ràng buộc psw)
+    - Khi chưa đăng nhập: chỉ hiện slide show + footer không cho sử dụng tính năng nào nữa **ok**
+    - Đăng kí/Đăng nhập: **(ok đã check)**
+        - Đăng nhập thành công: **ok** (đã check đăng nhập sai psw, đăng nhập với tk chưa có)
+        - Đăng nhập thất bại: (alert) **ok**
+        - Đăng kí: **ok**
           - Các trường hợp đã check: đăng nhập với tk đã tạo; psw khác repsw;
         - Hiệu ứng: Nhập psw >= 8 mới bấm đc (login + register)
-    - Hiển thị top của hàng theo sao
-    - Hiển thị product mới theo thời gian
-    - Tìm kiếm sản phẩm/dịch vụ:
+    - Hiển thị top cửa hàng theo sao: **ok**
+    - Hiển thị product mới theo thời gian: `sắp oke`
+    - Tìm kiếm sản phẩm/dịch vụ: **ok**
         - Hiển thị mặc định: -> `Sản phẩm` sắp xếp theo like
         - Tìm kiếm nhanh ở header -> trả ra `sản phẩm` theo từ khóa tìm kiếm (sắp xếp theo thời gian)
         - Tìm kiếm chuẩn: (phân loại, từ khóa, khu vực, thời gian)
