@@ -13,11 +13,13 @@ button{
   .header{
     width: 100%;
     display: flex;
-    margin-top: 5px;
-    margin-bottom: 10px;
+    height: 80px;
+    /* margin-top: 5px;
+    margin-bottom: 10px; */
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    background-color: #1abc9c;
   }
   .header .left{
     width: 400px;
@@ -334,7 +336,8 @@ button{
   }
   
   .sidebar i {
-    padding: 40px 0px 20px 40px;
+    margin-top: 30px;
+    padding: 40px 0px 0px 40px;
     font-size: 20px;
   }
   
@@ -372,6 +375,6 @@ button{
 
 
 /* -----------------content----------------- */
-.content1 {
+.content {
   flex: 1;
 }

@@ -69,3 +69,13 @@ def postsPage(request):
     managers = Manager.objects.filter().order_by('-avgStar')
     
     return render(request, 'index.html', {'posts' : posts, 'managers' : managers})
+
+# Posts
+def postsView(request):
+    posts = Post.objects.filter().order_by('time')
+    return render(request, 'posts.html', {'posts' : posts})
+
+# Restaurants
+def restaurantsView(request):
+    managers = Manager.objects.filter().order_by('name')
+    return render(request, 'restaurants.html', {'managers' : managers})

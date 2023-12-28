@@ -8,5 +8,7 @@ from django.conf.urls.static import static
 app_name = 'postspage'
 urlpatterns = [
     path('', views.postsPage, name='postsPage'),
+    path('posts/', views.postsView, name='posts'),
+    path('restaurants/', views.restaurantsView, name='restaurants'),
     path('like_post/<int:post_id>/', views.like_post, name='like_post'),
 ]   + static(settings.MEDIA_URL, document_root = settings.MEDIA_URL) # 3/12

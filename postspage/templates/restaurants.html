@@ -1,11 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurants</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "common/layout.html" %}
+{% load static %}
+{% block content %}
+    <div class="content2">
+        <div class="restaurant">
+            <img src="{% static 'img/user1.jpg'%}" alt="">
+            <h3>Restaurant1</h3>
+            <i class="fa-solid fa-star">    4.5</i>
+            <h4>Địa chỉ: Hà Nội</h4>
+        </div>
+
+        <div class="restaurant">
+            <img src="{% static 'img/user1.jpg'%}" alt="">
+            <h3>Restaurant1</h3>
+            <i class="fa-solid fa-star">    4.5</i>
+            <h4>Địa chỉ: Hà Nội</h4>
+        </div>
+
+        <div class="restaurant">
+            <img src="{% static 'img/user1.jpg'%}" alt="">
+            <h3>Restaurant1</h3>
+            <i class="fa-solid fa-star">    4.5</i>
+            <h4>Địa chỉ: Hà Nội</h4>
+        </div>
+    </div>
+{% endblock %}

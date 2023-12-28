@@ -1,86 +1,172 @@
 {% extends "common/layout.html" %}
 {% load static %}
 {% block content %}
-    <div class="content2">
+    <div class="posts">
         {% comment %} ----------------------Post List---------------------- {% endcomment %}
-        <div class="post-list">
-            {% comment %} {% for post in posts %}
-                <div class="post-content">
-                    <div class="sharer-info">
-                        <img src="{{post.account.avatar}}" alt="" class="avatar">
-                        <h2>{{post.account}}</h2>
-                        <h6>Thời gian: {{post.time}}</h6>
-                    </div>
-                    
-                    <div class="provider-info">
-                        <h4>Tên cửa hàng: {{post.provider}}</h4>
-                        <h4>Địa điểm: {{post.location}}</h4>
-                        <h4>Tiêu đề: {{post.title}}</h4>
-                    </div>
+            {% comment %} <div class="user">
+                <img src="user1.jpg" alt="User 1">
+                <div class="info">
+                    <div class="name">User 1</div>
+                    <div class="time">10 phút trước</div>
+                </div>
+            </div>
+            <div class="text">Tôi đã đến nhà hàng Restaurant 1 và thấy rất hài lòng với chất lượng dịch vụ và món ăn. Nhà hàng có không gian rộng rãi, thoáng mát, nhân viên phục vụ nhiệt tình, chu đáo. Món ăn ngon, đa dạng, hợp khẩu vị. Tôi sẽ giới thiệu cho bạn bè và người thân đến ăn thử.</div>
+            <div class="actions">
+                <button>Like</button>
+                <button>Comment</button>
+                <button>Share</button>
+            </div>
 
-                    <p>{{post.content}}</p>
+            <div class="user">
+                <img src="user1.jpg" alt="User 1">
+                <div class="info">
+                    <div class="name">User 1</div>
+                    <div class="time">10 phút trước</div>
+                </div>
+            </div>
+            <div class="text">Tôi đã đến nhà hàng Restaurant 1 và thấy rất hài lòng với chất lượng dịch vụ và món ăn. Nhà hàng có không gian rộng rãi, thoáng mát, nhân viên phục vụ nhiệt tình, chu đáo. Món ăn ngon, đa dạng, hợp khẩu vị. Tôi sẽ giới thiệu cho bạn bè và người thân đến ăn thử.</div>
+            <div class="actions">
+                <button>Like</button>
+                <button>Comment</button>
+                <button>Share</button>
+            </div>
+
+            <div class="user">
+                <img src="user1.jpg" alt="User 1">
+                <div class="info">
+                    <div class="name">User 1</div>
+                    <div class="time">10 phút trước</div>
+                </div>
+            </div>
+            <div class="text">Tôi đã đến nhà hàng Restaurant 1 và thấy rất hài lòng với chất lượng dịch vụ và món ăn. Nhà hàng có không gian rộng rãi, thoáng mát, nhân viên phục vụ nhiệt tình, chu đáo. Món ăn ngon, đa dạng, hợp khẩu vị. Tôi sẽ giới thiệu cho bạn bè và người thân đến ăn thử.</div>
+            <div class="actions">
+                <button>Like</button>
+                <button>Comment</button>
+                <button>Share</button>
+            </div> {% endcomment %}
+        <div class="post-list">
+            <ul>
+                <li class="item">
+                    <div class="info">
+                        <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                        <h2>Nhà hàng lẩu</h2>
+                        <h3>Time: 10:00</h3>
+                    </div>
+                    <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                    Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
+                    </p>
+
+                    <div class="post-photo">
+                    <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                    <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                    <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                    </div>
 
                     <div class="post-actions">
-                        <i class="far fa-thumbs-up">  {{post.like}}</i>  
+                        <i class="far fa-thumbs-up"></i> 
                         <i class="far fa-comment"></i>
-                        <i class="fas fa-share"></i>
+                        <i class="fa-regular fa-heart"></i>
                     </div>
 
                     <div class="post-comment">
-                        <img src="{% static 'img/user2.jpg'%}" alt="" class="avatar"> 
-                        <input type="text" placeholder="Viết bình luận ...">
+                        <img src="{% static 'img/user2.jpg'%}" alt="" class="avatar">
+                        <input type="text" placeholder="Viết bình luận ..." class="comment">
                     </div>
-                </div>
-            {% endfor %} {% endcomment %}
+                </li>
 
-            <div class="user">
-                <img src="user1.jpg" alt="User 1">
-                <div class="info">
-                    <div class="name">User 1</div>
-                    <div class="time">10 phút trước</div>
-                </div>
-            </div>
-            <div class="text">Tôi đã đến nhà hàng Restaurant 1 và thấy rất hài lòng với chất lượng dịch vụ và món ăn. Nhà hàng có không gian rộng rãi, thoáng mát, nhân viên phục vụ nhiệt tình, chu đáo. Món ăn ngon, đa dạng, hợp khẩu vị. Tôi sẽ giới thiệu cho bạn bè và người thân đến ăn thử.</div>
-            <div class="actions">
-                <button>Like</button>
-                <button>Comment</button>
-                <button>Share</button>
-            </div>
+                <li class="item">
+                    <div class="info">
+                        <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                        <h2>Nhà hàng lẩu</h2>
+                        <h3>Time: 10:00</h3>
+                    </div>
+                    <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                    Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
+                    </p>
 
-            <div class="user">
-                <img src="user1.jpg" alt="User 1">
-                <div class="info">
-                    <div class="name">User 1</div>
-                    <div class="time">10 phút trước</div>
-                </div>
-            </div>
-            <div class="text">Tôi đã đến nhà hàng Restaurant 1 và thấy rất hài lòng với chất lượng dịch vụ và món ăn. Nhà hàng có không gian rộng rãi, thoáng mát, nhân viên phục vụ nhiệt tình, chu đáo. Món ăn ngon, đa dạng, hợp khẩu vị. Tôi sẽ giới thiệu cho bạn bè và người thân đến ăn thử.</div>
-            <div class="actions">
-                <button>Like</button>
-                <button>Comment</button>
-                <button>Share</button>
-            </div>
+                    <div class="post-photo">
+                    <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                    <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                    <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                    </div>
 
-            <div class="user">
-                <img src="user1.jpg" alt="User 1">
-                <div class="info">
-                    <div class="name">User 1</div>
-                    <div class="time">10 phút trước</div>
-                </div>
-            </div>
-            <div class="text">Tôi đã đến nhà hàng Restaurant 1 và thấy rất hài lòng với chất lượng dịch vụ và món ăn. Nhà hàng có không gian rộng rãi, thoáng mát, nhân viên phục vụ nhiệt tình, chu đáo. Món ăn ngon, đa dạng, hợp khẩu vị. Tôi sẽ giới thiệu cho bạn bè và người thân đến ăn thử.</div>
-            <div class="actions">
-                <button>Like</button>
-                <button>Comment</button>
-                <button>Share</button>
-            </div>
+                    <div class="post-actions">
+                        <i class="far fa-thumbs-up"></i> 
+                        <i class="far fa-comment"></i>
+                        <i class="fa-regular fa-heart"></i>
+                    </div>
+
+                    <div class="post-comment">
+                        <img src="{% static 'img/user2.jpg'%}" alt="" class="avatar">
+                        <input type="text" placeholder="Viết bình luận ..." class="comment">
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="info">
+                        <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                        <h2>Nhà hàng lẩu</h2>
+                        <h3>Time: 10:00</h3>
+                    </div>
+                    <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                    </p>
+
+                    <div class="post-photo">
+                    <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                    <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                    <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                    </div>
+
+                    <div class="post-actions">
+                        <i class="far fa-thumbs-up"></i> 
+                        <i class="far fa-comment"></i>
+                        <i class="fa-regular fa-heart"></i>
+                    </div>
+
+                    <div class="post-comment">
+                        <img src="{% static 'img/user2.jpg'%}" alt="" class="avatar">
+                        <input type="text" placeholder="Viết bình luận ..." class="comment">
+                    </div>
+                </li>
+            </ul>
         </div>
 
         {% comment %} -------------------------------Searching------------------------------- {% endcomment %}
         <div class="searching">
-            <label for="search">Search: </label>
-            <input type="search" id="search" name="search" placeholder="Tìm kiếm ở đây..."> 
-            <button type="submit">Tìm kiếm</button>
+            <div class="search-container">
+                <label for="search">Search: </label>
+                <input type="search" id="search" name="search" placeholder="Tìm kiếm ở đây..."> 
+                <button type="submit">Tìm kiếm</button>
+            </div>
+
+            <div class="result-search">
+                <div class="result">
+                    <img src="{% static 'img/user3.jpg'%}" alt="User 1" class="avatar">
+                    <div class="info">
+                        <h4>Restaurant1</h4>
+                        <i class="fa-solid fa-star">    4.5</i>
+                        <h5>Địa chỉ: Hà Nội</h5>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="{% static 'img/user3.jpg'%}" alt="User 1" class="avatar">
+                    <div class="info">
+                        <h4>Restaurant1</h4>
+                        <i class="fa-solid fa-star">    4.5</i>
+                        <h5>Địa chỉ: Hà Nội</h5>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="{% static 'img/user3.jpg'%}" alt="User 1" class="avatar">
+                    <div class="info">
+                        <h4>Restaurant1</h4>
+                        <i class="fa-solid fa-star">    4.5</i>
+                        <h5>Địa chỉ: Hà Nội</h5>
+                    </div>
+                </div>
+            </div>
         </div> 
     </div>
 {% endblock %}
