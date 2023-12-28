@@ -42,9 +42,10 @@ _Đang phát triển_
 ### Đã hoàn thành
 - HOMEPAGE:
     - Đăng kí/Đăng nhập:
-        - Đăng nhập thành công: ok
+        - Đăng nhập thành công: ok (đã check đăng nhập sai psw, đăng nhập với tk chưa có)
         - Đăng nhập thất bại: (alert) ok
         - Đăng kí: (Đăng kí với mật khẩu ngắn ok - thêm ràng buộc psw)
+          - Các trường hợp đã check: đăng nhập với tk đã tạo; psw khác repsw;
     - Hiển thị top của hàng theo sao
     - Hiển thị product mới theo thời gian
     - Tìm kiếm sản phẩm/dịch vụ:
