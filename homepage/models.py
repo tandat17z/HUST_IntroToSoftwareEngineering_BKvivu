@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 import django.db.models.deletion
 from django.db.models import Avg
 from django.utils import timezone
-
+import uuid
 
 # Xử lý lưu trữ hình ảnh --------------------------------------------------
 def img_path_avt(instance, filename):
@@ -17,12 +17,19 @@ def img_path_avt(instance, filename):
     new_filename = f"avatar.{ext}"  # Đặt tên mới
     return os.path.join(role, username , new_filename)
 
+def img_path_bank(instance, filename):
+    acc = instance.account
+    username = acc.username
+    role = acc.role
+    ext = filename.split('.')[-1]  # Lấy phần mở rộng của tệp
+    new_filename = f"bank.{ext}"  # Đặt tên mới
+    return os.path.join(role, username , new_filename)
+
 def imgs_path(instance, filename):
     post_name = str(instance.post)
     username = str(instance.post.account)
     role = instance.post.account.role
     return os.path.join(role, username , 'posts', post_name, filename)
-
 
 def img_path_bill(instance, filename):
     provider_name = str(instance.provider)
@@ -39,6 +46,8 @@ def img_path_product(instance, filename):
     new_filename = f"{product_name}.{ext}"  # Đặt tên mới
     return os.path.join('manager', username, 'products', new_filename)
 
+def generate_unique_post_id():
+    return str(uuid.uuid4())
 
 # Create your models here.---------------------------------------------------
 class Account(User):
@@ -57,7 +66,14 @@ class Account(User):
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
     name = models.CharField(verbose_name='fullname', max_length=50)
+    age = models.IntegerField(null = True)
     avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
+
+    city = models.CharField(max_length=50, null=True)
+    district = models.CharField(max_length=50, null=True)
+    ward = models.CharField(max_length=50, null=True)
+
+    bio = models.TextField(max_length=1500, null = True)
 
     def __str__(self):
         return f"{self.account}"
@@ -77,22 +93,23 @@ class Sharer(models.Model):
         super().save(*args, **kwargs)
 
 class Manager(models.Model):
-    AREA = [
-        ('all', 'All'),
-        ('HaiBaTrung', 'Hai Bà Trưng'),
-        ('ThanhXuan', 'Thanh Xuân'),
-        ('DongDa', 'Đống Đa')
-    ]
-
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
 
-    name = models.CharField(max_length=50)
-    # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
-    name_stripped = models.CharField(max_length=50, null=True)
+    name = models.TextField(max_length=50)
+    name_stripped = models.TextField(max_length=50, null=True)# Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
     
+    phone = models.CharField(max_length=15, null=True)
     avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
+    bank = models.ImageField(upload_to=img_path_bank, default='noavatar.png')
+    facebook_link = models.URLField(max_length=200, blank=True, null=True)
+    website_link = models.URLField(max_length=200, blank=True, null=True)
+    t_open = models.TimeField(default='0:00')
+    t_closed = models.TimeField(default='23:59')
+
     address = models.TextField(null=True)
-    area = models.CharField(max_length=10, choices=AREA, null=True)
+    city = models.CharField(max_length=50, null=True)
+    district = models.CharField(max_length=50, null=True)
+    ward = models.CharField(max_length=50, null=True)
 
     bio = models.TextField(max_length=1500, null = True)
 
@@ -123,6 +140,9 @@ class Manager(models.Model):
             if check and old_instance.avatar.name != 'noavatar.png':
                 if old_instance.avatar:
                         old_instance.avatar.delete(save=False)
+            if check and old_instance.bank.name != 'noavatar.png':
+                if old_instance.bank:
+                        old_instance.bank.delete(save=False)
 
         #x tự động tính rank = star/ vote
         #x if self.num_votes > 0:
@@ -142,6 +162,11 @@ class Manager(models.Model):
 class Product(models.Model):
     TYPES = [
         ('food', 'Đồ ăn'),
+        ('bun dau', 'Bún đậu'),
+        ('com rang', 'Cơm rang'),
+        ('nem nuong', 'Nem nướng'),
+        ('cong vien', 'Công viên'),
+        ('bao tang', 'Bảo tàng'),
         ('service', 'Dịch vụ khác'),
     ]
     provider = models.ForeignKey(Manager, on_delete=models.CASCADE)
@@ -188,13 +213,16 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.product}_{self.bill}"
 
+
+
+
+
 class Post(models.Model):
+    post_id = models.CharField(max_length=100, unique=True, default=generate_unique_post_id)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     title = models.TextField()
     content = models.TextField()
-    # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
     name_stripped = models.CharField(max_length=50, null=True)
-
     time = models.DateTimeField(default=timezone.datetime.now())
     location = models.TextField()
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
@@ -207,6 +235,40 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         self.name_stripped = unidecode(self.title) + unidecode(self.content)
         super().save(*args, **kwargs)
+    
+    def increase_like(self):
+        self.like += 1
+        self.save()
+    
+    def decrease_like(self):
+        if self.like > 0:
+            self.like -= 1
+            self.save()
+
+# class Post(models.Model):
+#     account = models.ForeignKey(Account, on_delete=models.CASCADE)
+#     title = models.TextField()
+#     content = models.TextField()
+#     # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
+#     name_stripped = models.CharField(max_length=50, null=True)
+
+#     time = models.DateTimeField(default=timezone.datetime.now())
+#     location = models.TextField()
+#     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
+#     like = models.IntegerField(default=0)
+#     dislike = models.IntegerField(default=0)
+
+#     def __str__(self):
+#         return f"{self.account}_{self.title}"
+    
+#     def save(self, *args, **kwargs):
+#         self.name_stripped = unidecode(self.title) + unidecode(self.content)
+#         super().save(*args, **kwargs)
+
+class UserLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    value = models.IntegerField(default=1)
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)

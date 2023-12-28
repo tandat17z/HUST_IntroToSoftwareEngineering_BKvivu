@@ -308,3 +308,9 @@ display: table;
     display: flex;
     /* justify-content: center; */
 }
+
+#btnLogin:disabled, #btnRegister:disabled{
+    background-color: #dddddd; /* Màu nền xám */
+    color: #aaaaaa; /* Màu chữ xám */
+    cursor: not-allowed; /* Đổi hình con trỏ thành "not-allowed" */
+}

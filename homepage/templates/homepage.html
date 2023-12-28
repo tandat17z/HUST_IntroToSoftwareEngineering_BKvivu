@@ -3,6 +3,21 @@
 
 {% comment %} block của avatar trên header {% endcomment %}
 {% block info_user%}
+<div id="-box-nav">
+    <a href="{% url 'postspage:postsPage' %}" id="community"><i class="fa fa-fw fa-users"></i> Cộng đồng</a>
+    <div class="subnav">
+        <a href="">Dịch vụ</a>
+        <a href="">Bài chia sẻ</a>
+    </div>
+</div>
+<div class="setting_icon">
+    <a href="{% url 'settingspage:settingsPage' %}" class="setting">
+        <div >
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+        </div>
+    </a>
+</div>
 <a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user">
     <p style="font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
     <img class="img-user" src = "{{user.avatar.url}}"/>
@@ -10,71 +25,272 @@
 
 {% endblock %}
 
-
-{% comment %} block phần hiển thị top cửa hàng {% endcomment %}
-{% block tab_shop %}
-    {% for shop in top_shops %}
-    <button class = "tablinks {% if forloop.counter == 1 %}active{% endif %}" onclick="openCity(event, 'top{{ forloop.counter }}')">
-        <div class="number">
-            <h2>{{ forloop.counter }}</h2>
-        </div>
-        <a href="{% url 'profilepage:profilePage' shop.account.id%}">
-            <img src="{{shop.avatar.url}}" alt="logo_shop">
-        </a>
-        <div class="stars">
-            <p>{{shop.avgStar}}/5 <span><img src="{% static 'images/star.png' %}" alt=""></span></p>
-            <h2>{{shop.name}}</h2>
-        </div>
-    </button>
-    {% endfor %}
-
-{% endblock tab_shop %}
-
-
-{% comment %} block phần hiển thị bài viết tiêu biểu {% endcomment %}
-{% block tab_content %}
-    {% for shop in top_shops %}
-    <div id="top{{ forloop.counter }}" class="tabcontent" {% if forloop.counter == 1 %} style="display: block;" {% endif %}>
-        <img src="{{ shop.avatar.url}}" alt="">
-    </div>
-    {% endfor %}
-
-{% endblock tab_content %}
-
-{% comment %} block hiển thị kết quả tìm kiếm {% endcomment %}
-{% block products %}
-{% for item in searchShop %}
-<div class="post">
-    <img class="img-food" src="{{ item.avatar.url }}" alt="">
-    <div class="info" style="padding-left: 10px;">
-        <div class="text">
-            <h3>{{item.name}}</h3>
-            <p>{{ item.address}}</p>
-        </div>
-
-    </div>
-    <hr>
-    <div class="cost">
-        <button>Tới cửa hàng</button>
-    </div>
+{% block headerSearch %}
+<div class="center">
+    <form action = "#TimKiem" method = "POST">
+        {% csrf_token %}
+        <input type="text" placeholder="Nay đi đâu ta ..." name="search">
+        <button name="headerSearch" type="submit"><i class="fa fa-search"></i></button>
+    </form>
 </div>
-{% endfor %}
-{% for item in searchProduct %}
-<div class="post">
-    <img class="img-food" src="{{ item.img.url }}" alt="">
-    <div class="info">
-        <img class="img-avt" src="{{ item.provider.avatar.url }}" alt="">
-        <div class="text">
-            <h3>{{item.name}}</h3>
-            <p>{{ item.provider.name}}</p>
-        </div>
+{% endblock headerSearch %}
+{% block feature %}
+        {% comment %} Phần hiển thị top các cửa hàng/ dịch vụ ---------------------------------------{% endcomment %}
+        <div id="top-shop">
+            <h2 class="h2-header">TOP DỊCH VỤ</h2>
+            <div class="tab">
+                {% for shop in top_shops %}
+                <button class = "tablinks {% if forloop.counter == 1 %}active{% endif %}" onclick="openCity(event, 'top{{ forloop.counter }}')">
+                    <div class="number">
+                        <h2>{{ forloop.counter }}</h2>
+                    </div>
+                    <a href="{% url 'profilepage:profilePage' shop.account.id%}">
+                        <img src="{{shop.avatar.url}}" alt="logo_shop">
+                    </a>
+                    <div class="stars">
+                        <p>{{shop.avgStar}}/5 <span><img src="{% static 'images/star.png' %}" alt=""></span></p>
+                        <h2>{{shop.name}}</h2>
+                    </div>
+                </button>
+                {% endfor %}
+            </div>
+            {% for shop in top_shops %}
+            <div id="top{{ forloop.counter }}" class="tabcontent" {% if forloop.counter == 1 %} style="display: block;" {% endif %}>
+                <img src="{{ shop.avatar.url}}" alt="">
+            </div>
+            {% endfor %}
 
-    </div>
-    <hr>
-    <div class="cost">
-        <button>{{item.price}} VND</button>
-    </div>
-</div>
-{% endfor %}
-{% endblock products %}
+        </div>
+        
+        {% comment %} Phần hiển thị top bài viết nổi bật-------------------------------------------- {% endcomment %}
+        <div id="comment">
+            <h2 class="h2-header">BÀI VIẾT TIÊU BIỂU</h2>
+            <div id="comment-body">
+                <div class="prev">
+                    <a href="#">
+                        <img src="{% static 'images/prev.png' %}" alt="" width="50px">
+                    </a>
+                </div>
+                <ul class="post-list">
+                    <li class="item">
+                        <div class="info">
+                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                            <h2>Nhà hàng lẩu</h2>
+                            <h3>Time: 10:00</h3>
+                        </div>
+                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
+                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
+                        </p>
+
+                        <div class="post-photo">
+                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        </div>
+
+                        <div class="post-actions">
+                            <i class="far fa-thumbs-up"></i> 
+                            <i class="far fa-comment"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
+                    </li>
+                    <li class="item">
+                        <div class="info">
+                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                            <h2>Nhà hàng lẩu</h2>
+                            <h3>Time: 10:00</h3>
+                        </div>
+                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
+                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
+                        </p>
+
+                        <div class="post-photo">
+                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        </div>
+
+                        <div class="post-actions">
+                            <i class="far fa-thumbs-up"></i> 
+                            <i class="far fa-comment"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
+                    </li>
+                    <li class="item">
+                        <div class="info">
+                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                            <h2>Nhà hàng lẩu</h2>
+                            <h3>Time: 10:00</h3>
+                        </div>
+                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
+                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                        </p>
+
+                        <div class="post-photo">
+                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        </div>
+
+                        <div class="post-actions">
+                            <i class="far fa-thumbs-up"></i> 
+                            <i class="far fa-comment"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
+                    </li>
+                    <li class="item">
+                        <div class="info">
+                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
+                            <h2>Nhà hàng lẩu</h2>
+                            <h3>Time: 10:00</h3>
+                        </div>
+                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
+                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
+                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
+                        </p>
+
+                        <div class="post-photo">
+                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
+                        </div>
+
+                        <div class="post-actions">
+                            <i class="far fa-thumbs-up"></i> 
+                            <i class="far fa-comment"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
+                    </li>
+                </ul>
+                <div class="next">
+                    <a href="#">
+                        <img src="{% static 'images/next.png' %}" alt="" width="50px">
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+        <br>
+        {% comment %} Phần tìm kiếm ----------------------------------------------------------------- {% endcomment %}
+        <div id="TimKiem"></div>
+        <h2 class="h2-header" id="searchhh">TÌM KIẾM</h2>
+        <div id="searching">
+            <div class="box-left">
+                {% for item in searchShop %}
+                <div class="post">
+                    <img class="img-food" src="{{ item.avatar.url }}" alt="">
+                    <div class="info" style="padding-left: 10px;">
+                        <div class="text">
+                            <h3>{{item.name}}</h3>
+                            <p>Đánh giá: {{item.avgStar}}/5 <span><img class="search_imgstar" src="{% static 'images/star.png' %}" alt=""></span></p>
+                            <p>{{ item.district}}-{{item.ward}}</p>
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="cost">
+                        <a href="{% url 'profilepage:profilePage' item.account.id%}">
+                            <button>Tới cửa hàng</button>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+                {% for item in searchProduct %}
+                <div class="post">
+                    <img class="img-food" src="{{ item.img.url }}" alt="">
+                    <div class="info">
+                        <a href="{% url 'profilepage:profilePage' item.provider.account.id%}">
+                            <img class="img-avt" src="{{ item.provider.avatar.url }}" alt="">
+                        </a>
+                        <div class="text">
+                            <h3>{{item.name}}</h3>
+                            <p>Like: {{item.like}}, dislike: {{item.dislike}}</p>
+                            <p>Provider: {{ item.provider.name}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="cost">
+                        <button>{{item.price}} VND</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="box-right">
+                <div class="searchcontent">
+                    <p>Tìm kiếm nhanh:</p>
+                    <form action="#TimKiem" method="POST">
+                        {% csrf_token %}
+                        <button name="bundau" type="submit">Bún đậu</button>
+                        <button name="comrang" type="submit">Cơm rang</button>
+                        <button name="nemnuong" type="submit">Nem nướng</button>
+                        <button name="congvien" type="submit">Công viên</button>
+                        <button name="baotang" type="submit">Bảo tàng</button>
+                    </form>
+                    <hr>
+                </div>
+                <div class="search">
+                    <form action="#TimKiem" method="POST">
+                        {% csrf_token %}
+                        <label for="choices">Phân loại tìm kiếm:</label>
+                        <select id="choices" name="type">
+                            <option value="shop">Cửa hàng</option>
+                            <option value="product">Sản phẩm</option>
+                            <!-- Thêm các option khác nếu cần -->
+                        </select>
+                        <input type="text" placeholder="Nay đi đâu ta ..." name="search">
+                        <!-- <button id = "filter" type="submit"><i class="fa fa-filter"></i></button> -->
+                        <button name="search" id = "search" type="submit"><i class="fa fa-search"></i></button>
+                        <br>
+                        <div class="searchby">
+                            <br>
+                            <div class="form-group">
+                            <label for="city">Khu vực:</label>
+                            <select class="form-select form-select-sm mb-3" id="city" name="city" aria-label=".form-select-sm">
+                            <option value="all" selected>Chọn tỉnh thành</option>           
+                            </select>
+                            <br>      
+                            <select class="form-select form-select-sm mb-3" id="district" name="district" aria-label=".form-select-sm">
+                            <option value="all" selected>Chọn quận huyện</option>
+                            </select>
+                            
+                            <select class="form-select form-select-sm" id="ward" name="ward" aria-label=".form-select-sm">
+                            <option value="all" selected>Chọn phường xã</option>
+                            </select>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                            <label for="t_open">Khoảng thời gian:</label>
+                            <input class="time"
+                                type="time"
+                                name="t_open"
+                                id="t_open"
+                                class="form-control"
+                                value="00:00"
+                            required
+                            ></input>
+                            {% comment %} <label for="t_closed">Thời gian đóng cửa:</label> {% endcomment %}
+                            <input class="time"
+                                type="time"
+                                name="t_closed"
+                                id="t_closed"
+                                class="form-control"
+                                value="23:59"
+                            required
+                            ></input>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+{% endblock feature %}
+
 

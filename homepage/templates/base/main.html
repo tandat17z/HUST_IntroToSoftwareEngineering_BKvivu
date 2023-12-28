@@ -50,30 +50,9 @@
                 </a>
             </div>
             
-            <div class="center">
-                <form action = "#searchhh" method = "POST">
-                    {% csrf_token %}
-                    <input type="text" placeholder="Nay đi đâu ta ..." name="search">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
-            </div>
+            {% block headerSearch %}{% endblock headerSearch %}
                 
             <div class="right">
-                <div id="-box-nav">
-                    <a href="{% url 'postspage:postsPage' %}" id="community"><i class="fa fa-fw fa-users"></i> Cộng đồng</a>
-                    <div class="subnav">
-                        <a href="">Dịch vụ</a>
-                        <a href="">Bài chia sẻ</a>
-                    </div>
-                </div>
-                <div class="setting_icon">
-                    <a href="{% url 'settingspage:settingsPage' %}" class="setting">
-                        <div >
-                        <i class="fa-solid fa-gear"></i>
-                        <span>Settings</span>
-                        </div>
-                    </a>
-                </div>
                 {% block info_user %} {% endblock %}
             </div>
         </div>
@@ -102,164 +81,8 @@
             <span class="dot" onclick="currentSlide(3)"></span>
         </div>
     
-        {% comment %} Phần hiển thị top các cửa hàng/ dịch vụ ---------------------------------------{% endcomment %}
-        <div id="top-shop">
-            <h2 class="h2-header">TOP DỊCH VỤ</h2>
-            <div class="tab">
-                {% block tab_shop %}{% endblock tab_shop %}
-            </div>
-            {% block tab_content %}{% endblock tab_content %}
-        </div>
-        
-        {% comment %} Phần hiển thị top bài viết nổi bật-------------------------------------------- {% endcomment %}
-        <div id="comment">
-            <h2 class="h2-header">BÀI VIẾT TIÊU BIỂU</h2>
-            <div id="comment-body">
-                <div class="prev">
-                    <a href="#">
-                        <img src="{% static 'images/prev.png' %}" alt="" width="50px">
-                    </a>
-                </div>
-                <ul class="post-list">
-                    <li class="item">
-                        <div class="info">
-                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
-                            <h2>Nhà hàng lẩu</h2>
-                            <h3>Time: 10:00</h3>
-                        </div>
-                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
-                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
-                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
-                        </p>
+        {% block feature %}{% endblock feature %}
 
-                        <div class="post-photo">
-                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        </div>
-
-                        <div class="post-actions">
-                            <i class="far fa-thumbs-up"></i> 
-                            <i class="far fa-comment"></i>
-                            <i class="fas fa-share"></i>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <div class="info">
-                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
-                            <h2>Nhà hàng lẩu</h2>
-                            <h3>Time: 10:00</h3>
-                        </div>
-                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
-                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
-                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
-                        </p>
-
-                        <div class="post-photo">
-                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        </div>
-
-                        <div class="post-actions">
-                            <i class="far fa-thumbs-up"></i> 
-                            <i class="far fa-comment"></i>
-                            <i class="fas fa-share"></i>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <div class="info">
-                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
-                            <h2>Nhà hàng lẩu</h2>
-                            <h3>Time: 10:00</h3>
-                        </div>
-                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
-                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
-                        </p>
-
-                        <div class="post-photo">
-                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        </div>
-
-                        <div class="post-actions">
-                            <i class="far fa-thumbs-up"></i> 
-                            <i class="far fa-comment"></i>
-                            <i class="fas fa-share"></i>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <div class="info">
-                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
-                            <h2>Nhà hàng lẩu</h2>
-                            <h3>Time: 10:00</h3>
-                        </div>
-                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
-                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
-                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
-                        </p>
-
-                        <div class="post-photo">
-                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        </div>
-
-                        <div class="post-actions">
-                            <i class="far fa-thumbs-up"></i> 
-                            <i class="far fa-comment"></i>
-                            <i class="fas fa-share"></i>
-                        </div>
-                    </li>
-                </ul>
-                <div class="next">
-                    <a href="#">
-                        <img src="{% static 'images/next.png' %}" alt="" width="50px">
-                    </a>
-                </div>
-            </div>
-        </div>
-    
-        <br>
-        {% comment %} Phần tìm kiếm ----------------------------------------------------------------- {% endcomment %}
-        <h2 class="h2-header" id="searchhh">TÌM KIẾM</h2>
-        <div id="searching">
-            <div class="box-left">
-                {% block products %}{% endblock products %}
-            </div>
-            <div class="box-right">
-                <div class="searchcontent">
-                    <form action="#searchhh" method="POST">
-                        {% csrf_token %}
-                        <button name="bundau" type="submit">Bún đậu</button>
-                        <button name="comrang" type="submit">Cơm rang</button>
-                        <button name="nemnuong" type="submit">Nem nướng</button>
-                        <button name="congvien" type="submit">Công viên</button>
-                        <button name="baotang" type="submit">Bảo tàng</button>
-                    </form>
-                </div>
-                <div class="search">
-                    <form action="#searchhh" method="POST">
-                        {% csrf_token %}
-                        <input type="text" placeholder="Nay đi đâu ta ..." name="search">
-                        <!-- <button id = "filter" type="submit"><i class="fa fa-filter"></i></button> -->
-                        <button id = "search" type="submit"><i class="fa fa-search"></i></button>
-                        <br>
-                        <h3>Tìm kiếm theo:</h3>
-                        <div class="searchby">
-                            {{ form_choose_area }}
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    
-    
         <footer class="footer">
             <div class="waves">
               <div class="wave" id="wave1"></div>
@@ -296,6 +119,48 @@
         <script src="{% static 'js/header.js' %}"></script>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+    var citis = document.getElementById("city");
+    var districts = document.getElementById("district");
+    var wards = document.getElementById("ward");
+    var Parameter = {
+        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
+        method: "GET", 
+        responseType: "application/json", 
+    };
+    var promise = axios(Parameter);
+    promise.then(function (result) {
+    renderCity(result.data);
+    });
+
+    function renderCity(data) {
+    for (const x of data) {
+        citis.options[citis.options.length] = new Option(x.Name, x.Id);
+    }
+    citis.onchange = function () {
+        district.length = 1;
+        ward.length = 1;
+        if(this.value != ""){
+        const result = data.filter(n => n.Id === this.value);
+
+        for (const k of result[0].Districts) {
+            district.options[district.options.length] = new Option(k.Name, k.Id);
+        }
+        }
+    };
+    district.onchange = function () {
+        ward.length = 1;
+        const dataCity = data.filter((n) => n.Id === citis.value);
+        if (this.value != "") {
+        const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+
+        for (const w of dataWards) {
+            wards.options[wards.options.length] = new Option(w.Name, w.Id);
+        }
+        }
+    };
+    }
+	</script>
     </body>
 </html>

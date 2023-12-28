@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ post.title }}</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+
+    <!-- Comment form -->
+    <form method="POST">
+        {% csrf_token %}
+        <label for="content">Bình luận:</label><br>
+        <textarea id="content" name="content" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Gửi bình luận">
+    </form>
+
+    <!-- Comment list -->
+    <div class="comments">
+        {% for comment in comments %}
+            <div class="comment">
+                <h2>{{ comment.account }}</h2>
+                <p>{{ comment.content }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

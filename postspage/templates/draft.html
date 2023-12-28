@@ -1,0 +1,81 @@
+Xin chào, đây là Bing. Tôi có thể giúp bạn thực hiện chức năng thích và không thích cho mô hình Post của bạn. Bạn cần làm những bước sau:
+
+- Thêm một trường ManyToManyField để lưu trữ những người dùng đã thích hoặc không thích bài đăng. Ví dụ:
+
+```python
+class Post(models.Model):
+    # Các trường khác
+    likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
+    dislikes = models.ManyToManyField(User, related_name='post_dislikes', blank=True)
+```
+
+- Thêm một phương thức để tính tổng số lượt thích và không thích của một bài đăng. Ví dụ:
+
+```python
+class Post(models.Model):
+    # Các trường và phương thức khác
+    def total_likes(self):
+        return self.likes.count()
+    
+    def total_dislikes(self):
+        return self.dislikes.count()
+```
+
+- Tạo một view để xử lý yêu cầu thích hoặc không thích của người dùng. Bạn có thể sử dụng AJAX để tránh tải lại trang. Ví dụ:
+
+```python
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+
+def like_post(request):
+    post_id = request.POST.get('id')
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
+    if post.likes.filter(id=user.id).exists():
+        # Nếu người dùng đã thích bài đăng, hủy thích
+        post.likes.remove(user)
+        is_liked = False
+    else:
+        # Nếu người dùng chưa thích bài đăng, thêm thích
+        post.likes.add(user)
+        is_liked = True
+        # Nếu người dùng đã không thích bài đăng, hủy không thích
+        if post.dislikes.filter(id=user.id).exists():
+            post.dislikes.remove(user)
+    context = {
+        'post': post,
+        'is_liked': is_liked,
+        'total_likes': post.total_likes(),
+        'total_dislikes': post.total_dislikes(),
+    }
+    if request.is_ajax():
+        html = render_to_string('blog/like_section.html', context, request=request)
+        return JsonResponse({'form': html})
+
+def dislike_post(request):
+    post_id = request.POST.get('id')
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
+    if post.dislikes.filter(id=user.id).exists():
+        # Nếu người dùng đã không thích bài đăng, hủy không thích
+        post.dislikes.remove(user)
+        is_disliked = False
+    else:
+        # Nếu người dùng chưa không thích bài đăng, thêm không thích
+        post.dislikes.add(user)
+        is_disliked = True
+        # Nếu người dùng đã thích bài đăng, hủy thích
+        if post.likes.filter(id=user.id).exists():
+            post.likes.remove(user)
+    context = {
+        'post': post,
+        'is_disliked': is_disliked,
+        'total_likes': post.total_likes(),
+        'total_dislikes': post.total_dislikes(),
+    }
+    if request.is_ajax():
+        html = render_to_string('blog/dislike_section.html', context, request=request)
+        return JsonResponse({'form': html})
+```
+
+- Thêm các nút thích và không thích vào template của bài đăng
