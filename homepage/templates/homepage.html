@@ -29,8 +29,8 @@
 <div class="center">
     <form action = "#TimKiem" method = "POST">
         {% csrf_token %}
-        <input type="text" placeholder="Nay đi đâu ta ..." name="search">
-        <button name="headerSearch" type="submit"><i class="fa fa-search"></i></button>
+        <input type="text" placeholder="Nay đi đâu ta ..." name="headerSearch">
+        <button name="btnHeaderSearch" type="submit"><i class="fa fa-search"></i></button>
     </form>
 </div>
 {% endblock headerSearch %}
@@ -246,7 +246,7 @@
                         </select>
                         <input type="text" placeholder="Nay đi đâu ta ..." name="search">
                         <!-- <button id = "filter" type="submit"><i class="fa fa-filter"></i></button> -->
-                        <button name="search" id = "search" type="submit"><i class="fa fa-search"></i></button>
+                        <button name="btnSearch" id = "search" type="submit"><i class="fa fa-search"></i></button>
                         <br>
                         <div class="searchby">
                             <br>

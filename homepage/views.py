@@ -36,7 +36,7 @@ def searchAndFilter(keyword = '',
     elif area['district'] != 'all': searchShop = searchShop.filter(district=area['district'])
     elif area['city'] != 'all': searchShop = searchShop.filter(city=area['city'])
     searchProduct = Product.objects.filter(provider__in=searchShop)
-    print(area)
+    print(keyword, area)
     print(searchShop)
     print(searchProduct)
     # Tìm với từ khóa
@@ -64,10 +64,10 @@ def homePage(request):
     print("load Homepage --------------")
     if request.method == 'POST': # Ở trang thái tìm kiếm sản phẩm, lọc
         # Tìm kiếm ở header
-        if 'headerSearch' in request.POST:
-            keyword = request.POST.get('search')
-            keyword_stripped = unidecode(keyword).strip() # Tìm kiếm không dấu
-            print("vào phần searchHeader")
+        if 'btnHeaderSearch' in request.POST:
+            keyword = request.POST.get('headerSearch')
+            keyword_stripped = unidecode(keyword).strip().lower() # Tìm kiếm không dấu
+            
             searchShop, searchProduct = searchAndFilter(keyword_stripped)
         # Tìm kiếm theo tag ------------------
         elif 'bundau' in request.POST:
@@ -81,9 +81,11 @@ def homePage(request):
         elif 'baotang' in request.POST:
             searchShop, searchProduct = searchTag('bao tang')
         # Tìm kiếm chuẩn --------------------
-        elif 'search' in request.POST:
+        elif 'btnSearch' in request.POST:
+            print(request.POST)
             keyword = request.POST.get('search')
-            keyword_stripped = unidecode(keyword).strip() # Tìm kiếm không dấu
+            words = unidecode(keyword.lower()).split()
+            keyword_stripped = ' '.join(words) # Tìm kiếm không dấu
             type = request.POST.get('type')
             city, district, ward = getArea(
                 request.POST.get('city'),
