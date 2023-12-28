@@ -11,4 +11,5 @@ urlpatterns = [
     path('posts/', views.postsView, name='posts'),
     path('restaurants/', views.restaurantsView, name='restaurants'),
     path('like_post/<int:post_id>/', views.like_post, name='like_post'),
+    path('test', views.test, name='test')
 ]   + static(settings.MEDIA_URL, document_root = settings.MEDIA_URL) # 3/12

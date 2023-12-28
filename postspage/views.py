@@ -79,3 +79,6 @@ def postsView(request):
 def restaurantsView(request):
     managers = Manager.objects.filter().order_by('name')
     return render(request, 'restaurants.html', {'managers' : managers})
+
+def test(request):
+    return render(request, 'restaurants.html')
