@@ -56,6 +56,7 @@ _Đang phát triển_
         - Tìm kiếm chuẩn: (phân loại, từ khóa, khu vực, thời gian)
             - Theo tag: Tìm kiếm `sản phẩm` theo tag đã gán (hoặc chứa từ khóa của tag)
             - Theo đầy đủ: Tìm kiếm `cửa hàng` (sắp xếp theo vote), tìm kiếm `sản phẩm` (sắp xếp theo mới nhất)
+            - Tìm kiếm theo từng loại khu vực: city, district, ward
 - posts
 - Profile:
     - Hiển thị bài viết/ sản phẩm
