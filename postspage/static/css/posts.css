@@ -45,9 +45,14 @@ ul {
   margin-bottom: 15px;
 }
 
+.item .post-photo {
+  display: flex;
+  overflow-x: auto;
+}
+
 .item .post-photo img {
   margin-left: 5px;
-  width: calc(33% - 8px);
+  max-width: 100%;
   height: 150px;
   border-radius: 15px;
 }
@@ -82,6 +87,7 @@ ul {
 /* --------------searching----------- */
 .searching {
    flex: 1;
+   min-width: 400px;
    background-color: beige;
 }
 
