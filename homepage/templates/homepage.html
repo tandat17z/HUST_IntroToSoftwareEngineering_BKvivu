@@ -3,6 +3,21 @@
 
 {% comment %} block của avatar trên header {% endcomment %}
 {% block info_user%}
+<div id="-box-nav">
+    <a href="{% url 'postspage:postsPage' %}" id="community"><i class="fa fa-fw fa-users"></i> Cộng đồng</a>
+    <div class="subnav">
+        <a href="">Dịch vụ</a>
+        <a href="">Bài chia sẻ</a>
+    </div>
+</div>
+<div class="setting_icon">
+    <a href="{% url 'settingspage:settingsPage' %}" class="setting">
+        <div >
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+        </div>
+    </a>
+</div>
 <a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user">
     <p style="font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
     <img class="img-user" src = "{{user.avatar.url}}"/>
@@ -10,6 +25,15 @@
 
 {% endblock %}
 
+{% block headerSearch %}
+<div class="center">
+    <form action = "#TimKiem" method = "POST">
+        {% csrf_token %}
+        <input type="text" placeholder="Nay đi đâu ta ..." name="search">
+        <button name="headerSearch" type="submit"><i class="fa fa-search"></i></button>
+    </form>
+</div>
+{% endblock headerSearch %}
 {% block feature %}
         {% comment %} Phần hiển thị top các cửa hàng/ dịch vụ ---------------------------------------{% endcomment %}
         <div id="top-shop">
@@ -164,6 +188,7 @@
                     <div class="info" style="padding-left: 10px;">
                         <div class="text">
                             <h3>{{item.name}}</h3>
+                            <p>Đánh giá: {{item.avgStar}}/5 <span><img class="search_imgstar" src="{% static 'images/star.png' %}" alt=""></span></p>
                             <p>{{ item.district}}-{{item.ward}}</p>
                         </div>
 
@@ -185,7 +210,8 @@
                         </a>
                         <div class="text">
                             <h3>{{item.name}}</h3>
-                            <p>Của: {{ item.provider.name}}</p>
+                            <p>Like: {{item.like}}, dislike: {{item.dislike}}</p>
+                            <p>Provider: {{ item.provider.name}}</p>
                         </div>
                     </div>
                     <hr>
@@ -195,8 +221,10 @@
                 </div>
                 {% endfor %}
             </div>
+
             <div class="box-right">
                 <div class="searchcontent">
+                    <p>Tìm kiếm nhanh:</p>
                     <form action="#TimKiem" method="POST">
                         {% csrf_token %}
                         <button name="bundau" type="submit">Bún đậu</button>
@@ -205,30 +233,40 @@
                         <button name="congvien" type="submit">Công viên</button>
                         <button name="baotang" type="submit">Bảo tàng</button>
                     </form>
+                    <hr>
                 </div>
                 <div class="search">
                     <form action="#TimKiem" method="POST">
                         {% csrf_token %}
+                        <label for="choices">Phân loại tìm kiếm:</label>
+                        <select id="choices" name="type">
+                            <option value="shop">Cửa hàng</option>
+                            <option value="product">Sản phẩm</option>
+                            <!-- Thêm các option khác nếu cần -->
+                        </select>
                         <input type="text" placeholder="Nay đi đâu ta ..." name="search">
                         <!-- <button id = "filter" type="submit"><i class="fa fa-filter"></i></button> -->
-                        <button id = "search" type="submit"><i class="fa fa-search"></i></button>
+                        <button name="search" id = "search" type="submit"><i class="fa fa-search"></i></button>
                         <br>
                         <div class="searchby">
+                            <br>
                             <div class="form-group">
-                            <p>Tìm kiếm theo khu vực: </p>
+                            <label for="city">Khu vực:</label>
                             <select class="form-select form-select-sm mb-3" id="city" name="city" aria-label=".form-select-sm">
-                            <option value="" selected>Chọn tỉnh thành</option>           
+                            <option value="all" selected>Chọn tỉnh thành</option>           
                             </select>
-                                        
+                            <br>      
                             <select class="form-select form-select-sm mb-3" id="district" name="district" aria-label=".form-select-sm">
-                            <option value="" selected>Chọn quận huyện</option>
+                            <option value="all" selected>Chọn quận huyện</option>
                             </select>
                             
                             <select class="form-select form-select-sm" id="ward" name="ward" aria-label=".form-select-sm">
                             <option value="all" selected>Chọn phường xã</option>
                             </select>
                             </div>
-                            <p>Thời điểm mở cửa: </p>
+                            <br>
+                            <div class="form-group">
+                            <label for="t_open">Khoảng thời gian:</label>
                             <input class="time"
                                 type="time"
                                 name="t_open"
@@ -237,7 +275,7 @@
                                 value="00:00"
                             required
                             ></input>
-                            <p>Thời điểm đóng cửa: </p>
+                            {% comment %} <label for="t_closed">Thời gian đóng cửa:</label> {% endcomment %}
                             <input class="time"
                                 type="time"
                                 name="t_closed"
@@ -246,11 +284,13 @@
                                 value="23:59"
                             required
                             ></input>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        
 {% endblock feature %}
 
 

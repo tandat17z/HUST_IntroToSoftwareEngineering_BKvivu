@@ -7,9 +7,25 @@
         <form method='POST'>
             {% csrf_token %}
             <h1>Login</h1>
-            <input name = 'username' placeholder="Username" type="text">
-            <input name = 'password' placeholder="Password" type="password">
-            <button type="submit" >Submit</button>
+            <input id = "inputUsername" name = 'username' placeholder="Username" type="text" oninput="checkLogin()">
+            <input id = "inputPsw" name = 'password' placeholder="Password" type="password" oninput="checkLogin()">
+            <button name='login' type="submit" id="btnLogin" disabled="True">Submit</button>
+            <script>
+                function checkLogin() {
+                    // Kiểm tra điều kiện và thiết lập thuộc tính disabled
+                    var inputUsername = document.getElementById('inputUsername');
+                    var inputPsw = document.getElementById('inputPsw');
+                    // Thay bằng điều kiện thực tế từ server hoặc nơi khác
+                    if (inputPsw.value.length >= 8 && inputUsername.value.length > 0) {
+                        console.log('Ấn được nhé');
+                    document.getElementById('btnLogin').disabled = false;
+                    }
+                    else{
+                        console.log('Button disabled true.');
+                        document.getElementById('btnLogin').disabled = true;
+                    }
+                }
+              </script>
         </form>
     </div>
 </div>
@@ -30,12 +46,18 @@
                 <input type="text" placeholder="Enter Email" name="rgt_email" required>
                 
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="rgt_psw" required>
+                <input type="password" placeholder="Enter Password" name="rgt_psw" id="inputPswRegister" oninput="checkPassword()" required>
         
                 <label for="psw-repeat"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Repeat Password" name="rgt_repsw" required>
+                <input type="password" placeholder="Repeat Password" name="rgt_repsw" id="inputRepsw" oninput="checkPassword()" required>
                 
-                {{form_rgt}}
+                {% comment %} {{form_rgt}} {% endcomment %}
+                <label for="role"><strong>Đăng kí với vai trò:</strong></label>
+                <select id="role" name="role">
+                    <option value="manager">Người quản lý</option>
+                    <option value="sharer">Người chia sẻ</option>
+                    <!-- Thêm các option khác nếu cần -->
+                </select>
                 <!-- <label>
                 <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
                 </label> -->
@@ -45,9 +67,25 @@
                
                 <div class="clearfix">
                 <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                <button type="submit" class="signupbtn">Sign Up</button>
+                <button name='register' type="submit" class="signupbtn" disabled="true" id="btnRegister">Sign Up</button>
                 </div>
             </div>
+            <script>
+                function checkPassword() {
+                    // Kiểm tra điều kiện và thiết lập thuộc tính disabled
+                    var input1 = document.getElementById('inputPswRegister');
+                    var input2 = document.getElementById('inputRepsw');
+                    // Thay bằng điều kiện thực tế từ server hoặc nơi khác
+                    if (input1.value.length >= 8 && input2.value.length == input1.value.length) {
+                        console.log('Ấn được nhé');
+                        document.getElementById('btnRegister').disabled = false;
+                    }
+                    else{
+                        console.log('Button disabled true.');
+                        document.getElementById('btnRegister').disabled = true;
+                    }
+                }
+              </script>
         </form>
     </div>
 </div>  

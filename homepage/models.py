@@ -31,7 +31,6 @@ def imgs_path(instance, filename):
     role = instance.post.account.role
     return os.path.join(role, username , 'posts', post_name, filename)
 
-
 def img_path_bill(instance, filename):
     provider_name = str(instance.provider)
     sharer_name = str(instance.sharer)

@@ -50,30 +50,9 @@
                 </a>
             </div>
             
-            <div class="center">
-                <form action = "#TimKiem" method = "POST">
-                    {% csrf_token %}
-                    <input type="text" placeholder="Nay đi đâu ta ..." name="search">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
-            </div>
+            {% block headerSearch %}{% endblock headerSearch %}
                 
             <div class="right">
-                <div id="-box-nav">
-                    <a href="{% url 'postspage:postsPage' %}" id="community"><i class="fa fa-fw fa-users"></i> Cộng đồng</a>
-                    <div class="subnav">
-                        <a href="">Dịch vụ</a>
-                        <a href="">Bài chia sẻ</a>
-                    </div>
-                </div>
-                <div class="setting_icon">
-                    <a href="{% url 'settingspage:settingsPage' %}" class="setting">
-                        <div >
-                        <i class="fa-solid fa-gear"></i>
-                        <span>Settings</span>
-                        </div>
-                    </a>
-                </div>
                 {% block info_user %} {% endblock %}
             </div>
         </div>
