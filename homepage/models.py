@@ -221,14 +221,13 @@ class Order(models.Model):
 
 
 class Post(models.Model):
-    post_id = models.CharField(max_length=100, unique=True, default=generate_unique_post_id)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     title = models.TextField()
     content = models.TextField()
     name_stripped = models.CharField(max_length=50, null=True)
     time = models.DateTimeField(default=timezone.datetime.now())
     location = models.TextField()
-    provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
+    provider = models.ForeignKey(Manager,  related_name='provider', on_delete=models.SET_NULL, null=True)
     like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
 
@@ -240,14 +239,6 @@ class Post(models.Model):
         self.name_stripped = ' '.join(words)
         super().save(*args, **kwargs)
     
-    def increase_like(self):
-        self.like += 1
-        self.save()
-    
-    def decrease_like(self):
-        if self.like > 0:
-            self.like -= 1
-            self.save()
 
 # class Post(models.Model):
 #     account = models.ForeignKey(Account, on_delete=models.CASCADE)
@@ -269,17 +260,24 @@ class Post(models.Model):
 #         self.name_stripped = (unidecode(self.title) + unidecode(self.content)).strip().lower()
 #         super().save(*args, **kwargs)
 
-class UserLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    value = models.IntegerField(default=1)
-
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
     img = models.ImageField(upload_to=imgs_path)
     isDelete = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.post}"
+
+# vote_profile_model
+class StarVote(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    manager = models.ForeignKey(Manager, on_delete=models.CASCADE)
+    stars = models.IntegerField(default=0)
+    def __str__(self):
+        return f"{self.account} Voted For {self.manager}"
+
+class UserLike(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, null= True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
 class Comment(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
@@ -289,12 +287,3 @@ class Comment(models.Model):
     
     def __str__(self):
         return f"{self.post}"
-
-
-# vote_profile_model
-class StarVote(models.Model):
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    manager = models.ForeignKey(Manager, on_delete=models.CASCADE)
-    stars = models.IntegerField(default=0)
-    def __str__(self):
-        return f"{self.account} Voted For {self.manager}"

@@ -6,7 +6,7 @@
 /* -----------post-list------------ */
 .post-list{
   flex: 2;
-  height: 800px;
+  height: calc(100vh - 80px);
   padding-top: 30px;
   overflow-y: scroll 
 }
