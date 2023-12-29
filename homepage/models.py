@@ -232,3 +232,4 @@ class StarVote(models.Model):
     stars = models.IntegerField(default=0)
     def __str__(self):
         return f"{self.account} Voted For {self.manager}"
+

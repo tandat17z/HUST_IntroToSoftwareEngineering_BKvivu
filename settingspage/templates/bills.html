@@ -3,17 +3,17 @@
 
 {% block bills%}
 <div style="display: flex;">
-<div style="flex:0.15">
+<div style="position: fixed; background-color: black; align-items: center; justify-content: center; display: flex; flex-direction: column; z-index: 1000;" >
 <label for="choices">Select Mode</label>
     <select id="choices" name="choices" style="height: 50px; width: 70px;">
         <option value="Waiting">Waiting</option>
         <option value="Accept">Accept</option>
         <option value="Decline">Decline</option>
     </select>
-<button id="getDataButton" style="margin-left: 0; height: 50px; width: 50px;">Lọc</button>
+<button id="getDataButton" style="height: 50px; width: 50px;">Lọc</button>
 </div>
 
-<div class="container" style="flex:1;">
+<div class="container" style="margin-left: 20%;">
 
 <ul>
     {% for bill in bills %}
