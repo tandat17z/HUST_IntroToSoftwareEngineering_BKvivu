@@ -136,7 +136,7 @@ def billsPage(request):
     #     acc = Account.objects.get(user_ptr=request.user)
     #     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     #     bills = user.bill_set.all()
-        
+    
     #     context = {
     #         "bills" : bills,
     #         "acc" : acc,
