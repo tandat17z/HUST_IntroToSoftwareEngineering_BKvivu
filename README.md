@@ -57,7 +57,16 @@ _Đang phát triển_
             - Theo tag: Tìm kiếm `sản phẩm` theo tag đã gán (hoặc chứa từ khóa của tag)
             - Theo đầy đủ: Tìm kiếm `cửa hàng` (sắp xếp theo vote), tìm kiếm `sản phẩm` (sắp xếp theo mới nhất)
             - Tìm kiếm theo từng loại khu vực: city, district, ward
-- posts
+- posts: Có 2 trang: posts (Hiển thị các bài viết), restaurant(Đề xuất các cửa hàng)
+    - posts:
+      - Hiển thị các bài viết theo thời gian
+      - like + comment **ok**
+      - Show các comment, xóa comment (của mình) **ok**
+      - Link trực tiếp tới trang cá nhân **ok**
+      - Tìm kiềm bài viết (đang làm)
+    - restaurant:
+      - Hiện giao diện **ok**
+      - (Đang làm)
 - Profile:
     - Hiển thị bài viết/ sản phẩm
     - Vote
