@@ -13,8 +13,16 @@ class ManagerAdmin(admin.ModelAdmin):
 
 class BillAmin(admin.ModelAdmin):
     list_display = ('__str__', 'time', 'status')
+
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'time', 'location', 'provider', 'like', 'dislike')
+    list_display = ('__str__', 'time', 'provider', 'like', 'dislike')
+    
+class UserLikeAdmin(admin.ModelAdmin):
+    list_display = ('account', 'post')
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'content')
+    
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Sharer, SharerAdmin)
 admin.site.register(Manager, ManagerAdmin)
@@ -23,6 +31,7 @@ admin.site.register(Bill, BillAmin)
 admin.site.register(Order)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Image)
-admin.site.register(Comment)
-admin.site.register(StarVote)
 admin.site.register(CartItem)
+admin.site.register(Comment, CommentAdmin)
+admin.site.register(StarVote)
+admin.site.register(UserLike, UserLikeAdmin)

@@ -1,0 +1,158 @@
+/* ----------posts----------- */
+.posts {
+  display: flex;
+}
+
+button{
+  background-color: #fff;
+  border: none;
+}
+
+button:hover{
+  background-color: #24efab;
+}
+
+.sendCmt{
+  font-size: 18px;
+  margin-top: 25px;
+  margin-left: 5px;
+}
+/* -----------post-list------------ */
+.post-list{
+  flex: 2;
+  height: calc(100vh - 80px);
+  padding-top: 30px;
+  overflow-y: scroll 
+}
+
+ul {
+  list-style-type: none;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0px 40px 40px 40px;
+}
+
+.item {
+  margin: 15px 40px 0px 40px;
+  padding: 30px 30px 30px 30px;
+  border: 2px solid #ccc;
+  border-radius: 30px;
+
+}
+
+.item .avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%; 
+  object-fit: cover; 
+  margin: 0 10px 10px 0;
+}
+
+.info {
+  overflow: hidden;
+}
+
+.info img {
+  float: left; 
+  margin-right: 10px; 
+}
+
+.item p {
+  text-align: justify;
+  margin-bottom: 15px;
+}
+
+.item .post-photo {
+  display: flex;
+  overflow-x: auto;
+}
+
+.item .post-photo img {
+  margin-left: 5px;
+  max-width: 100%;
+  height: 150px;
+  border-radius: 15px;
+}
+
+.item .post-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.item .post-comment {
+  display: flex;
+  align-items: center;
+}
+
+.item .post-comment .avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  float: left;
+  margin: 20px 20px 0px 30px;
+}
+
+.item .post-comment input {
+  display: inline-block; 
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-top: 25px; 
+  padding: 10px; 
+  width: 300px;
+}
+/* --------------searching----------- */
+.searching {
+   flex: 1;
+   min-width: 400px;
+   background-color: beige;
+}
+
+.searching .search-container {
+  margin: 30px 25px;
+}
+
+.searching .search-container label {
+  font-size: 18px;
+  margin-right: 5px;
+  /* font-weight: bold; */
+}
+
+.searching .search-container input {
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 8px;
+  width: 200px;
+}
+
+.searching .search-container button {
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 8px;
+  /* width: 80px; */
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.searching .search-container button:hover {
+  background-color: #ccc;
+}
+
+.searching .result {
+  margin: 15px 40px;
+  border: 1px solid #ccc;
+  border-radius: 18px;
+  padding: 8px;
+  background-color: bisque;
+}
+
+.searching .result :hover {
+  cursor: pointer;
+}
+.searching .result .avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; 
+  object-fit: cover; 
+  margin: 0 10px 10px 0;
+  float:left;
+}

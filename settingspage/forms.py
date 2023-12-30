@@ -14,7 +14,7 @@ class UpdateManagerForm(forms.ModelForm):
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'content', 'location', 'provider')
+        fields = ('title', 'content', 'address', 'provider')
 
 class ProductForm(forms.ModelForm):
     class Meta:

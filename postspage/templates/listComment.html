@@ -1,0 +1,56 @@
+
+<div class="list-comment-container" id="containerComment">
+  <div class="list-comment">
+    <button id="cancelButton" onclick="cancelComment()" class="btn btn-secondary mt-2 float-end"><i class="fa-solid fa-xmark"></i></button>
+    <section class="gradient-custom">
+      <div class="container my-5 py-5">
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-12 col-lg-10 col-xl-8">
+            <div class="card">
+              <div class="card-body p-4">
+                <h4 class="text-center mb-4 pb-2">Comments</h4>
+    
+                <div class="row">
+                  <div class="col" id="allCommentOfPostId">
+  
+                    <!--
+                    <div class="d-flex flex-start mt-4">
+                      <img class="rounded-circle shadow-1-strong me-3"
+                        src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(12).webp" alt="avatar" width="65"
+                        height="65" />
+                      <div class="flex-grow-1 flex-shrink-1">
+                        <div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <p class="mb-1">
+                              Natalie Smith <span class="small">- 2 hours ago</span>
+                            </p>
+                          </div>
+                          <p class="small mb-0">
+                            The standard chunk of Lorem Ipsum used since the 1500s is
+                            reproduced below for those interested. Sections 1.10.32 and
+                            1.10.33.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    -->
+
+
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<script>
+  function cancelComment(){
+    var containerComment = document.getElementById('containerComment');
+    containerComment.style.display = 'none'; // hoặc 'block' tùy thuộc vào yêu cầu của bạn
+  }
+</script>

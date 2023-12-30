@@ -1,0 +1,226 @@
+{% extends "common/layout.html" %}
+{% load static %}
+{% block content %}
+    <div class="posts">
+        <div class="post-list">
+            <ul>
+                {% for item in info %}
+                <li class="item">
+                    <div class="info">
+                        <a href="{% url 'profilepage:profilePage' item.post.account.id%}">
+                            <img src="{{item.author.avatar.url}}" alt="{{item.post.account.username}}" class="avatar">
+                        </a>
+                        <h3><strong>{{item.author.name}}</strong></h3>
+                        <h6>Time: {{item.post.time}}</h6>
+                        <p> 
+                        {% if item.post.provider %}
+                            Đang ở: <a href="{% url 'profilepage:profilePage' item.post.provider.account.id%}"><strong>{{item.post.provider.name}}</strong></a>
+                        {% endif %}
+                            <br>
+                            <i class="fa-solid fa-location-dot"></i>
+                            {{item.post.ward}}-{{item.post.district}}-{{item.post.city}} ({{item.post.address}})
+                        </p>
+                    </div>
+                    <h3><strong>{{item.post.title}}</strong></h3>
+                    <p>{{item.post.content}}</p>
+ 
+                    {% if item.img|length > 0 %}
+                    <div class="post-photo">
+                        {% for image in item.img %}
+                        <img src="{{image.img.url}}" alt="Post 1" class="photo">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="post-actions">
+                        {% if item.userLike %}
+                        <button value="true" onclick="likeAction(event, {{item.post.id}})"> 
+                        {% else %}
+                        <button value="false" onclick="likeAction(event, {{item.post.id}})"> 
+                        {% endif %}
+                            <big id="{{item.post.id}}_like">{{item.post.like}} </big> 
+                            <i class="far fa-thumbs-up"></i>
+                        </button>
+                        <button onclick="showComment(event, {{ item.post.id }})"> Comment <i class="far fa-comment"></i> </button>
+                        <i class="fa-regular fa-heart"></i>
+                    </div>
+
+                    <div class="post-comment">
+                        <img src="{{user.avatar.url}}" alt="" class="avatar">
+                        <input type="text" placeholder="Viết bình luận ..." class="comment" id="{{item.post.id}}_comment">
+                        <button class="sendCmt" onclick="insertComment(event, {{item.post.id}})"> Gửi</button>
+                    </div>
+                    {% comment %} ----------Comments----------- {% endcomment %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% include "listComment.html" %}
+        </div>
+        
+        {% comment %} -------------------------------Searching------------------------------- {% endcomment %}
+        <div class="searching">
+            <div class="search-container">
+                <label for="search">Search: </label>
+                <input type="search" id="search" name="search" placeholder="Tìm kiếm ở đây..."> 
+                <button type="submit">Tìm kiếm</button>
+            </div>
+
+            <div class="result-search">
+                <div class="result">
+                    <img src="{% static 'img/user3.jpg'%}" alt="User 1" class="avatar">
+                    <div class="info">
+                        <h4>Restaurant1</h4>
+                        <i class="fa-solid fa-star">    4.5</i>
+                        <h5>Địa chỉ: Hà Nội</h5>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="{% static 'img/user3.jpg'%}" alt="User 1" class="avatar">
+                    <div class="info">
+                        <h4>Restaurant1</h4>
+                        <i class="fa-solid fa-star">    4.5</i>
+                        <h5>Địa chỉ: Hà Nội</h5>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="{% static 'img/user3.jpg'%}" alt="User 1" class="avatar">
+                    <div class="info">
+                        <h4>Restaurant1</h4>
+                        <i class="fa-solid fa-star">    4.5</i>
+                        <h5>Địa chỉ: Hà Nội</h5>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <script>
+        function likeAction(event, postId) {
+            const button = event.currentTarget;
+            const likeElement = document.getElementById(postId + "_like");
+            const like = parseInt(likeElement.innerText, 10);   
+            let newLike = like;
+            if( button.value === "false"){
+                newLike = like + 1;
+                button.value = "true";
+            }
+            else{
+                newLike = like - 1;
+                button.value = "false";
+            }
+            likeElement.innerText = newLike
+
+            // Gửi yêu cầu AJAX để cập nhật số lượng like trên server
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `/postspage/update_likes/${postId}/`, true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.send(JSON.stringify({ like: newLike}));
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function insertComment(event, postId){
+        const inputCmt = document.getElementById(postId + "_comment");
+        const contentCmd = inputCmt.value;
+        inputCmt.value = '';
+        // Gửi yêu cầu AJAX để cập nhật số lượng like trên server
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", `/postspage/insert_comment/${postId}/`, true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify({comment: contentCmd}));
+        alert("Comment thành công rồi nhé");
+        showCmt(postId)
+    }
+    function showComment(event, postId){
+        showCmt(postId)
+    }
+    function showCmt(postId) {
+        // Ngăn chặn hành động mặc định của nút  event.preventDefault(); 
+        const cmtElm = document.getElementById("containerComment");
+        console.log("ấn show comment rồi")
+        cmtElm.style.display = "flex";
+        // Gửi yêu cầu AJAX để lấy dữ liệu comment
+        $.ajax({
+            url: `/postspage/get_comments/${postId}/`,
+            method: 'GET',
+            success: function(response) {
+                // Xử lý dữ liệu JSON nhận được
+                var comments = response.comments;
+                var containerComment = document.getElementById('allCommentOfPostId');
+                
+                // Xóa nội dung cũ trong containerComment
+                containerComment.innerHTML = '';
+
+                // Thêm các comment mới vào containerComment
+                comments.forEach(function(comment) {
+                    var commentHTML = `
+                        <div id="comment_${comment.id}" class="d-flex flex-start mt-4">
+                            <a href="/profile/${comment.authorId}">
+                            <img class="rounded-circle shadow-1-strong me-3"
+                            src="${comment.img}" alt="avatar" width="65"
+                            height="65" />
+                            </a>
+                            <div class="flex-grow-1 flex-shrink-1">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                <p class="mb-1">
+                                    ${comment.name} <span class="small"> <i class="fa-solid fa-clock"></i> ${formatTime(comment.time)}</span>
+                                </p>
+                                <button onclick="deleleCmt(event, ${comment.id})"><i class="fa-solid fa-xmark"></i> </button>
+                                </div>
+                                <p class="small mb-0">
+                                ${comment.content}
+                                </p>
+                            </div>
+                            </div>
+                        </div>
+                    `;
+                    containerComment.innerHTML += commentHTML;
+                });
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function deleleCmt(event, commentId){ // xóa comment của mình thoi-----------
+        // Gửi yêu cầu AJAX đến URL của Django view xử lý xóa dữ liệu
+        var userChoice = window.confirm("Bạn có chắc muốn xóa bình luận không?");
+
+        // Kiểm tra kết quả
+        if (userChoice) {
+        $.ajax({
+            url: `/postspage/delete_comment/${commentId}/`,  // Điều chỉnh đúng đường dẫn của view xóa dữ liệu
+            type: 'POST',
+            data: { 'data_id': commentId },  // Truyền id của dữ liệu cần xóa
+            success: function(response) {
+                var containerComment = document.getElementById('comment_' + commentId);
+                if(response.success === true){
+                    containerComment.remove()
+                    alert("Xóa bình luận của bạn thành công")
+                }
+                else{
+                    alert("Không thể xóa bình luận của người khác!!!")
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+        }
+    }
+
+    function formatTime(timeString) {
+        // Chuyển đổi chuỗi thời gian sang đối tượng Date
+        
+        const date = timeString.substring(0, timeString.indexOf('T'));
+        const time = timeString.substring(timeString.indexOf('T') + 1, timeString.indexOf('T') + 6);
+        // Định dạng lại thời gian theo ý muốn (ví dụ: dd/MM/yyyy HH:mm:ss)
+        //const formattedTime = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+        const formattedTime = `${date} ${time}`;
+        return formattedTime;
+    }
+</script>
+{% endblock %}

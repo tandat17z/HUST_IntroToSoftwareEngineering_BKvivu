@@ -1,0 +1,42 @@
+/* ---------------restaurants----------------- */ */
+.restaurants {
+    display: flex;
+}
+
+.restaurant-list {
+    margin-top: 30px 30px;
+    display: inline-flex;
+    width: 100%;
+    height: calc(100vh - 80px);
+    flex-wrap: wrap;
+    padding: 20px;
+    overflow-y: scroll;
+}
+
+.restaurant-list .restaurant {
+    width: calc(100% / 3 - 40px);
+    margin: 20px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.restaurant-list .restaurant .avatar {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+.restaurant-list .restaurant-info {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.restaurant-list .restaurant p {
+    text-align: justify;
+}
+
+

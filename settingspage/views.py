@@ -315,6 +315,7 @@ def addPost(request):
         'acc': acc,
     }
     return render(request, 'add_post.html', context)
+
 def deleteImagePost(request, postId, imageId):
     try:
         image = Image.objects.get(id = imageId)
