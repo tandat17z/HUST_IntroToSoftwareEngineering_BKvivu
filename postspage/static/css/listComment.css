@@ -1,0 +1,26 @@
+.list-comment-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.list-comment {
+    background-color: azure;
+    width: 800px;
+    height: 500px;
+    overflow-y: scroll;
+    align-items: center;
+    justify-content: center;
+}
+
+.gradient-custom { 
+    background: #4facfe; 
+    background: -webkit-linear-gradient(to right, #00f2fe, #4facfe);
+    background: linear-gradient(to right, #00f2fe, #4facfe);
+}

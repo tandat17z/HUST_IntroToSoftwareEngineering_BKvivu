@@ -63,7 +63,7 @@ from homepage.models import Post, Comment
 
 # Create your views here.
 def postsPage(request):
-    posts = Post.objects.filter().order_by('time')
+    posts = Post.objects.filter().order_by('-time')
     managers = Manager.objects.filter().order_by('-avgStar')
     
     return render(request, 'index.html', {'posts' : posts, 'managers' : managers})
@@ -78,10 +78,15 @@ def postsView(request):
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     info = list()
     for p in posts:
-        u = Sharer.objects.get(account= p.account) if p.account.role == 'sharer' else Manager.objects.get(account= p.account)
+        author = Sharer.objects.get(account= p.account) if p.account.role == 'sharer' else Manager.objects.get(account= p.account)
+        try:
+            userLike = UserLike.objects.get(account=acc, post=p) 
+        except:
+            userLike = None
         info.append({
             'post': p, 
-            'user': u, 
+            'author': author, 
+            'userLike': userLike,
             'img': Image.objects.filter(post = p)
         })
 
@@ -110,18 +115,19 @@ def restaurantsView(request):
 def test(request):
     return render(request, 'restaurants.html')
 
+
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
 @csrf_exempt
-def update_likes(request):
+def update_likes(request, post_id):
     acc = Account.objects.get(user_ptr=request.user)
+    post = Post.objects.get(id = post_id)
     if request.method == 'POST':
         # Nhận dữ liệu từ yêu cầu AJAX
         data = json.loads(request.body)
-        print(data)
-        post = Post.objects.get(id = data['postId'])
         if( post.like < data['like'] ):
             userLike = UserLike.objects.create(
                 account = acc,
@@ -135,31 +141,59 @@ def update_likes(request):
             userLike.delete()
         post.like = data['like']
         post.save()
-        # Thực hiện các hành động cập nhật số lượng like ở đây
-        # ...
-
-        # Trả về JSON response (có thể chỉ trả về 'success' nếu cần)
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False})
     
 @csrf_exempt
-def insert_comment(request):
+def insert_comment(request, post_id):
     acc = Account.objects.get(user_ptr=request.user)
     if request.method == 'POST':
         # Nhận dữ liệu từ yêu cầu AJAX
         data = json.loads(request.body)
-        print(data)
-        post = Post.objects.get(id = data['postId'])
+
+        post = Post.objects.get(id = post_id)
         comment = Comment.objects.create(
             account = acc,
             post = post,
             content = data['comment']
         )
-        # Thực hiện các hành động cập nhật số lượng like ở đây
-        # ...
-
-        # Trả về JSON response (có thể chỉ trả về 'success' nếu cần)
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False})
+
+@csrf_exempt
+def delete_comment(request, comment_id):
+    acc = Account.objects.get(user_ptr=request.user)
+    if request.method == 'POST':
+        print(request.POST.get('data_id'))
+
+        comment = Comment.objects.get(id = comment_id)
+        delete = False
+        if comment.account == acc: # chỉ xóa đc comment của mình
+            comment.delete()
+            delete = True
+        return JsonResponse({'success': delete})
+    else:
+        return JsonResponse({'success': "error"})
+    
+def get_comments(request, post_id):
+    try:
+        post = Post.objects.get(id=post_id)
+        comments = Comment.objects.filter(post=post).order_by('-time')
+        data = []
+        for comment in comments:
+            author = Sharer.objects.get(account= comment.account) if comment.account.role == 'sharer' else Manager.objects.get(account= comment.account)
+            data.append({
+                'id': comment.id,
+                'name': author.name,
+                'authorId': comment.account.id,
+                'img': author.avatar.url,
+                'time': comment.time,
+                'content': comment.content
+            })
+        
+        return JsonResponse({'comments': data})
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return JsonResponse({'error': 'An error occurred'})

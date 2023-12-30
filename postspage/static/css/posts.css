@@ -3,6 +3,20 @@
   display: flex;
 }
 
+button{
+  background-color: #fff;
+  border: none;
+}
+
+button:hover{
+  background-color: #24efab;
+}
+
+.sendCmt{
+  font-size: 18px;
+  margin-top: 25px;
+  margin-left: 5px;
+}
 /* -----------post-list------------ */
 .post-list{
   flex: 2;
@@ -26,8 +40,8 @@ ul {
 }
 
 .item .avatar {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%; 
   object-fit: cover; 
   margin: 0 10px 10px 0;

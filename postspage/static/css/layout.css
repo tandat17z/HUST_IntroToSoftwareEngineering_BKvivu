@@ -7,6 +7,8 @@
 
 a{
   text-decoration: none;
+  font-family: "Times New Roman", Times, serif;
+  color:#551a8b;
 }
 /*-----------------header-----------------*/
 button{
@@ -216,7 +218,7 @@ button{
   }
   
   /* Set a style for all buttons */
-  #-box-signup .container button{
+  #-box-signup .maincontainer button{
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
@@ -224,7 +226,7 @@ button{
     font-size: 17px;
   }
   
-  #-box-signup .container button:hover {
+  #-box-signup .maincontainer button:hover {
     opacity:1;
   }
   
@@ -248,7 +250,7 @@ button{
   }
   
   /* Add padding to container elements */
-    #-box-signup .container {
+    #-box-signup .maincontainer {
     padding: 16px;
   }
   
@@ -323,7 +325,7 @@ button{
   }
 
 /* ----------------container--------------- */
-.container {
+.maincontainer {
   display: flex;
 }
 
