@@ -16,7 +16,7 @@ from .urls import *
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-
+from collections import OrderedDict
 
 
 ImageUploadFormSet = modelformset_factory(Image, CreateImgForm, extra=0, can_delete=True)
@@ -329,6 +329,7 @@ def statisticsPage(request):
     bills = user.bill_set.all()
     monthOfYear = [0]*12
     year = datetime.now().year
+    month = datetime.now().month
     total = 0
     for bill in bills : 
         if bill.status == 'Accept' and bill.time.year == year :
@@ -336,10 +337,42 @@ def statisticsPage(request):
             monthOfYear[month-1] += bill.price
             total += bill.price
     listRevenue = json.dumps(monthOfYear)
+
+    product_quantity = OrderedDict()
+    for product in user.product_set.all():
+        product_quantity[product.name] = 0
+    user_set = set()
+    for bill in bills :
+        if bill.status == 'Accept' and bill.time.year == year and bill.time.month == month:
+            for order in  bill.order_set.all():
+                product = Product.objects.get(id=order.product_id)
+                product_quantity[product.name] += order.quantity
+            user_set.add(Sharer.objects.get(account_id=bill.sharer_id))
+    age_list = [0]*4
+    total_age = len(user_set)
+    for u in user_set:
+        age = u.age
+        if age >= 10 and age < 18:
+            age_list[0] += 1        
+        elif age >= 18 and age < 30:
+            age_list[1] += 1
+        elif age >= 30 and age < 50:
+            age_list[2] += 1
+        else:
+            age_list[3] += 1
+    age_phantram = [round(age_list[0]*100/total_age, 2), round(age_list[1]*100/total_age,2), round(age_list[2]*100/total_age, 2), round(age_list[3]*100/total_age, 2)]
+            
+    sorted_product_quantity = OrderedDict(sorted(product_quantity.items(), key = lambda item: item[1], reverse=True))
     context = {
         'acc' : acc,
         'monthOfYear' : listRevenue,
         'year' : year,
+        'month': month,
         'total' : total,
+        'product_quantity' : sorted_product_quantity,
+        'product': user.product_set.all(),
+        'best_seller_name' : next(iter(sorted_product_quantity.items()))[0],
+        'best_seller_quantity' : next(iter(sorted_product_quantity.items()))[1],
+        'age_phantram': json.dumps(age_phantram),
     }
     return render(request, 'statistics.html', context)

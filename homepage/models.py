@@ -57,6 +57,7 @@ class Account(User):
 class Sharer(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
     name = models.CharField(verbose_name='fullname', max_length=50)
+    age = models.IntegerField(null = True)
     avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
 
     def __str__(self):
