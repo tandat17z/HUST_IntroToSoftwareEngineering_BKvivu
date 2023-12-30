@@ -1,9 +1,0 @@
-{% if check == True %}
-Cập nhật hình ảnh:
-<form action="" method='POST'>
-    {% csrf_token %}
-    {{form_upload_img}}
-</form>
-{% else %}
-Đã cập nhật thành công
-{% endif%}

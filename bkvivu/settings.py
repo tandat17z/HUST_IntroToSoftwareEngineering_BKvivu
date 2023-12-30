@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'postspage',
     'profilepage',
     'settingspage',
+    'shoppingcart',
     'bootstrap5',
     'crispy_forms',
 ]

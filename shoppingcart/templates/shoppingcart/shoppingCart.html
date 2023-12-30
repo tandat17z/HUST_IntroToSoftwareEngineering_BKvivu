@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <link rel="stylesheet" href="{% static 'shoppingCartStyle.css' %}">
+  <script src="{% static 'shoppingCartScript.js' %}"></script>
+</head>
+<body onload="updateTotal()">
+
+<div>
+    <a href="{% url 'homepage:homePage' %}">
+        <h1> Return to homePage</h1>
+    </a>
+</div>
+  {% comment %} Giỏ hàng {% endcomment %}
+  <div id="cart">
+    <!-- Vòng lặp for qua từng cửa hàng-->
+    {% for manager, items in items_in_cart.items %}
+      <div class="store">
+        <a class="manager-name" href="{% url 'profilepage:profilePage' manager.account.id%}">
+          <h2>{{manager.name}}</h2>
+        </a>
+        {% for item in items %}
+        <!-- Sản phẩm -->
+          <div class="product">
+            <input type="checkbox" class="checkbox" data-item-id="{{ item.id }}" onclick="updateTotal()">
+            <img src="{{item.product.img.url}}" alt="{{item.product.name}}">
+            <div class="product-info">
+              <h3>{{item.product.name}}</h3>
+              <p class="price">{{item.product.price}}</p>
+            </div>
+            <div class="quantity">
+              <button onclick="decreaseQuantity(this)" data-item-id="{{ item.id }}">-</button>
+              <span class="quantity-value">{{item.quantity}}</span>
+              <button onclick="increaseQuantity(this)" data-item-id="{{ item.id }}">+</button>
+            </div>
+            <div class="subtotal-container">
+              <div class="subtotal-price">{{item.product.price}}</div>
+            </div>
+            <button class="remove-btn" onclick="removeProduct(this)" data-item-id="{{ item.id }}">X</button>
+          </div>
+        {% endfor %}
+        <!-- Giá tiền -->
+        <div class="store-footer">
+          <form class="order-form" method="POST" action="{% url 'shoppingcart:createBill' %}">
+            {% csrf_token %}
+            <input type="hidden" name="manager_id" value="{{ manager.account.id }}">
+            <input type="hidden" name="selectedItems" value="">
+            <div class="store-total">Total: 0 VNĐ</div>
+            <button class="order-btn">Đặt hàng</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+</body>
+</html>

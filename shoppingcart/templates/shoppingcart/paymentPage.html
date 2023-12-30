@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'paymentStyle.css' %}">
+    <script src="{% static 'paymentScript.js' %}"></script>
+
+</head>
+<body>
+    <div>
+        <a href="{% url 'shoppingcart:shoppingCart'%}">Back to shopping cart</a>
+    </div>
+    <h1 class="hi">Thanh Toán đi cưng</h1>
+    <h2> {{manager.name}}</h2>
+    <img src="{{manager.bank.url}}" alt="">
+    <h3> Vui lòng thanh toán : {{bill.price}} VNĐ</h3>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form_pay}}
+        <div style="justify-content: space-around;" >
+            <button class="btn btn-primary">Submit</button>
+            <a class="btn btn-primary" href="{% url 'shoppingcart:cancelPayment' bill.id%}">Cancel</a>
+        </div>
+    </form>
+</body>
+</html>
