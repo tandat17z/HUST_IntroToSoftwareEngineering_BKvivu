@@ -21,8 +21,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from profilepage import views as profileViews
+from django.shortcuts import redirect
 
 urlpatterns = [
+    path('', lambda request: redirect('homepage/')),
     path('admin/', admin.site.urls),
     path('logout/', profileViews.logout_view, name = 'logout'),
     path('homepage/', include('homepage.urls')),
