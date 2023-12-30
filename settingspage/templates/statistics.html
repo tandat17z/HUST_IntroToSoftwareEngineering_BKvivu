@@ -52,6 +52,21 @@
             display: true,
             text: "Store's monthly revenue",
             }
+        },
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+            backgroundColor: barColors,
+            data: myArray
+            }]
+        },
+        options: {
+            legend: {display: false},
+            title: {
+            display: true,
+            text: "Store's monthly revenue",
+            }
         }
     });
     var xPieValues = ["Age: 10-18", "Age: 18-30", "Age: 30-50", "Other"];
