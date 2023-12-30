@@ -217,17 +217,18 @@ class Order(models.Model):
         return f"{self.product}_{self.bill}"
 
 
-
-
-
 class Post(models.Model):
-    post_id = models.CharField(max_length=100, unique=True, default=generate_unique_post_id)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     title = models.TextField()
     content = models.TextField()
-    name_stripped = models.CharField(max_length=50, null=True)
+    name_stripped = models.CharField(max_length=150000, null=True)
     time = models.DateTimeField(default=timezone.datetime.now())
-    location = models.TextField()
+    
+    address = models.TextField(null=True)
+    city = models.CharField(max_length=50, null=True)
+    district = models.CharField(max_length=50, null=True)
+    ward = models.CharField(max_length=50, null=True)
+
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
     like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
@@ -238,41 +239,12 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         words = unidecode((self.title + self.content).lower()).split()
         self.name_stripped = ' '.join(words)
+
+        #Tự động tính số like
+        likeList = UserLike.objects.filter(post = self)
+        self.like = likeList.count()
         super().save(*args, **kwargs)
     
-    def increase_like(self):
-        self.like += 1
-        self.save()
-    
-    def decrease_like(self):
-        if self.like > 0:
-            self.like -= 1
-            self.save()
-
-# class Post(models.Model):
-#     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-#     title = models.TextField()
-#     content = models.TextField()
-#     # Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
-#     name_stripped = models.CharField(max_length=50, null=True)
-
-#     time = models.DateTimeField(default=timezone.datetime.now())
-#     location = models.TextField()
-#     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
-#     like = models.IntegerField(default=0)
-#     dislike = models.IntegerField(default=0)
-
-#     def __str__(self):
-#         return f"{self.account}_{self.title}"
-    
-#     def save(self, *args, **kwargs):
-#         self.name_stripped = (unidecode(self.title) + unidecode(self.content)).strip().lower()
-#         super().save(*args, **kwargs)
-
-class UserLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    value = models.IntegerField(default=1)
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
@@ -281,16 +253,6 @@ class Image(models.Model):
     def __str__(self):
         return f"{self.post}"
 
-class Comment(models.Model):
-    account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
-    post = models.ForeignKey(Post, on_delete=django.db.models.deletion.CASCADE)
-    content = models.TextField()
-    like = models.IntegerField(default=0)
-    
-    def __str__(self):
-        return f"{self.post}"
-
-
 # vote_profile_model
 class StarVote(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
@@ -298,3 +260,23 @@ class StarVote(models.Model):
     stars = models.IntegerField(default=0)
     def __str__(self):
         return f"{self.account} Voted For {self.manager}"
+
+class UserLike(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, null= True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+
+    # class Meta:
+    #     # primary key ( account,post)
+    #     constraints = [
+    #         models.UniqueConstraint(fields=['account_id', 'post_id'], name='unique_constraint_name')
+    #     ]
+
+class Comment(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    post = models.ForeignKey(Post, on_delete=django.db.models.deletion.CASCADE)
+    time = models.DateTimeField(default=timezone.datetime.now())
+    content = models.TextField()
+    like = models.IntegerField(default=0)
+    
+    def __str__(self):
+        return f"{self.post}"

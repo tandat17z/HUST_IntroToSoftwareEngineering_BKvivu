@@ -5,11 +5,12 @@ button{
 .header{
     width: 100%;
     display: flex;
-    margin-top: 5px;
-    margin-bottom: 10px;
+    height: 80px;
+    margin: 0;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    background-color: #cae0d8;
 }
 .header .left{
     width: 400px;

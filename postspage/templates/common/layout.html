@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PostsPage</title>
+        {% comment %} <link rel="stylesheet" href="{% static 'css/header.css'%}"> {% endcomment %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="{% static 'css/layout.css'%}">
+        <link rel="stylesheet" href="{% static 'css/posts.css'%}">
+        <link rel="stylesheet" href="{% static 'css/listComment.css'%}">
+        <link rel="stylesheet" href="{% static 'css/restaurants.css'%}">
+        <script src="https://kit.fontawesome.com/5045ba31f9.js" crossorigin="anonymous"></script>
+    </head>
+<body>
+    {% comment %}-----------------header-------------------- {% endcomment %}
+    <div class="header">
+        <div class="left">
+            <a href="{% url 'homepage:homePage' %}" class="logo">
+                <img src="{% static 'images/logo.png' %}"  alt="logo">
+                <div class = "description">
+                    <h2><strong>BKvivu</strong></h2>
+                    <p>Nền tảng chia sẻ dịch vụ hàng đầu</p>
+                </div> 
+            </a>
+        </div>
+            
+        <div class="right">
+            <div id="-box-nav">
+                <a href="" id="community"><i class="fa fa-fw fa-users"></i> Cộng đồng</a>
+                <div class="subnav">
+                    <a href="{% url 'postspage:restaurants' %}">Cửa hàng</a>
+                    <a href="{% url 'postspage:posts' %}">Bài chia sẻ</a>
+                </div>
+            </div>
+            <div class="setting_icon">
+                <a href="{% url 'settingspage:settingsPage' %}" class="setting">
+                    <div >
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                    </div>
+                </a>
+            </div>
+            <a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user">
+                <p style="font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
+                <img class="img-user" src = "{{user.avatar.url}}"/>
+            </a>
+            
+        </div>
+    </div>
+    
+    {% comment %} ---------------------container--------------------- {% endcomment %}
+    <div class="maincontainer">
+        {% comment %} ----------Sidebar----------- {% endcomment %}
+        <div class="sidebar">
+            <a href="{% url 'postspage:posts' %}"><i class="fa-solid fa-pager"> Posts</i></a>
+            <a href="{% url 'postspage:restaurants' %}"><i class="fa-solid fa-shop"> Restaurants</i></a>
+        </div>
+        
+        {% comment %} ----------content----------- {% endcomment %}
+        <div class="content">
+            {% block content %} {% endblock %}  
+        </div>  
+        
+        {% comment %} ----------footer----------- {% endcomment %}
+    </div>
+    <script src="{% static 'js/logged.js' %}"></script>
+</body>
+</html>
