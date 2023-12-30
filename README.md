@@ -63,7 +63,7 @@ _Đang phát triển_
       - like + comment **ok**
       - Show các comment, xóa comment (của mình) **ok**
       - Link trực tiếp tới trang cá nhân **ok**
-      - Tìm kiềm viết (đang làm)
+      - Tìm kiềm bài viết (đang làm)
     - restaurant:
       - Hiện giao diện **ok**
       - (Đang làm)
