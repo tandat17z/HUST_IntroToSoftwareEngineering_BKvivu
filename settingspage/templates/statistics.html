@@ -12,21 +12,21 @@
     const barColors = ["red", "green","blue","black","brown", "yellow", "sliver", "purple", "red", "bronze", "lime", "aqua"];
     var myArray = JSON.parse(document.getElementById('myData').getAttribute('data-array'));
     new Chart("myChart", {
-    type: "bar",
-    data: {
-        labels: xValues,
-        datasets: [{
-        backgroundColor: barColors,
-        data: myArray
-        }]
-    },
-    options: {
-        legend: {display: false},
-        title: {
-        display: true,
-        text: "Store's monthly revenue",
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+            backgroundColor: barColors,
+            data: myArray
+            }]
+        },
+        options: {
+            legend: {display: false},
+            title: {
+            display: true,
+            text: "Store's monthly revenue",
+            }
         }
-    }
     });
 </script>
 {% endblock %}
