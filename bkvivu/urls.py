@@ -29,6 +29,7 @@ urlpatterns = [
     path('postspage/', include('postspage.urls')),
     path('profile/', include('profilepage.urls')),
     path('settings/', include('settingspage.urls')),
+    path('shoppingcart/', include('shoppingcart.urls'))
 ]
 
 if settings.DEBUG:

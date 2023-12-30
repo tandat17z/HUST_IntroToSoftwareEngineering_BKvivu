@@ -57,7 +57,7 @@ class CreateProduct(View):
             form_product = ProductForm(request.POST, request.FILES, instance= newProduct)
             if form_product.is_valid():
                 if form_product.cleaned_data['img'].name == 'default.jpg':
-                    messages.error(request, "Thêm sản phẩm thất bại vì thiếu hình ảnh") 
+                    messages.error(request, "Thêm sản phẩm thất bại vì thiếu hình ảnh")
                     newProduct.delete()
                     return redirect('settingspage:product')
                 product = form_product.save(commit= False) # Đối tượng mô hình k đưa vào cơ sở dữ liệu
@@ -88,10 +88,10 @@ class editProduct(View):
         pform = ProductForm(instance= _product)
         context = {
             'form_product': pform,
-            'acc': acc, 
+            'acc': acc,
         }
         return render(request, 'addproduct.html', context)
-    def post(sefl, request, product_id):
+    def post(self, request, product_id):
         _product = Product.objects.get(pk = product_id)
         pform = ProductForm(request.POST, request.FILES, instance = _product)
         if pform.is_valid():
@@ -111,7 +111,7 @@ def generalPage(request):
             user.name = request.POST.get('name')
             user.age = request.POST.get('age')
             user.bio = request.POST.get('comment')
-            
+
             city_id = request.POST.get('city')
             district_id = request.POST.get('district')
             ward_id = request.POST.get('ward')
@@ -163,7 +163,7 @@ def billsPage(request):
 
 
 def viewBill(request, billId):
-    if request.method == 'GET' : 
+    if request.method == 'GET' :
         bill = Bill.objects.get(id = billId)
         return render(request, "bill.html", {"bill" : bill})
 def accept(request, billId):
@@ -174,11 +174,11 @@ def accept(request, billId):
         # bill.delete()
         messages.success(message='Accept', request=request)
         return redirect('settingspage:billsPage')
-    except : 
+    except :
         messages.success(message='Error happened, try again', request=request)
         return redirect('settingspage:billsPage')
 def decline(request,billId):
-    try : 
+    try :
         bill = Bill.objects.get(pk = billId)
         bill.status = "Decline"
         bill.save()
@@ -218,14 +218,14 @@ def postPage(request):
 
 def deletePost(request, postId):
     post = Post.objects.get(id = postId)
-    try: 
+    try:
         post.delete()
         messages.success(request, 'Xóa bài viết thành công')
         return redirect('settingspage:postPage')
     except:
         messages.error(request, 'Xóa bài viết thất bại')
         return redirect('settingspage:postPage')
-    
+
 def changePost(request, postId):
     if request.method == 'GET':
         acc = Account.objects.get(user_ptr=request.user)
@@ -236,10 +236,10 @@ def changePost(request, postId):
         form_img = []
         a = 0
         for i in img :
-            a = a + 1 
+            a = a + 1
             form_img.append(CreateImgForm(instance=i, prefix=f'form-{a}'))
         context = {
-            'acc' : acc, 
+            'acc' : acc,
             'user' : user,
             'form_post' : form_post,
             'form_img' : form_img,
@@ -254,12 +254,12 @@ def changePost(request, postId):
         form_img = []
         a = 0
         for i in img :
-            a = a+1 
+            a = a+1
             if i.isDelete == True :
                 i.delete()
             else :
                 form_img.append(CreateImgForm(request.POST, request.FILES, prefix=f'form-{a}', instance=i))
-        if form_post.is_valid : 
+        if form_post.is_valid :
             for form in form_img :
                 if not form.is_valid :
                     messages.error(request, 'Error')
@@ -267,7 +267,7 @@ def changePost(request, postId):
 
             newFormPost = form_post.save(commit=False)
             newFormPost.save()
-            for form in form_img : 
+            for form in form_img :
                 newImg = form.save(commit=False)
                 newImg.save()
 
@@ -275,9 +275,9 @@ def changePost(request, postId):
             for image in images :
                 img = Image.objects.create(post = post, img = image)
                 img.save()
-           
+
             return redirect('settingspage:postPage')
-        else : 
+        else :
             messages.error(request, 'Error')
             return redirect('settingspage:postPage')
 
@@ -300,14 +300,14 @@ def addPost(request):
 
             messages.success(request, 'Success')
             return redirect('settingspage:postPage')
-            # except: 
+            # except:
             #     messages.error(request, 'Error')
             #     return redirect('settingspage:postPage')
         else :
             post.delete()
             messages.error(request, 'Error')
             return redirect('settingspage:postPage')
-    
+
 
     form_post = CreatePostForm()
     context = {

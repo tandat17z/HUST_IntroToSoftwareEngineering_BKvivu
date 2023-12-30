@@ -33,10 +33,10 @@ def imgs_path(instance, filename):
 
 def img_path_bill(instance, filename):
     provider_name = str(instance.provider)
-    sharer_name = str(instance.sharer)
+    acc_name = str(instance.acc)
     time = instance.time
     ext = filename.split('.')[-1]  # Lấy phần mở rộng của tệp
-    new_filename = f"{time}_{sharer_name}.{ext}"  # Đặt tên mới
+    new_filename = f"{time}_{acc_name}.{ext}"  # Đặt tên mới
     return os.path.join('manager', provider_name, 'bills', new_filename)
 
 def img_path_product(instance, filename):
@@ -97,7 +97,7 @@ class Manager(models.Model):
 
     name = models.TextField(max_length=50)
     name_stripped = models.TextField(max_length=50, null=True)# Thêm thuộc tính name_stripped tự động lưu sẽ bỏ dấu câu trong name-----
-    
+
     phone = models.CharField(max_length=15, null=True)
     avatar = models.ImageField(upload_to=img_path_avt, default='noavatar.png')
     bank = models.ImageField(upload_to=img_path_bank, default='noavatar.png')
@@ -122,13 +122,13 @@ class Manager(models.Model):
 
     def __str__(self):
         return f"{self.account}"
-    
+
     # Hàm cập nhật đánh giá trung bình sau mỗi lượt đánh giá
     def updateAvgStar(self):
         self.num_votes = self.starvote_set.count()
         avg_star = StarVote.objects.filter(manager=self).aggregate(Avg('stars'))['stars__avg']
         self.avgStar = avg_star if avg_star else 0.0
-    
+
     def save(self, *args, **kwargs):
         # Kiểm tra và xóa ảnh cũ (nếu có)
         if self.pk:
@@ -157,7 +157,7 @@ class Manager(models.Model):
         if self.name:
             words = unidecode(self.name.lower()).split()
             self.name_stripped = ' '.join(words)
-        
+
         # Gọi hàm save của lớp cha (object)
         super().save(*args, **kwargs)
 
@@ -196,9 +196,9 @@ class Product(models.Model):
 
 class Bill(models.Model):
     STATUS = [
-        
+
     ]
-    sharer = models.ForeignKey(Sharer, on_delete=models.SET_NULL, null=True, verbose_name='Người mua')
+    acc = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, verbose_name='Người mua')
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
     time = models.DateTimeField(default=timezone.datetime.now())
     price = models.IntegerField(default=0)
@@ -206,7 +206,7 @@ class Bill(models.Model):
     status = models.CharField(max_length=200, default="Waiting")
 
     def __str__(self):
-        return f"{self.provider}_{self.sharer}_" + datetime.strftime(self.time, "%Y-%m-%d %H:%M:%S")
+        return f"{self.provider}_{self.acc}_" + datetime.strftime(self.time, "%Y-%m-%d %H:%M:%S")
 
 class Order(models.Model):
     bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
@@ -234,16 +234,16 @@ class Post(models.Model):
 
     def __str__(self):
         return f"{self.account}_{self.title}"
-    
+
     def save(self, *args, **kwargs):
         words = unidecode((self.title + self.content).lower()).split()
         self.name_stripped = ' '.join(words)
         super().save(*args, **kwargs)
-    
+
     def increase_like(self):
         self.like += 1
         self.save()
-    
+
     def decrease_like(self):
         if self.like > 0:
             self.like -= 1
@@ -264,7 +264,7 @@ class Post(models.Model):
 
 #     def __str__(self):
 #         return f"{self.account}_{self.title}"
-    
+
 #     def save(self, *args, **kwargs):
 #         self.name_stripped = (unidecode(self.title) + unidecode(self.content)).strip().lower()
 #         super().save(*args, **kwargs)
@@ -286,7 +286,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=django.db.models.deletion.CASCADE)
     content = models.TextField()
     like = models.IntegerField(default=0)
-    
+
     def __str__(self):
         return f"{self.post}"
 
@@ -298,3 +298,11 @@ class StarVote(models.Model):
     stars = models.IntegerField(default=0)
     def __str__(self):
         return f"{self.account} Voted For {self.manager}"
+
+# item in shoppingCart
+class CartItem(models.Model):
+    account = models.ForeignKey(Account, on_delete = models.CASCADE)
+    product = models.ForeignKey(Product, on_delete = models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    def __str__(self):
+        return f"{self.product} in shopping Cart of {self.account}"

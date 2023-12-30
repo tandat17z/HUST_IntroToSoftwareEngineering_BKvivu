@@ -131,9 +131,13 @@
                                         <span>{{product.price}}</span>
                                         <span>Đ</span>
                                     </div>
-                                    <button class="buy">
-                                        <i class="fa-solid fa-circle-plus"></i>
-                                    </button>
+                                    <form action="{% url 'shoppingcart:addItem' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button class="buy" type="submit" onclick="addToCart({{ product.id }})">
+                                            <i class="fa-solid fa-circle-plus"></i>
+                                        </button>
+                                    </form>
+
                                 </div>
                             </div>
                         {% endfor %}

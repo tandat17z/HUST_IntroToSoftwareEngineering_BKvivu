@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+    overflow-y: scroll ;
+   }
+
+   #cart {
+    width: 80%;
+    max-width: 800px;
+    margin: 10px 0z;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   }
+
+   .store {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f0f8ff;
+   }
+
+   .manager-name {
+    text-decoration: none;
+   }
+   .manager-name :active {
+    color: #16a976;
+   }
+   .manager-name :hover {
+    color: #28a745;
+   }
+
+   .product {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #e0ffff;
+   }
+
+   .product img {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+
+   }
+
+   .product-info {
+    flex-grow: 1;
+   }
+
+   .quantity {
+    display: flex;
+    align-items: center;
+   }
+
+   .quantity button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 3px;
+   }
+
+   .remove-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 3px;
+   }
+
+   .store-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #d4edda;
+    border-radius: 8px;
+   }
+
+   .total {
+    font-weight: bold;
+   }
+
+   .order-btn {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+   }
+
+   .subtotal-container {
+    background-color: #16a976;
+    border-radius: 8px;
+    padding: 10px;
+    margin-right: 8px;
+   }
+
+   .subtotal {
+    font-size: 14px;
+    font-weight: bold;
+   }
