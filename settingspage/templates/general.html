@@ -121,6 +121,7 @@
     </header>
     <form id="survey-form" method = "POST" enctype="multipart/form-data">
         {% csrf_token %}
+<<<<<<< HEAD
       <div class="form-group">
         <label id="name-label" for="name">Tên cửa hàng: </label>
         <input
@@ -257,6 +258,11 @@
           Submit
         </button>
       </div>
+=======
+        {{form_gerenal.as_p}}
+        
+        <button type="submit"> Submit</button>
+>>>>>>> ntThanh
     </form>
   </div>
 {% endif %}

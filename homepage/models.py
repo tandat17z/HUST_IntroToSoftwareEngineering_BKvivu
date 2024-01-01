@@ -223,6 +223,7 @@ class Post(models.Model):
     content = models.TextField()
     name_stripped = models.CharField(max_length=150000, null=True)
     time = models.DateTimeField(default=timezone.datetime.now())
+<<<<<<< HEAD
     
     address = models.TextField(null=True)
     city = models.CharField(max_length=50, null=True)
@@ -230,6 +231,10 @@ class Post(models.Model):
     ward = models.CharField(max_length=50, null=True)
 
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
+=======
+    location = models.TextField()
+    provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True, blank=True)
+>>>>>>> ntThanh
     like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
 
@@ -264,6 +269,7 @@ class StarVote(models.Model):
     def __str__(self):
         return f"{self.account} Voted For {self.manager}"
 
+<<<<<<< HEAD
 # item in shoppingCart
 class CartItem(models.Model):
     account = models.ForeignKey(Account, on_delete = models.CASCADE, null=True)
@@ -295,3 +301,5 @@ class Comment(models.Model):
     
 class Test(models.Model):
     content = models.TextField()
+=======
+>>>>>>> ntThanh

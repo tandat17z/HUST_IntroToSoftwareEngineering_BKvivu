@@ -10,12 +10,18 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from homepage.models import *
 from .forms import *
+from django.http import JsonResponse
+import json
 from .urls import *
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+<<<<<<< HEAD
 
 from func.func import *
+=======
+from collections import OrderedDict
+>>>>>>> ntThanh
 
 
 ImageUploadFormSet = modelformset_factory(Image, CreateImgForm, extra=0, can_delete=True)
@@ -128,9 +134,19 @@ def generalPage(request):
             user.t_open = request.POST.get('t_open')
             user.t_closed = request.POST.get('t_closed')
 
+<<<<<<< HEAD
             city_id = request.POST.get('city')
             district_id = request.POST.get('district')
             ward_id = request.POST.get('ward')
+=======
+        if form.is_valid():
+            # Thực hiện thay đổi avatar
+            newA = form.save(commit=False)
+            newA.save()
+            # newA.avatar: Avatar mới
+            #Trả về trang cá nhân
+            messages.success(request, 'Thông tin đã được cập nhật')
+>>>>>>> ntThanh
 
             user.city, user.district, user.ward = getArea(city_id, district_id, ward_id)
 
@@ -151,13 +167,31 @@ def generalPage(request):
 
 #Bill Page
 def billsPage(request):
+    # if request.method == 'POST':
+    #     data_from_js = request.POST.get('data_from_js', '')
+    #     acc = Account.objects.get(user_ptr=request.user)
+    #     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    #     bills = user.bill_set.all()
+    
+    #     context = {
+    #         "bills" : bills,
+    #         "acc" : acc,
+    #         "user" : user,
+    #         "data_from_js" : data_from_js,
+    #     }
+    #     messages.success(request, data_from_js)
+    #     return render(request, "bills.html", context)
+
+        # return JsonResponse({'data_from_js' : data_from_js})
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     bills = user.bill_set.all()
+    selected_data = request.GET.get('selectedData', 'Waiting')
     context = {
         "bills" : bills,
         "acc" : acc,
         "user" : user,
+        "data_from_js" : selected_data,
     }
     return render(request, "bills.html", context)
 
@@ -188,18 +222,6 @@ def decline(request,billId):
     except :
         messages.success(message='Error happened, try again', request=request)
         return redirect('settingspage:billsPage')
-
-
-
-
-
-#Sattistics Page
-def statisticsPage(request):
-    acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-    return render(request, 'statistics.html', {'acc' : acc})
-
-
 
 
 
@@ -321,7 +343,6 @@ def deleteImagePost(request, postId, imageId):
         image = Image.objects.get(id = imageId)
         image.isDelete = True
         image.save()
-        messages.success(request, 'Success')
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
     except:
         messages.error(request, 'Error')
@@ -336,6 +357,7 @@ def unDelete(request, postId, imageId):
     except:
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
     
+<<<<<<< HEAD
 def testPostPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     postList = Post.objects.filter(account= acc)
@@ -367,3 +389,62 @@ def testCreatePosts(request):
         }
         return render(request, 'posts/addPost.html', context)
 
+=======
+
+
+
+#Sattistics Page
+def statisticsPage(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc) 
+    bills = user.bill_set.all()
+    monthOfYear = [0]*12
+    year = datetime.now().year
+    month = datetime.now().month
+    total = 0
+    for bill in bills : 
+        if bill.status == 'Accept' and bill.time.year == year :
+            month = bill.time.month
+            monthOfYear[month-1] += bill.price
+            total += bill.price
+    listRevenue = json.dumps(monthOfYear)
+
+    product_quantity = OrderedDict()
+    for product in user.product_set.all():
+        product_quantity[product.name] = 0
+    user_set = set()
+    for bill in bills :
+        if bill.status == 'Accept' and bill.time.year == year and bill.time.month == month:
+            for order in  bill.order_set.all():
+                product = Product.objects.get(id=order.product_id)
+                product_quantity[product.name] += order.quantity
+            user_set.add(Sharer.objects.get(account_id=bill.sharer_id))
+    age_list = [0]*4
+    total_age = len(user_set)
+    for u in user_set:
+        age = u.age
+        if age >= 10 and age < 18:
+            age_list[0] += 1        
+        elif age >= 18 and age < 30:
+            age_list[1] += 1
+        elif age >= 30 and age < 50:
+            age_list[2] += 1
+        else:
+            age_list[3] += 1
+    age_phantram = [round(age_list[0]*100/total_age, 2), round(age_list[1]*100/total_age,2), round(age_list[2]*100/total_age, 2), round(age_list[3]*100/total_age, 2)]
+            
+    sorted_product_quantity = OrderedDict(sorted(product_quantity.items(), key = lambda item: item[1], reverse=True))
+    context = {
+        'acc' : acc,
+        'monthOfYear' : listRevenue,
+        'year' : year,
+        'month': month,
+        'total' : total,
+        'product_quantity' : sorted_product_quantity,
+        'product': user.product_set.all(),
+        'best_seller_name' : next(iter(sorted_product_quantity.items()))[0],
+        'best_seller_quantity' : next(iter(sorted_product_quantity.items()))[1],
+        'age_phantram': json.dumps(age_phantram),
+    }
+    return render(request, 'statistics.html', context)
+>>>>>>> ntThanh
