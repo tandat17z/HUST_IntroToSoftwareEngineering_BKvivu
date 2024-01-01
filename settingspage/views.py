@@ -16,12 +16,10 @@ from .urls import *
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-<<<<<<< HEAD
 
 from func.func import *
-=======
+
 from collections import OrderedDict
->>>>>>> ntThanh
 
 
 ImageUploadFormSet = modelformset_factory(Image, CreateImgForm, extra=0, can_delete=True)
@@ -134,19 +132,9 @@ def generalPage(request):
             user.t_open = request.POST.get('t_open')
             user.t_closed = request.POST.get('t_closed')
 
-<<<<<<< HEAD
             city_id = request.POST.get('city')
             district_id = request.POST.get('district')
             ward_id = request.POST.get('ward')
-=======
-        if form.is_valid():
-            # Thực hiện thay đổi avatar
-            newA = form.save(commit=False)
-            newA.save()
-            # newA.avatar: Avatar mới
-            #Trả về trang cá nhân
-            messages.success(request, 'Thông tin đã được cập nhật')
->>>>>>> ntThanh
 
             user.city, user.district, user.ward = getArea(city_id, district_id, ward_id)
 
@@ -357,7 +345,6 @@ def unDelete(request, postId, imageId):
     except:
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
     
-<<<<<<< HEAD
 def testPostPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     postList = Post.objects.filter(account= acc)
@@ -388,10 +375,6 @@ def testCreatePosts(request):
             'createpostform': createpostform,
         }
         return render(request, 'posts/addPost.html', context)
-
-=======
-
-
 
 #Sattistics Page
 def statisticsPage(request):
@@ -431,8 +414,10 @@ def statisticsPage(request):
             age_list[2] += 1
         else:
             age_list[3] += 1
-    age_phantram = [round(age_list[0]*100/total_age, 2), round(age_list[1]*100/total_age,2), round(age_list[2]*100/total_age, 2), round(age_list[3]*100/total_age, 2)]
-            
+    if total_age != 0:
+        age_phantram = [round(age_list[0]*100/total_age, 2), round(age_list[1]*100/total_age,2), round(age_list[2]*100/total_age, 2), round(age_list[3]*100/total_age, 2)]
+    else:
+        age_phantram = [0]*4
     sorted_product_quantity = OrderedDict(sorted(product_quantity.items(), key = lambda item: item[1], reverse=True))
     context = {
         'acc' : acc,
@@ -447,4 +432,4 @@ def statisticsPage(request):
         'age_phantram': json.dumps(age_phantram),
     }
     return render(request, 'statistics.html', context)
->>>>>>> ntThanh
+
