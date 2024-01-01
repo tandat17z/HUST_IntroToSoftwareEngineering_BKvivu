@@ -196,14 +196,17 @@ class Product(models.Model):
 
 class Bill(models.Model):
     STATUS = [
-
+        ('unpaid', 'Chưa thanh toán'),
+        ('waiting', 'Đang chờ xác nhận'),
+        ('confirmed', 'Đã xác nhận'),
+        ('cancelled', 'Đã hủy')
     ]
     acc = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, verbose_name='Người mua')
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
     time = models.DateTimeField(default=timezone.datetime.now())
     price = models.IntegerField(default=0)
     img = models.ImageField(upload_to=img_path_bill, null=True, blank=True)
-    status = models.CharField(max_length=200, default="Waiting")
+    status = models.CharField(max_length=200, choices=STATUS, default='unpaid')
 
     def __str__(self):
         return f"{self.provider}_{self.acc}_" + datetime.strftime(self.time, "%Y-%m-%d %H:%M:%S")
@@ -223,7 +226,7 @@ class Post(models.Model):
     content = models.TextField()
     name_stripped = models.CharField(max_length=150000, null=True)
     time = models.DateTimeField(default=timezone.datetime.now())
-    
+
     address = models.TextField(null=True)
     city = models.CharField(max_length=50, null=True)
     district = models.CharField(max_length=50, null=True)
@@ -244,7 +247,7 @@ class Post(models.Model):
         likeList = UserLike.objects.filter(post = self)
         self.like = likeList.count()
         super().save(*args, **kwargs)
-    
+
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
@@ -287,9 +290,9 @@ class Comment(models.Model):
     time = models.DateTimeField(default=timezone.datetime.now())
     content = models.TextField()
     like = models.IntegerField(default=0)
-    
+
     def __str__(self):
         return f"{self.post}"
-    
+
 class Test(models.Model):
     content = models.TextField()
