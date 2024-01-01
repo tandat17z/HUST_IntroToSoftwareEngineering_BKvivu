@@ -34,6 +34,7 @@
     </form>
 </div>
 {% endblock headerSearch %}
+
 {% block feature %}
         {% comment %} Phần hiển thị top các cửa hàng/ dịch vụ ---------------------------------------{% endcomment %}
         <div id="top-shop">
@@ -72,101 +73,50 @@
                     </a>
                 </div>
                 <ul class="post-list">
+                    {% for item in topPosts %}
                     <li class="item">
                         <div class="info">
-                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
-                            <h2>Nhà hàng lẩu</h2>
-                            <h3>Time: 10:00</h3>
+                            <a href="{% url 'profilepage:profilePage' item.post.account.id%}">
+                                <img src="{{item.author.avatar.url}}" alt="{{item.post.account.username}}" class="avatar">
+                            </a>
+                            <h2>{{item.author.name}}</h2>
+                            <h3>Time: {{item.post.time}}</h3>
+                            <p> 
+                                {% if item.post.provider %}
+                                    Đang ở: <a href="{% url 'profilepage:profilePage' item.post.provider.account.id%}"><strong>{{item.post.provider.name}}</strong></a>
+                                {% endif %}
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    {{item.post.ward}}-{{item.post.district}}-{{item.post.city}} ({{item.post.address}})
+                            </p>
                         </div>
-                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
-                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
-                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
+                        <h2 class="title"><strong>{{item.post.title}}</strong></h2>
+                        <p class="content">
+                            {{item.post.content}}
                         </p>
 
-                        <div class="post-photo">
-                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        </div>
+                        {% if item.img|length > 0 %}
+                    <div class="post-photo">
+                        {% for image in item.img %}
+                        <img src="{{image.img.url}}" alt="Post 1" class="photo">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
 
                         <div class="post-actions">
-                            <i class="far fa-thumbs-up"></i> 
-                            <i class="far fa-comment"></i>
+                            {% if item.userLike %}
+                            <button value="true" onclick="likeAction(event, {{item.post.id}})" style="background-color: #f00;"> 
+                            {% else %}
+                            <button value="false" onclick="likeAction(event, {{item.post.id}})"> 
+                            {% endif %}
+                                <span id="{{item.post.id}}_like">{{item.post.like}} </span>
+                                <i class="far fa-thumbs-up"></i> 
+                            </button>
+                            <button>{{item.post.commentNum}} <i class="far fa-comment"></i></button>
                             <i class="fas fa-share"></i>
                         </div>
                     </li>
-                    <li class="item">
-                        <div class="info">
-                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
-                            <h2>Nhà hàng lẩu</h2>
-                            <h3>Time: 10:00</h3>
-                        </div>
-                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
-                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
-                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
-                        </p>
-
-                        <div class="post-photo">
-                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        </div>
-
-                        <div class="post-actions">
-                            <i class="far fa-thumbs-up"></i> 
-                            <i class="far fa-comment"></i>
-                            <i class="fas fa-share"></i>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <div class="info">
-                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
-                            <h2>Nhà hàng lẩu</h2>
-                            <h3>Time: 10:00</h3>
-                        </div>
-                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
-                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
-                        </p>
-
-                        <div class="post-photo">
-                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        </div>
-
-                        <div class="post-actions">
-                            <i class="far fa-thumbs-up"></i> 
-                            <i class="far fa-comment"></i>
-                            <i class="fas fa-share"></i>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <div class="info">
-                            <img src="{% static 'img/user1.jpg'%}" alt="User 1" class="avatar">
-                            <h2>Nhà hàng lẩu</h2>
-                            <h3>Time: 10:00</h3>
-                        </div>
-                        <i class="fa-sharp fa-light fa-circle-ellipsis-vertical"></i>
-                        <p>Lẩu là một món ăn truyền thống của Việt Nam, có nguồn gốc từ Trung Quốc. Món ăn này bao gồm một nồi nước dùng đang sôi, xung quanh là các loại thực phẩm như thịt, hải sản, rau củ,... Người ăn có thể tự mình lựa chọn và nhúng các loại thực phẩm vào nồi nước dùng để thưởng thức.
-                        Lẩu là món ăn phù hợp cho mọi dịp, từ những bữa ăn gia đình ấm cúng đến những buổi họp mặt bạn bè thân thiết.
-                        </p>
-
-                        <div class="post-photo">
-                        <img src="{% static 'img/post1.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1b.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        <img src="{% static 'img/post1c.jpg'%}" alt="Post 1" class="photo">
-                        </div>
-
-                        <div class="post-actions">
-                            <i class="far fa-thumbs-up"></i> 
-                            <i class="far fa-comment"></i>
-                            <i class="fas fa-share"></i>
-                        </div>
-                    </li>
+                    {% endfor %}
+                
                 </ul>
                 <div class="next">
                     <a href="#">
@@ -175,7 +125,32 @@
                 </div>
             </div>
         </div>
-    
+        <script>
+                
+                function likeAction(event, postId) {
+                    const button = event.currentTarget;
+                    const likeElement = document.getElementById(postId + "_like");
+                    const like = parseInt(likeElement.innerText, 10);   
+                    let newLike = like;
+                    if( button.value === "false"){
+                        newLike = like + 1;
+                        button.value = "true";
+                        button.style.backgroundColor = '#f00';
+                    }
+                    else{
+                        newLike = like - 1;
+                        button.value = "false";
+                        button.style.backgroundColor = '#fff';
+                    }
+                    likeElement.innerText = newLike
+        
+                    // Gửi yêu cầu AJAX để cập nhật số lượng like trên server
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("POST", `/homepage/update_likes/${postId}/`, true);
+                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhr.send(JSON.stringify({ like: newLike}));
+                }
+        </script>
         <br>
         {% comment %} Phần tìm kiếm ----------------------------------------------------------------- {% endcomment %}
         <div id="TimKiem"></div>

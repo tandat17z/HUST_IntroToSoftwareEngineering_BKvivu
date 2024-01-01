@@ -11,12 +11,11 @@
                             <img src="{{item.author.avatar.url}}" alt="{{item.post.account.username}}" class="avatar">
                         </a>
                         <h3><strong>{{item.author.name}}</strong></h3>
-                        <h6>Time: {{item.post.time}}</h6>
+                        <h6>Time: <strong>{{item.post.time}}</strong></h6>
                         <p> 
                         {% if item.post.provider %}
                             Đang ở: <a href="{% url 'profilepage:profilePage' item.post.provider.account.id%}"><strong>{{item.post.provider.name}}</strong></a>
                         {% endif %}
-                            <br>
                             <i class="fa-solid fa-location-dot"></i>
                             {{item.post.ward}}-{{item.post.district}}-{{item.post.city}} ({{item.post.address}})
                         </p>
@@ -33,15 +32,21 @@
                     {% endif %}
 
                     <div class="post-actions">
+                        <!-- LIKE -->
                         {% if item.userLike %}
-                        <button value="true" onclick="likeAction(event, {{item.post.id}})"> 
+                        <button value="true" onclick="likeAction(event, {{item.post.id}})" style="background-color: #f00;"> 
                         {% else %}
                         <button value="false" onclick="likeAction(event, {{item.post.id}})"> 
                         {% endif %}
                             <big id="{{item.post.id}}_like">{{item.post.like}} </big> 
                             <i class="far fa-thumbs-up"></i>
                         </button>
-                        <button onclick="showComment(event, {{ item.post.id }})"> Comment <i class="far fa-comment"></i> </button>
+                        <!-- Comment -->
+                        <button onclick="showComment(event, {{ item.post.id }})"> 
+                            <big id="{{item.post.id}}_commentNum">{{item.post.commentNum}} </big> 
+                            <i class="far fa-comment"></i> 
+                        </button>
+                        <!-- Heart -->
                         <i class="fa-regular fa-heart"></i>
                     </div>
 
@@ -104,10 +109,12 @@
             if( button.value === "false"){
                 newLike = like + 1;
                 button.value = "true";
+                button.style.backgroundColor = '#f00';
             }
             else{
                 newLike = like - 1;
                 button.value = "false";
+                button.style.backgroundColor = '#fff';
             }
             likeElement.innerText = newLike
 
@@ -119,6 +126,7 @@
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <script>
     function insertComment(event, postId){
         const inputCmt = document.getElementById(postId + "_comment");
@@ -130,6 +138,10 @@
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send(JSON.stringify({comment: contentCmd}));
         alert("Comment thành công rồi nhé");
+
+        // Tăng _commentNum
+        const cmtNum = document.getElementById(postId + "_commentNum");
+        cmtNum.innerText = parseInt(cmtNum.innerText, 10) + 1
         showCmt(postId)
     }
     function showComment(event, postId){
@@ -199,6 +211,9 @@
                 var containerComment = document.getElementById('comment_' + commentId);
                 if(response.success === true){
                     containerComment.remove()
+                    // Giảm _commentNum
+                    const cmtNum = document.getElementById(response.postId + "_commentNum");
+                    cmtNum.innerText = parseInt(cmtNum.innerText, 10) - 1
                     alert("Xóa bình luận của bạn thành công")
                 }
                 else{

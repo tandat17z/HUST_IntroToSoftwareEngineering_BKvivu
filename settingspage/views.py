@@ -326,6 +326,7 @@ def deleteImagePost(request, postId, imageId):
     except:
         messages.error(request, 'Error')
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
+
 def unDelete(request, postId, imageId):
     try:
         image = Image.objects.get(id = imageId)
@@ -334,3 +335,35 @@ def unDelete(request, postId, imageId):
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
     except:
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
+    
+def testPostPage(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    postList = Post.objects.filter(account= acc)
+    context = {
+        'acc': acc,
+        'postList': postList,
+    }
+    return render(request, 'posts/postList.html', context)
+
+def testCreatePosts(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    if request.method == 'POST':
+        post = Post.objects.create(account = acc)
+        form_post = CreatePostForm(request.POST, instance=post)
+        if form_post.is_valid :
+            # try:
+            newPost = form_post.save(commit=False)
+            newPost.save()
+            images = request.FILES.getlist('images')
+            for image in images :
+                img = Image.objects.create(post = post, img = image)
+                img.save()
+            messages.success(request, 'Tạo bài viết thành công')
+            return redirect('settingspage:testPostPage')
+    else:
+        createpostform = CreatePostFormTest()
+        context = {
+            'createpostform': createpostform,
+        }
+        return render(request, 'posts/addPost.html', context)
+

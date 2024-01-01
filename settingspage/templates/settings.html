@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'tabbar.css'%}">
     <link rel="stylesheet" href="{% static 'list.css'%}">
     <link rel="stylesheet" href="{% static 'product.css'%}">
+    {% block css %}{% endblock css %}
     <script src="https://kit.fontawesome.com/bc4d8a1311.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -33,7 +34,7 @@
         <a href="{% url 'settingspage:product' %}" onclick="showContent('products')">Products</a>
         <a href="#bills" onclick="showContent('bills')">Bills</a>
         <a href="#statistics" onclick="showContent('statistics')">Statistics</a>
-        <a href="{% url 'settingspage:postPage' %}" onclick="">Posts</a>
+        <a href="{% url 'settingspage:testPostPage' %}" onclick="">Posts</a>
     </nav>
 
     {% block general%} {% endblock %}

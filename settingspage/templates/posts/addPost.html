@@ -1,0 +1,11 @@
+{% load static %}
+<!-- Tải jQuery từ CDN -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{createpostform.as_p}}
+    <p>Thêm hình ảnh
+    <input type="file" name="images" id="imageInput" multiple></p>
+    <button type="submit">Submit</button>
+</form>

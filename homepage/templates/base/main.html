@@ -31,12 +31,10 @@
     <body>
         {% comment %} alert thông báo kết quả đăng kí/ đăng nhập -------------------------------{% endcomment %}
         {% for message in messages %}
-            <div id="alert-message" js-message="{{message}}"></div>
+            <script>
+                alert(message);
+            </script>
         {% endfor %}
-        <script>
-            var message = document.getElementById('alert-message').getAttribute('js-message');
-            alert(message);
-        </script>
 
         {% comment %} Phần header -----------------------------------------------------------{% endcomment %}
         <div class="header">

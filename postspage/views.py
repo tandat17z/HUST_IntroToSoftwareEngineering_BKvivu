@@ -158,6 +158,8 @@ def insert_comment(request, post_id):
             post = post,
             content = data['comment']
         )
+        post.commentNum += 1
+        post.save()
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False})
@@ -166,14 +168,13 @@ def insert_comment(request, post_id):
 def delete_comment(request, comment_id):
     acc = Account.objects.get(user_ptr=request.user)
     if request.method == 'POST':
-        print(request.POST.get('data_id'))
-
         comment = Comment.objects.get(id = comment_id)
-        delete = False
         if comment.account == acc: # chỉ xóa đc comment của mình
+            post = comment.post
+            post.commentNum -= 1
+            post.save()
             comment.delete()
-            delete = True
-        return JsonResponse({'success': delete})
+            return JsonResponse({'success': True, 'postId': post.id})
     else:
         return JsonResponse({'success': "error"})
     

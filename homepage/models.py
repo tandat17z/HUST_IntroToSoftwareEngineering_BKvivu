@@ -233,6 +233,8 @@ class Post(models.Model):
     like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
 
+    commentNum = models.IntegerField(default= 0)
+
     def __str__(self):
         return f"{self.account}_{self.title}"
 

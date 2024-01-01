@@ -76,28 +76,28 @@ var translateY = 0
 var count = commentItem.length
 
 next.addEventListener('click', function (event) {
-    event.preventDefault()
-    if( count == 1){
-        translateY += 1500
-        comment.style.transform = `translateY(${translateY}px`
-        count = commentItem.length
-    }
-    else{
-        translateY += -500
-        comment.style.transform = `translateY(${translateY}px`
-        count --
-    }
+event.preventDefault()
+if( count == 1){
+    translateY += 600*(commentItem.length - 1)
+    comment.style.transform = `translateY(${translateY}px`
+    count = commentItem.length
+}
+else{
+    translateY += -600
+    comment.style.transform = `translateY(${translateY}px`
+    count --
+}
 })
 
 prev.addEventListener('click', function (event) {
     event.preventDefault()
-    if( count == 4){
-        translateY += -1500
+    if( count == commentItem.length){
+        translateY += -600*(commentItem.length - 1)
         comment.style.transform = `translateY(${translateY}px`
         count = 1
     }
     else{
-        translateY += 500
+        translateY += 600
         comment.style.transform = `translateY(${translateY}px`
         count ++
     }

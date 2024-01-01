@@ -59,9 +59,25 @@ def homePage(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
 
-    # list top cửa hàng 
+    # list top cửa hàng-------------- 
     top_shops = Manager.objects.filter(avgStar__isnull=False).order_by('-avgStar')[:5]
-    print("load Homepage --------------")
+    # list top posts-------------
+    posts = Post.objects.filter().order_by('-like')
+    info = list()
+    for p in posts:
+        author = Sharer.objects.get(account= p.account) if p.account.role == 'sharer' else Manager.objects.get(account= p.account)
+        try:
+            userLike = UserLike.objects.get(account=acc, post=p) 
+        except:
+            userLike = None
+        info.append({
+            'post': p, 
+            'author': author, 
+            'userLike': userLike,
+            'img': Image.objects.filter(post = p)
+        })
+
+    # search ----------------
     if request.method == 'POST': # Ở trang thái tìm kiếm sản phẩm, lọc
         # Tìm kiếm ở header
         if 'btnHeaderSearch' in request.POST:
@@ -111,6 +127,7 @@ def homePage(request):
         'acc': acc,
         'user': user,
         'top_shops': top_shops,
+        'topPosts': info,
         'searchShop': searchShop,
         'searchProduct': searchProduct,
     }
@@ -169,7 +186,7 @@ def loginPage(request):
                     login(request, user_logged)
                     messages.success(request, 'Đăng kí thành công. Chào mừng đến với BKvivu.')
                     return redirect('homepage:registerPage')
-            messages.error(request, 'Đăng kí không thành công. Vui lòng thử lại.')
+            messAlert = 'Đăng kí không thành công. Vui lòng thử lại.'
         elif 'login' in request.POST:
             username = request.POST.get('username')
             psw = request.POST.get('password')
@@ -178,10 +195,10 @@ def loginPage(request):
                 login(request, user_logged)
                 messages.success(request, 'Đăng nhập thành công rùi nhé.')
                 return redirect('homepage:homePage')
-            messages.error(request, 'Đăng nhập không thành công. Vui lòng thử lại.')
+            messAlert = 'Đăng nhập không thành công. Vui lòng thử lại.'
 
     # messages.error(request, 'Đăng nhập')
-    return render(request, 'login.html')
+    return render(request, 'login.html', {'messAlert': messAlert})
 
 def registerPage(request):
     if request.user.is_authenticated:
@@ -226,5 +243,32 @@ def registerPage(request):
         }
         return render(request, 'register.html', context)
 
-def test(request):
-    return render(request, 'manager.html')
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def update_likes(request, post_id):
+    acc = Account.objects.get(user_ptr=request.user)
+    post = Post.objects.get(id = post_id)
+    if request.method == 'POST':
+        # Nhận dữ liệu từ yêu cầu AJAX
+        data = json.loads(request.body)
+        if( post.like < data['like'] ):
+            userLike = UserLike.objects.create(
+                account = acc,
+                post = post
+            )
+        else:
+            userLike = UserLike.objects.get(
+                account = acc,
+                post = post
+            )
+            userLike.delete()
+        post.like = data['like']
+        post.save()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False})
+    
