@@ -30,9 +30,11 @@
     </head>
     <body>
         {% comment %} alert thông báo kết quả đăng kí/ đăng nhập -------------------------------{% endcomment %}
-        {% for message in messages %}
+        {% for message in messAlert %}
+            div
             <script>
-                alert(message);
+                console.log("{{message}}");
+                alert("{{message}}");
             </script>
         {% endfor %}
 

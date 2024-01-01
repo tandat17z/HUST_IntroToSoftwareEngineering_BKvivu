@@ -175,6 +175,7 @@ def delete_comment(request, comment_id):
             post.save()
             comment.delete()
             return JsonResponse({'success': True, 'postId': post.id})
+        return JsonResponse({'success': False})
     else:
         return JsonResponse({'success': "error"})
     

@@ -140,6 +140,7 @@ def loginPage(request):
     if request.user.is_authenticated:
         return redirect('homepage:homePage')
 
+    messAlert = list()
     if request.method == 'POST':
         if 'register' in request.POST:  #nếu đăng kí (register)
             rgt_username = request.POST.get('rgt_username')
@@ -184,9 +185,8 @@ def loginPage(request):
                         )
                     user_logged = authenticate(request, username=rgt_username, password=psw)
                     login(request, user_logged)
-                    messages.success(request, 'Đăng kí thành công. Chào mừng đến với BKvivu.')
                     return redirect('homepage:registerPage')
-            messAlert = 'Đăng kí không thành công. Vui lòng thử lại.'
+            messAlert.append('Đăng kí không thành công. Vui lòng thử lại.') 
         elif 'login' in request.POST:
             username = request.POST.get('username')
             psw = request.POST.get('password')
@@ -195,7 +195,7 @@ def loginPage(request):
                 login(request, user_logged)
                 messages.success(request, 'Đăng nhập thành công rùi nhé.')
                 return redirect('homepage:homePage')
-            messAlert = 'Đăng nhập không thành công. Vui lòng thử lại.'
+            messAlert.append('Đăng nhập không thành công. Vui lòng thử lại.')
 
     # messages.error(request, 'Đăng nhập')
     return render(request, 'login.html', {'messAlert': messAlert})
