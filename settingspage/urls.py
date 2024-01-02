@@ -10,9 +10,9 @@ urlpatterns = [
 
     path('posts', views.testPostPage, name='testPostPage'),
     path('posts/addPosts', views.testCreatePosts, name='testCreatePosts'),
-    # path('posts/', views.postPage, name='postPage'),
+    path('posts/', views.postPage, name='postPage'),
     path('posts/changePost/<int:postId>', views.changePost, name='changePost'),
-    # path('posts/addPost', views.addPost, name='addPost'),
+    path('posts/addPost', views.addPost, name='addPost'),
     path('posts/deletePost/<int:postId>', views.deletePost, name='deletePost'),
     path('posts/changePost/<int:postId>/deleteImagePost/<int:imageId>', views.deleteImagePost, name='deleteImagePost'),
     path('posts/changePost/<int:postId>/unDelete/<int:imageId>', views.unDelete, name='unDelete'),

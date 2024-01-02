@@ -15,10 +15,10 @@
 <body>
     <!-- Chat logo -->
     <div class="chatbox">
-        <a href="https://chat.openai.com/" target="_blank" class="chat-link">
+        <a href="{% url 'profilepage:chatDefault' target_user.account_id %}" target="_blank" class="chat-link">
             <div class="chat-label">
                 <i class="fa-solid fa-message"></i>
-                <span>CSKH</span>
+                <span>Chat</span>
             </div>
         </a>
     </div>
@@ -72,11 +72,18 @@
             </div>
             <div class="name">
                 <h1 id="name-profile">{{ target_user.name }}</h2>
-                {% if target_user.account.role == "manager" %}
+                {% if target_user.account.role == 'manager' %}
                     {% block rateProfile %}
                     {% endblock rateProfile %}
                 {% endif %}
             </div>
+            {% if target_user.account.role == 'manager' and user.account.role == 'sharer' %}
+            <div>
+                <a href="{% url 'profilepage:chatPage' target_user.account.id target_user.account.id %}">
+                    <i style="font-size: 40px;" class="fas fa-comment-dots"></i>
+                </a>
+            </div>
+            {% endif %}
         </div>
     {% if target_user.account.role == "manager" %}
         {% block infoProfileManager %}

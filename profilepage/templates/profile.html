@@ -21,7 +21,7 @@
             </div>
         </button>
         <div id="voteProfile">
-            <form action="{% url 'profilepage:voteProfile' target_user.account.id%}" method="post">
+            <form action="{% url 'profilepage:voteProfile' target_user.account_id%}" method="post">
                 {% csrf_token %}
                 <div class="starsvote">
                     <input type="radio" id="one" name="rate" value="1">
