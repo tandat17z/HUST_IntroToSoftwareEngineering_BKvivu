@@ -83,21 +83,23 @@
         <option value="{{user.ward}}" selected>{{user.ward}}</option>
         </select>
     </div>
+
+
     <div class="form-group">
-        <p>Avatar: </p>
-        <img style="height: 50px; width: 50px;" src="{{user.avatar.url}}" alt="">
-        <input
-            type="file"
-            name="avatar"
-            id="avatar"
-            class="form-control"
-            placeholder="Hình ảnh avatar"
-            value={{user.avatar.url}}
-        required
-        >
-        
-      </input>
-      </div>
+      <label for="avatar">Avatar:</label>
+      <img id="img-avatar" style="height: 100px; width: 100px;" alt="" src="{{user.avatar.url}}" >
+      <input
+          type="file"
+          name="avatar"
+          id="avatar"
+          class="form-control"
+          placeholder="Hình ảnh avatar"
+          accept="image/*"
+          onchange="displayImageAvatar()"
+          
+      ></input>
+    </div>
+
     <div class="form-group">
       <p>Giới thiệu về bạn: </p>
       <textarea

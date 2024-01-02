@@ -120,6 +120,13 @@ def generalPage(request):
 
             user.avatar = request.FILES.get('avatar')
             user.save()
+            context = {
+                'role': acc.role,
+                'acc': acc,
+                'user': user,
+            }
+
+            return render(request, 'general.html', context)
         else:
             user.name = request.POST.get('name')
             user.phone = request.POST.get('phone')
@@ -140,26 +147,32 @@ def generalPage(request):
             user.facebook_link = request.POST.get('facebook_link')
             user.website_link = request.POST.get('website_link')
             user.save()
+            context = {
+                'role': acc.role,
+                'acc': acc,
+                'user': user,
+                'time_open': user.t_open,
+                'time_close': user.t_closed,
+            }
+
+            return render(request, 'general.html', context)
+    if acc.role == 'manager':   
+        time_open = user.t_open.strftime("%H:%M")
+        time_close = user.t_closed.strftime("%H:%M")
+        
         context = {
             'role': acc.role,
             'acc': acc,
             'user': user,
-            'time_open': user.t_open,
-            'time_close': user.t_closed,
+            'time_open': time_open,
+            'time_close': time_close,
         }
-
-        return render(request, 'general.html', context)
-        
-    time_open = user.t_open.strftime("%H:%M")
-    time_close = user.t_closed.strftime("%H:%M")
-    
-    context = {
-        'role': acc.role,
-        'acc': acc,
-        'user': user,
-        'time_open': time_open,
-        'time_close': time_close,
-    }
+    else:
+        context = {
+            'role': acc.role,
+            'acc': acc,
+            'user': user,
+        }
     return render(request, 'general.html', context)
 
 #Bill Page
