@@ -91,7 +91,7 @@ def chatPageDefault(request, acc_id):
             'all_user': list_all_user
         }
         return render(request, "chat_base.html", context)
-
+    
 def chatPage(request, acc_id, user_id):
     if request.method == 'GET': 
         acc1 = Account.objects.get(user_ptr=request.user)
@@ -118,7 +118,7 @@ def chatPage(request, acc_id, user_id):
         models.Q(sender=acc1) | models.Q(receiver=acc1)).values('receiver').exclude(receiver=acc1.id).distinct() if acc1.role == 'manager' else Message.objects.filter(
         models.Q(sender=acc1) | models.Q(receiver=acc1)).values('sender').exclude(sender=acc1.id).distinct()
         
-        #default : tuong tac 2 chieu roi, i send you , you send me
+  
         list_all_user = []
         for user in all_user:
             add_user = Manager.objects.get(pk=user['sender']) if acc1.role == 'sharer' else Sharer.objects.get(pk=user['receiver'])
@@ -133,7 +133,7 @@ def chatPage(request, acc_id, user_id):
             'all_user': list_all_user
         }
         return render(request, "chat.html", context)
-
+#send message
 def save_message(request, acc_id, user_id):
     if request.method == 'POST':
         content = request.POST.get('content', '')
@@ -146,7 +146,7 @@ def save_message(request, acc_id, user_id):
         time = newMessage[0].time
         data = {'message': content, 'time': time, 'success' : True, 'user_id': user_id, 'message_id': message_id}
         return JsonResponse(data)
-
+#update message
 def get_message(request, acc_id, user_id):
     acc1 = Account.objects.get(user_ptr=request.user)
     acc2 = Account.objects.get(id = user_id)

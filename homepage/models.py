@@ -129,20 +129,23 @@ class Manager(models.Model):
         avg_star = StarVote.objects.filter(manager=self).aggregate(Avg('stars'))['stars__avg']
         self.avgStar = avg_star if avg_star else 0.0
 
-    def save(self, *args, **kwargs):
-        # Kiểm tra và xóa ảnh cũ (nếu có)
-        if self.pk:
-            try:
-                old_instance = Manager.objects.get(pk=self.pk)
-                check = True
-            except:
-                check = False
-            if check and old_instance.avatar.name != 'noavatar.png':
-                if old_instance.avatar:
-                        old_instance.avatar.delete(save=False)
-            if check and old_instance.bank.name != 'noavatar.png':
-                if old_instance.bank:
-                        old_instance.bank.delete(save=False)
+        
+# commnet hàm save này vì khi ở phần general nếu mình ko chọn ảnh thì nó sẽ tự xóa ảnh cũ và cho về ảnh mặc định
+        
+    # def save(self, *args, **kwargs):
+    #     # Kiểm tra và xóa ảnh cũ (nếu có)
+    #     if self.pk:
+    #         try:
+    #             old_instance = Manager.objects.get(pk=self.pk)
+    #             check = True
+    #         except:
+    #             check = False
+    #         if check and old_instance.avatar.name != 'noavatar.png':
+    #             if old_instance.avatar:
+    #                     old_instance.avatar.delete(save=False)
+    #         if check and old_instance.bank.name != 'noavatar.png':
+    #             if old_instance.bank:
+    #                     old_instance.bank.delete(save=False)
 
         #x tự động tính rank = star/ vote
         #x if self.num_votes > 0:

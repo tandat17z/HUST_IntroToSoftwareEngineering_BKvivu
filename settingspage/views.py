@@ -14,7 +14,7 @@ from .urls import *
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-
+from datetime import datetime
 from func.func import *
 
 
@@ -133,19 +133,32 @@ def generalPage(request):
             ward_id = request.POST.get('ward')
 
             user.city, user.district, user.ward = getArea(city_id, district_id, ward_id)
-
-            user.avatar = request.FILES.get('avatar')
-            user.bank = request.FILES.get('bank')
-
+            if 'avatar' in request.FILES: 
+                user.avatar = request.FILES.get('avatar')
+            if 'bank' in request.FILES:
+                user.bank = request.FILES.get('bank')
             user.facebook_link = request.POST.get('facebook_link')
             user.website_link = request.POST.get('website_link')
             user.save()
-        messages.success(request, 'Thông tin đã được cập nhật')
+        context = {
+            'role': acc.role,
+            'acc': acc,
+            'user': user,
+            'time_open': user.t_open,
+            'time_close': user.t_closed,
+        }
 
+        return render(request, 'general.html', context)
+        
+    time_open = user.t_open.strftime("%H:%M")
+    time_close = user.t_closed.strftime("%H:%M")
+    
     context = {
         'role': acc.role,
         'acc': acc,
         'user': user,
+        'time_open': time_open,
+        'time_close': time_close,
     }
     return render(request, 'general.html', context)
 

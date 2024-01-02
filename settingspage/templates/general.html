@@ -42,6 +42,7 @@
       Vui lòng cung cấp cho chúng tôi những thông tin dưới đây!
     </p>
   </header>
+  
   <form id="survey-form" method = "POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">
@@ -84,6 +85,7 @@
     </div>
     <div class="form-group">
         <p>Avatar: </p>
+        <img style="height: 50px; width: 50px;" src="{{user.avatar.url}}" alt="">
         <input
             type="file"
             name="avatar"
@@ -92,7 +94,9 @@
             placeholder="Hình ảnh avatar"
             value={{user.avatar.url}}
         required
-        ></input>
+        >
+        
+      </input>
       </div>
     <div class="form-group">
       <p>Giới thiệu về bạn: </p>
@@ -173,27 +177,30 @@
         />
       </div>
       <div class="form-group">
-        <p>Avatar: </p>
+        <label for="avatar">Avatar:</label>
+        <img id="img-avatar" style="height: 100px; width: 100px;" alt="" src="{{user.avatar.url}}" >
         <input
             type="file"
             name="avatar"
             id="avatar"
             class="form-control"
             placeholder="Hình ảnh avatar"
-            value={{user.avatar}}
-            required="false"
+            accept="image/*"
+            onchange="displayImageAvatar()"
+            
         ></input>
       </div>
       <div class="form-group">
-        <p>QR thanh toán: </p>
+        <label for="bank">QR:</label>
+        <img id="img-bank" style="height: 100px; width: 100px;" src="{{user.bank.url}}" alt="" >
         <input
             type="file"
             name="bank"
             id="bank"
             class="form-control"
-            value="{{user.bank.url}}"
-            required="false"
-        required
+            accept="image/*"
+            onchange="displayImageBank()"
+            
         ></input>
       </div>
       <div class="form-group">
@@ -203,7 +210,7 @@
             name="t_open"
             id="bank"
             class="form-control"
-            value="{{user.t_open}}"
+            value="{{time_open}}"
         required
         ></input>
       </div>
@@ -214,7 +221,7 @@
             name="t_closed"
             id="t_closed"
             class="form-control"
-            value="{{user.t_closed}}"
+            value={{time_close}}
         required
         ></input>
       </div>
@@ -256,11 +263,13 @@
         <button type="submit" id="submit" class="submit-button">
           Submit
         </button>
+        
       </div>
     </form>
+    
   </div>
 {% endif %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script>
     var citis = document.getElementById("city");
     var districts = document.getElementById("district");
@@ -302,6 +311,38 @@
         }
     };
     }
+    
 	</script>
+  <script>
+    
+    
+    function displayImageAvatar() {
+      var input = document.getElementById('avatar');
+      var image = document.getElementById('img-avatar');
+      var selectedFile = input.files[0];
+      if (selectedFile) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('img-avatar').src = e.target.result;
+          
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+      document.getElementById('t_open').setAttribute('value', '{{user.t_open}}');
+    document.getElementById('t_closed').setAttribute('value','{{user.t_closed}}');
+    }
+    function displayImageBank() {
+      var input = document.getElementById('bank');
+      var image = document.getElementById('img-bank');
+      var selectedFile = input.files[0];
+      if (selectedFile) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          image.src = e.target.result;
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    }
+  </script>
 </body>
 </html>
