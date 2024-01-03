@@ -27,12 +27,24 @@
 
 {% block headerSearch %}
 <div class="center">
-    <form action = "#TimKiem" method = "POST">
-        {% csrf_token %}
-        <input type="text" placeholder="Nay đi đâu ta ..." name="headerSearch">
-        <button name="btnHeaderSearch" type="submit"><i class="fa fa-search"></i></button>
+    <form>
+        <input type="text" placeholder="Nay đi đâu ta ..." id="headerSearch">
+        <button name="btnHeaderSearch" type="button" onclick="clickHeaderSearch(event)"><i class="fa fa-search"></i></button>
     </form>
 </div>
+<script>
+    // header search
+    function clickHeaderSearch(event){
+        var inputElement = document.getElementById("headerSearch");
+        var searchKey = inputElement.value;
+
+        var searchKeyElement = document.getElementById("searchKey")
+        searchKeyElement.value = searchKey;
+
+        var timKiemElement = document.getElementById("TimKiem");
+        timKiemElement.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
 {% endblock headerSearch %}
 
 {% block feature %}
@@ -156,26 +168,8 @@
         <div id="TimKiem"></div>
         <h2 class="h2-header" id="searchhh">TÌM KIẾM</h2>
         <div id="searching">
-            <div class="box-left">
-                {% for item in searchShop %}
-                <div class="post">
-                    <img class="img-food" src="{{ item.avatar.url }}" alt="">
-                    <div class="info" style="padding-left: 10px;">
-                        <div class="text">
-                            <h3>{{item.name}}</h3>
-                            <p>Đánh giá: {{item.avgStar}}/5 <span><img class="search_imgstar" src="{% static 'images/star.png' %}" alt=""></span></p>
-                            <p>{{ item.district}}-{{item.ward}}</p>
-                        </div>
-
-                    </div>
-                    <hr>
-                    <div class="cost">
-                        <a href="{% url 'profilepage:profilePage' item.account.id%}">
-                            <button>Tới cửa hàng</button>
-                        </a>
-                    </div>
-                </div>
-                {% endfor %}
+            <div class="box-left" id="containerSearch">
+                <!-- Mặc định chưa tìm kiếm là hiển thị các sản phẩm mới nhất-->
                 {% for item in searchProduct %}
                 <div class="post">
                     <img class="img-food" src="{{ item.img.url }}" alt="">
@@ -185,7 +179,6 @@
                         </a>
                         <div class="text">
                             <h3>{{item.name}}</h3>
-                            <p>Like: {{item.like}}, dislike: {{item.dislike}}</p>
                             <p>Provider: {{ item.provider.name}}</p>
                         </div>
                     </div>
@@ -200,32 +193,28 @@
             <div class="box-right">
                 <div class="searchcontent">
                     <p>Tìm kiếm nhanh:</p>
-                    <form action="#TimKiem" method="POST">
-                        {% csrf_token %}
-                        <button name="bundau" type="submit">Bún đậu</button>
-                        <button name="comrang" type="submit">Cơm rang</button>
-                        <button name="nemnuong" type="submit">Nem nướng</button>
-                        <button name="congvien" type="submit">Công viên</button>
-                        <button name="baotang" type="submit">Bảo tàng</button>
-                    </form>
+                    <button class="btnTag" name="bundau" onclick="searchTag(event, 'bun dau')">Bún đậu</button>
+                    <button class="btnTag" name="comrang" onclick="searchTag(event, 'com rang')">Cơm rang</button>
+                    <button class="btnTag" name="nemnuong" onclick="searchTag(event, 'nem nuong')">Nem nướng</button>
+                    <button class="btnTag" name="congvien"  onclick="searchTag(event, 'cong vien')">Công viên</button>
+                    <button class="btnTag" name="baotang" onclick="searchTag(event, 'bao tang')">Bảo tàng</button>
                     <hr>
                 </div>
                 <div class="search">
-                    <form action="#TimKiem" method="POST">
-                        {% csrf_token %}
-                        <label for="choices">Phân loại tìm kiếm:</label>
-                        <select id="choices" name="type">
-                            <option value="shop">Cửa hàng</option>
-                            <option value="product">Sản phẩm</option>
-                            <!-- Thêm các option khác nếu cần -->
-                        </select>
-                        <input type="text" placeholder="Nay đi đâu ta ..." name="search">
-                        <!-- <button id = "filter" type="submit"><i class="fa fa-filter"></i></button> -->
-                        <button name="btnSearch" id = "search" type="submit"><i class="fa fa-search"></i></button>
+                    <form action="#TimKiem">
+                    <label for="choices">Phân loại tìm kiếm:</label>
+                    <select id="choices" name="type">
+                        <option value="shop">Cửa hàng</option>
+                        <option value="product">Sản phẩm</option>
+                        <!-- Thêm các option khác nếu cần -->
+                    </select>
+                    <input id="searchKey" type="text" placeholder="Nay đi đâu ta ..." name="search">
+                    <!-- <button id = "filter" type="submit"><i class="fa fa-filter"></i></button> -->
+                    <button name="btnSearch" id = "search" type="button" onclick="mainSearch(event)"><i class="fa fa-search"></i></button>
+                    <br>
+                    <div class="searchby">
                         <br>
-                        <div class="searchby">
-                            <br>
-                            <div class="form-group">
+                        <div class="form-group">
                             <label for="city">Khu vực:</label>
                             <select class="form-select form-select-sm mb-3" id="city" name="city" aria-label=".form-select-sm">
                             <option value="all" selected>Chọn tỉnh thành</option>           
@@ -238,9 +227,9 @@
                             <select class="form-select form-select-sm" id="ward" name="ward" aria-label=".form-select-sm">
                             <option value="all" selected>Chọn phường xã</option>
                             </select>
-                            </div>
-                            <br>
-                            <div class="form-group">
+                        </div>
+                        <br>
+                        <div class="form-group">
                             <label for="t_open">Khoảng thời gian:</label>
                             <input class="time"
                                 type="time"
@@ -259,13 +248,148 @@
                                 value="23:59"
                             required
                             ></input>
-                            </div>
                         </div>
+                    </div>
                     </form>
                 </div>
             </div>
         </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function searchTag(event, tag){
+            // reset màu các btnTag
+            var btnTags = document.querySelectorAll('.btnTag');
+            btnTags.forEach(function(btn) {
+                btn.style.backgroundColor = '#fff'; // Thay đổi màu nền thành xám
+            });
+            // Đổi màu tag hiện tại
+            const button = event.currentTarget;
+            button.style.backgroundColor = '#f00';
 
+            var selectElement = document.getElementById("choices");
+            var selectedValue = selectElement.value;
+            console.log("searchTag", tag);
+            var valueTag = tag.replace(/ /g, "_");
+            // Gửi yêu cầu AJAX để lấy dữ liệu comment
+            $.ajax({
+                url: `/homepage/searchTag/${valueTag}/`,
+                type: `POST`,
+                data: {'choices': selectedValue},
+                success: function(response) {
+                    var containerSearch = document.getElementById("containerSearch");
+                    containerSearch.innerHTML = '';
+                    if ( selectedValue === 'shop'){
+                        showShop(response.dataShop, containerSearch);
+                    }
+                    else{
+                        showProduct(response.dataProduct, containerSearch);
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+        function showShop(dataShop, containerSearch){
+            containerSearch.innerHTML = '';
+            dataShop.forEach(function(shop) {
+                console.log(shop.id)
+                var shopHTML = `
+                    <div class="post">
+                        <img class="img-food" src="${shop.avatar}" alt="">
+                        <div class="info" style="padding-left: 10px;">
+                            <div class="text">
+                                <h3>Cửa hàng: ${shop.name}</h3>
+                                <p>Đánh giá: ${shop.avgStar}/5 <span><img class="search_imgstar" src="{% static 'images/star.png' %}" alt=""></span></p>
+                                <p>${shop.district}-${shop.ward}</p>
+                            </div>
+    
+                        </div>
+                        <hr>
+                        <div class="cost">
+                            <a href="/profile/${shop.id}/">
+                                <button>Tới cửa hàng</button>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                containerSearch.innerHTML += shopHTML;
+            })
+        }
+        function showProduct(dataProduct, containerSearch){
+            containerSearch.innerHTML = '';
+            dataProduct.forEach(function(product) {
+                var productHTML = `
+                <div class="post">
+                    <img class="img-food" src="${product.img}" alt="">
+                    <div class="info">
+                        <a href="/profile/${product.provider.id}/"">
+                            <img class="img-avt" src="${product.provider.avatar}" alt="">
+                        </a>
+                        <div class="text">
+                            <h3>${product.name}</h3>
+                            <!--<p>Like: {{item.like}}, dislike: {{item.dislike}}</p> -->
+                            <p>Provider: ${product.provider.name}</p>
+
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="cost">
+                        <button>${product.price} VND</button>
+                    </div>
+                </div>
+                `;
+                containerSearch.innerHTML += productHTML;
+            })
+        }
+
+        // Tìm kiếm chính ---------------------
+        function mainSearch(event){
+            var selectElement = document.getElementById("choices");
+            var selectedValue = selectElement.value;
+
+            var searchKeyElement = document.getElementById("searchKey");
+            var searchKey = searchKeyElement.value;
+
+            var t_openElement = document.getElementById("t_open");
+            var t_open = t_openElement.value;
+            var t_closedElement = document.getElementById("t_closed");
+            var t_closed = t_closedElement.value;
+
+            var cityElement = document.getElementById("city");
+            var city = cityElement.value;
+            var districtElement = document.getElementById("district");
+            var district = districtElement.value;
+            var wardElement = document.getElementById("ward");
+            var ward = wardElement.value;
+
+            $.ajax({
+                url: `/homepage/search/`,
+                type: `POST`,
+                data: {
+                    'choices': selectedValue,
+                    'searchKey': searchKey,
+                    'city': city, 'district': district, 'ward': ward,
+                    't_open': t_open,
+                    't_closed': t_closed,
+                },
+                success: function(response) {
+                    var containerSearch = document.getElementById("containerSearch");
+                    containerSearch.innerHTML = '';
+                    if ( selectedValue === 'shop'){
+                        showShop(response.dataShop, containerSearch);
+                    }
+                    else{
+                        showShop(response.dataProduct, containerSearch);
+                    }
+                    alert("Tìm kiếm thành công")
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
         <script src="{% static 'js/header_logged.js' %}"></script>
 {% endblock feature %}
 
