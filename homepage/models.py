@@ -77,20 +77,21 @@ class Sharer(models.Model):
 
     def __str__(self):
         return f"{self.account}"
-    def save(self, *args, **kwargs):
-        # Kiểm tra và xóa ảnh cũ (nếu có)
-        if self.pk:
-            try:
-                old_instance = Sharer.objects.get(pk=self.pk)
-                check = True
-            except:
-                check = False
+    
+    # def save(self, *args, **kwargs):
+    #     # Kiểm tra và xóa ảnh cũ (nếu có)
+    #     if self.pk:
+    #         try:
+    #             old_instance = Sharer.objects.get(pk=self.pk)
+    #             check = True
+    #         except:
+    #             check = False
 
-            if check and old_instance.avatar.name != 'noavatar.png':
-                if old_instance.avatar:
-                    old_instance.avatar.delete(save=False)
-        # Gọi hàm save của lớp cha (object)
-        super().save(*args, **kwargs)
+    #         if check and old_instance.avatar.name != 'noavatar.png':
+    #             if old_instance.avatar:
+    #                 old_instance.avatar.delete(save=False)
+    #     # Gọi hàm save của lớp cha (object)
+    #     super().save(*args, **kwargs)
 
 class Manager(models.Model):
     account = models.OneToOneField(Account, on_delete=django.db.models.deletion.CASCADE, primary_key=True)
@@ -129,20 +130,20 @@ class Manager(models.Model):
         avg_star = StarVote.objects.filter(manager=self).aggregate(Avg('stars'))['stars__avg']
         self.avgStar = avg_star if avg_star else 0.0
 
-    def save(self, *args, **kwargs):
-        # Kiểm tra và xóa ảnh cũ (nếu có)
-        if self.pk:
-            try:
-                old_instance = Manager.objects.get(pk=self.pk)
-                check = True
-            except:
-                check = False
-            if check and old_instance.avatar.name != 'noavatar.png':
-                if old_instance.avatar:
-                        old_instance.avatar.delete(save=False)
-            if check and old_instance.bank.name != 'noavatar.png':
-                if old_instance.bank:
-                        old_instance.bank.delete(save=False)
+    # def save(self, *args, **kwargs):
+    #     # Kiểm tra và xóa ảnh cũ (nếu có)
+    #     if self.pk:
+    #         try:
+    #             old_instance = Manager.objects.get(pk=self.pk)
+    #             check = True
+    #         except:
+    #             check = False
+    #         if check and old_instance.avatar.name != 'noavatar.png':
+    #             if old_instance.avatar:
+    #                     old_instance.avatar.delete(save=False)
+    #         if check and old_instance.bank.name != 'noavatar.png':
+    #             if old_instance.bank:
+    #                     old_instance.bank.delete(save=False)
 
         #x tự động tính rank = star/ vote
         #x if self.num_votes > 0:
@@ -151,15 +152,15 @@ class Manager(models.Model):
         #x     self.rank = 0
 
         # Gọi hàm tính sao trung bình để cập nhật avgStar
-        self.updateAvgStar()
+        # self.updateAvgStar()
 
         # bỏ dấu của name để phục vụ tính năng tìm kiếm
-        if self.name:
-            words = unidecode(self.name.lower()).split()
-            self.name_stripped = ' '.join(words)
+        # if self.name:
+        #     words = unidecode(self.name.lower()).split()
+        #     self.name_stripped = ' '.join(words)
 
         # Gọi hàm save của lớp cha (object)
-        super().save(*args, **kwargs)
+        # super().save(*args, **kwargs)
 
 class Product(models.Model):
     TYPES = [
@@ -196,17 +197,14 @@ class Product(models.Model):
 
 class Bill(models.Model):
     STATUS = [
-        ('unpaid', 'Chưa thanh toán'),
-        ('waiting', 'Đang chờ xác nhận'),
-        ('confirmed', 'Đã xác nhận'),
-        ('cancelled', 'Đã hủy')
+        
     ]
     acc = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, verbose_name='Người mua')
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)
     time = models.DateTimeField(default=timezone.datetime.now())
     price = models.IntegerField(default=0)
     img = models.ImageField(upload_to=img_path_bill, null=True, blank=True)
-    status = models.CharField(max_length=200, choices=STATUS, default='unpaid')
+    status = models.CharField(max_length=200, choices=STATUS, default='Waiting')
 
     def __str__(self):
         return f"{self.provider}_{self.acc}_" + datetime.strftime(self.time, "%Y-%m-%d %H:%M:%S")
@@ -236,11 +234,13 @@ class Post(models.Model):
     like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
 
+    commentNum = models.IntegerField(default= 0)
+
     def __str__(self):
         return f"{self.account}_{self.title}"
 
     def save(self, *args, **kwargs):
-        words = unidecode((self.title + self.content).lower()).split()
+        words = unidecode((self.title + " " + self.content).lower()).split()
         self.name_stripped = ' '.join(words)
 
         #Tự động tính số like
@@ -296,3 +296,14 @@ class Comment(models.Model):
 
 class Test(models.Model):
     content = models.TextField()
+#Model for chatPage
+class Message(models.Model):
+    sender = models.ForeignKey(Account, on_delete=models.CASCADE, null=False, related_name='send')
+    receiver = models.ForeignKey(Account, on_delete=models.CASCADE, null= False, related_name='recieve')
+    content = models.CharField(max_length=1000)
+    time = models.DateTimeField(default=timezone.datetime.now())
+    def __str__(self):
+        return f"{self.sender} to {self.receiver} ({self.time})"
+class ImageMessage(models.Model):
+    message = models.ForeignKey(Message, on_delete=models.CASCADE)
+    img = models.ImageField()

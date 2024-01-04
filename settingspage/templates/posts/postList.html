@@ -1,0 +1,87 @@
+{% extends "../settingspage/base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'posts/styles.css'%}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock css %}
+
+{% block post%} 
+<h1>Bài viết của bạn</h1>
+<ul>
+    {% for post in postList %}
+    
+    <li id="post_{{post.id}}">
+        <div class="date">
+            <h3>Mar<br><span>06</span></h3>
+        </div>
+        <div class="info">
+            <div class="time">
+                <i class="fa-solid fa-clock"></i>
+                <p>5.pm</p>
+            </div>
+            <div class="shop">
+                <i class="fa-solid fa-shop"></i>
+                <a href="#"><p>{{post.provider.name}}</p></a>
+            </div>
+            <div class="location">
+                <i class="fa-solid fa-location-dot"></i>
+                <a href="#"><p>{{post.ward}} - {{post.district}} - {{post.city}} ({{post.address}})</p></a>
+            </div>
+            <div class="title">
+                <i class="fa-solid fa-bars-staggered"></i>
+                <h2> <small>Tiêu đề: </small> {{post.title}}</h2>
+            </div>
+            <div class="likedis">
+                <i class="fa-solid fa-thumbs-up"></i> <p>{{post.like}}</p>
+                <i class="fa-solid fa-comment"></i> <p>{{post.commentNum}}</p>
+            </div>
+            <div class="action-product">
+                <a class="edit-product">
+                    <div>
+                        <i class="fa-solid fa-pen" aria-hidden="true"></i>
+                    </div>
+                </a>
+                <a class="delete-product" onclick="deletePost(event, {{post.id}})">
+                    <div>
+                        <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                    </div>
+                </a>
+            </div>
+             
+        </div>
+    </li>
+    {% endfor %}
+
+</ul>
+<a href="{% url 'settingspage:testCreatePosts' %}" class="add-product">
+    <div class="container-add-product">
+        <i class="fa-solid fa-circle-plus"></i>
+        <h3>Thêm bài viết</h3>
+    </div>
+</a>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function deletePost(event, postId){
+        var userChoice = window.confirm("Bạn có chắc muốn xóa bài viết không?");
+        if( userChoice){
+            $.ajax({
+                url: `/settings/posts/delete/${postId}/`,  // Điều chỉnh đúng đường dẫn của view xóa dữ liệu
+                type: 'POST',
+                success: function(response) {
+                    var containerPost = document.getElementById('post_' + postId);
+                    if(response.success === true){
+                        containerPost.remove()
+                        alert("Xóa bài viết thành công")
+                    }
+
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,136 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: #D5D5AC;
+}
+
+ul{
+    position:relative;
+    width: 50%;
+    max-height: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    /* transform: translate(-50%,-50%); */
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 15px 50px rgba(0,0,0,.2);
+    overflow-y: auto;
+}
+h1{
+    margin: 0 0 10px;
+    padding: 0 0 10px;
+    font-size: 24px;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+
+}
+ul li{
+    position: relative;
+    display: flex;
+    list-style: none;
+    padding: 4px;
+    border-radius:4px ;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+}
+ul li:hover{
+    background: #607d8b;
+}
+ul li .info{
+    color: #262626;
+    text-decoration: none;
+    display: block;
+    padding-left:70px ;
+}
+ul li :hover a{
+    color: #fff;
+}
+ul li .date{
+    /* position: absolute;
+    top: 7px;
+    left: 6px; */
+    width: 60px;
+    text-align: center;
+}
+ul li .date::before{
+    content: '';
+    /* position: absolute;
+    top: 0;
+    left: 0; */
+    width: 100%;
+    height: 0;
+    border-top: 22px solid #e2574c ;
+    border-bottom: 50px solid #e4e7e7 ;
+    z-index: 1;
+    border-radius: 5px;
+}
+ul li .date h3{
+    position: relative;
+    z-index: 2;
+    margin-top: -6px;
+    font-size: 16px;
+    color: #f00;
+    line-height: 36px;
+}
+ul li .date h3 span{
+    font-size: 36px;
+    color: #324d5b;
+}
+ul li .date p {
+    font-size: 18px ;
+
+}
+.time, .title,.likedis, .shop , .location {
+    display: flex;
+    height: 40px;
+}
+.info i{
+    margin-top: 17px;
+}
+li .info i {
+    margin-right: 5px; 
+    margin-left: 5px;
+}
+.add-product {
+    background-color: aquamarine;
+    border: 2px solid green;
+    border-radius: 20px;
+    text-decoration: none;
+    text-align: center;
+    position: fixed;
+    bottom: 35px;
+    right: 35px;
+    justify-content: center;
+}
+.container-add-product {
+    padding: 10px 13px;
+    display: flex;
+    width: 170px;
+    height: 30px;
+    margin: auto 0;
+    align-items: center;
+    justify-content: center;
+}
+.container-add-product i{
+margin-right: 5px;
+}
+.action-product {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 10px; /* Khoảng cách từ mép trên */
+    margin-right: 10px; /* Khoảng cách từ mép phải */
+}
+
+/* Điều chỉnh margin và padding cho các nút trong action-product */
+.action-product a {
+    margin-left: 10px; /* Khoảng cách giữa các nút */
+    padding: 5px; /* Kích thước padding cho các nút */
+}
+
+/* Điều chỉnh vị trí của mục xóa và chỉnh sửa sang phải */
+.delete-product, .edit-product {
+    text-align: right;
+}
+a{
+    text-decoration: none;
+}

@@ -6,5 +6,9 @@ urlpatterns = [
     path('', views.homePage, name='homePage'),
     path('login/', views.loginPage, name='loginPage'),
     path('login/register/', views.registerPage, name='registerPage'),
-    path('test', views.test),
+    path('update_likes/<int:post_id>/', views.update_likes, name='update_likes'),
+
+    path('searchTag/<str:tag>/', views.searchTag, name='searchTag'),
+    path('search/', views.mainSearch, name='mainSearch'),
+    
 ]

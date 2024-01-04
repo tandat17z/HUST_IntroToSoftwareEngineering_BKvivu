@@ -29,4 +29,9 @@ class CreateImgForm(forms.ModelForm):
         #     'img' : forms.FileInput(attrs={'class' : '11'})
         # }
         
-
+class CreatePostFormTest(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title', 'content', 'address', 
+                  'city', 'district', 'ward',
+                  'provider')

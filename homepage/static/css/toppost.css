@@ -3,7 +3,7 @@
   height: 478px;
   margin: 0px auto;
   margin-top: 50px;
-  margin-bottom: 150px;
+  margin-bottom: 250px;
 }
 
 #comment-body{
@@ -12,7 +12,7 @@
   align-items: center;
   position: relative;
   /* width: 1000px; */
-  height: 500px;
+  height: 600px;
   list-style: none;
   overflow: hidden; /* đã ẩn các trang bên trong */
 }
@@ -41,7 +41,7 @@
   #comment ul li {
     position: relative;
     list-style-type: none; 
-    height: 500px;
+    height: 600px;
     margin: 0px;
     padding: 15px;
     border: 2px solid #ccc;
@@ -49,16 +49,16 @@
   }
 
   #comment img {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     float: left;
     margin: 0px 10px 0px 10px;
   }
 
   #comment .item h2 {
-    
-    margin: 10px auto 0px auto;
+    font-size: 28px;
+    margin: 10px auto 10px auto;
   }
   #comment .item h3 {
     font-size: 16px;
@@ -66,11 +66,19 @@
     margin-top: 5px;
     margin-bottom: 5px;
   }
-
-  #comment p {
-    padding: 10px;
+  .info p{
+    margin: 5px;
+    text-align: justify;
+  }
+  #comment strong{
+    margin: 0px 10px 0px 10px;
+  }
+  #comment .content {
+    height: 220px;
+    overflow-y: scroll;
+    padding: 0px 10px 0px 10px;
     font-size: 16px;
-    line-height: 1.8;
+    line-height: 1.6;
     text-align: justify;
     margin: 0px;
   }

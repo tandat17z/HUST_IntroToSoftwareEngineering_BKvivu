@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # BKvivu
 # Hust_AIproject_PathfindingProblem
 - [Giới thiệu](#angel-giới-thiệu)
@@ -75,3 +76,25 @@ _Đang phát triển_
      - Tạo sản phẩm
      - Tạo bài viết
      - Hiển thị Bill
+<<<<<<< HEAD
+=======
+Setting :
+
+    -General (done)
+    -Bill (done)
+    -Product(done- có thể chỉnh lại chút ui)
+    -Statistics(có thống kê về doanh số bán được theo tháng trong năm, đang làm thêm về sản phẩm)
+    -Post (Chỉnh lại giao diện thêm và chỉnh bài viết cho giống giao diện khi mà bài viết được hiện thị)
+Chat : 
+
+    -UI : done
+    -chức năng : done
+    -chưa tích hợp vào shop
+    
+>>>>>>> ntThanh
+=======
+- Chat :
+    - Chỉ có người chia sẻ mới có thể nhắn với người quản lí
+    - Khi người dùng nhấn vào phần chat trong cửa hàng thì nó sẽ ra phần chat của người đó và người quản lí, còn ấn vào cái chat nổi nằm phía dưới sẽ hiện ra phần chat mặc định của người chia sẻ
+    - Đang phát triển thêm chat có kèm hình ảnh (continue)
+>>>>>>> master
