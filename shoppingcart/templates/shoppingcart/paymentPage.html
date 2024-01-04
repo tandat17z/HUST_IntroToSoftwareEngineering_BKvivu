@@ -12,8 +12,9 @@
 <body>
     <div>
         <a href="{% url 'shoppingcart:shoppingCart'%}">Back to shopping cart</a>
+        <a href="{% url 'shoppingcart:orderList'%}">Go to orderlist</a>
     </div>
-    <h1 class="hi">Thanh Toán đi cưng</h1>
+    <h1 class="hi">Thanh Toán đi hi</h1>
     <h2> {{manager.name}}</h2>
     <img src="{{manager.bank.url}}" alt="">
     <h3> Vui lòng thanh toán : {{bill.price}} VNĐ</h3>
