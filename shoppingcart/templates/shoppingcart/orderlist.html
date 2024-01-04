@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh sách đơn hàng</title>
+  <link rel="stylesheet" href="{% static 'orderlistStyle.css' %}">
+  <script src="{% static 'orderlistScript.js' %}"></script>
+</head>
+<body>
+    <div>
+        <a href="{% url 'homepage:homePage' %}">
+            <h1> Return to homePage</h1>
+        </a>
+    </div>
+{% comment %} Vòng for duyệt tất cả các đơn hàng {% endcomment %}
+    {% for bill, orders in productOfBill.items %}
+    <div class="order-container">
+        <div class="order-header">
+          <div class="store-info">
+            <img src="{{bill.provider.avatar.url}}" alt="{{bill.provider.name}}">
+            <div>
+              <h3>{{bill.provider.name}}</h3>
+            </div>
+          </div>
+          <div class="order-status pending">{{bill.status}}</div>
+        </div>
+        {% for order in orders %}
+        <!-- Sản phẩm 1 -->
+        <div class="product-item">
+          <img src="{{order.product.img.url}}" alt="{{order.product.name}}">
+          <div class="product-details">
+            <h4>{{order.product.name}}</h4>
+            <p>{{order.product.price}}</p>
+          </div>
+          <div class="product-quantity">Số lượng: {{order.quantity}}</div>
+        </div>
+        {% endfor %}
+
+        <!-- Khối tổng tiền và nút thanh toán, hủy đơn -->
+        <div class="order-total">
+          <div>Tổng Tiền: {{bill.price}} VNĐ</div>
+          <div class="action-buttons">
+            <button onclick="payOrder()">Thanh Toán</button>
+            <button onclick="cancelOrder()">Hủy Đơn</button>
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</body>
+</html>
