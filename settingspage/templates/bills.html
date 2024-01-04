@@ -18,6 +18,8 @@
                     &#10006;
                     {% elif bill.status == "Waiting" %}
                     &#10227;
+                    {% elif bill.status == "DeclineByUser" %}
+                    <p style="color : red;">Người dùng đã hủy đơn hàng</p>
                     {% endif %}
                 </i>
             </p>

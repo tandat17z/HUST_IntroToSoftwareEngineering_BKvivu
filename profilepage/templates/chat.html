@@ -99,7 +99,7 @@
     </button>
 </div>
 <label for="fileInput" id="imageIcon"><i class="fa fa-image"></i></label>
-<!-- <img src="" alt="" id="showImg"> -->
+<img width="100px" height="100px" src="" alt="" id="showImg" style="display: none;">
 <!-- Input thực tế để chọn file -->
 
 </div>
@@ -132,14 +132,15 @@
 
             if (selectedFile) {
                 const reader = new FileReader();
+                var url;
                 reader.onload = function (e) {
-                    var url = e.target.result;
-                    var chatHistoryUl = $('#chat-history-ul');
+                    url = e.target.result;
                     document.getElementById('showImg').src = url;
+
                     // Hiển thị ảnh trên biểu tượng
-                    // alert(url);
                 };
                 reader.readAsDataURL(selectedFile);
+                document.getElementById('showImg').style = 'block';
             }
         }
 </script>
@@ -159,6 +160,7 @@
 
     $(document).ready(function() {
         $('#message_form').submit(function(e) {
+
             e.preventDefault();
             var content = $('#content').val().trim();
             if (content.length > 0)

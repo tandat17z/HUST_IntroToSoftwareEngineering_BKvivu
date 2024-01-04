@@ -1,5 +1,98 @@
 {% extends "settingspage/base.html" %}
 {% load static %}
 {% block statistics %} 
-    
+<div style="display: flex;">
+<div class="section1">
+    <canvas id="myChart" style="width:100%; max-width:600px; align-items: center; margin: 0 auto; "></canvas>
+    <div style="text-align: center; align-items: center; justify-content: center;" >
+        <p>Doanh thu tính từ đầu năm <i style="color: blue;font-weight: bold;">{{year}}</i> là : <i style="color: red; font-weight: bold;">{{total}}</i></p>
+    </div>
+    <div id="myData" data-array="{{ monthOfYear }}"></div>
+
+
+    <canvas id="myPieChart" style="width: 100%; max-width: 600px;align-items: center; margin: 0 auto;"></canvas>
+    <div id="myPieData" data-array="{{age_phantram}}"></div>
+</div>
+<div class="section2">
+    <div class="table-statistics">
+    <p>Danh sách sản phẩm và số lượng bán được trong tháng {{month}} - {{year}}</p>
+    <table>
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+    </tr>
+    {% for key, value in product_quantity.items %}
+        <tr>
+            <td>{{key}}</td>
+            <td>{{value}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <p>Sản phẩm bán chạy nhất tháng {{month}} : {{best_seller_name}} - {{best_seller_quantity}}</p>
+    </div>
+</div>
+</div>
+<script>
+    const xValues = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const yValues = Array(12).fill(0);
+    const barColors = ["red", "green","blue","black","brown", "yellow", "sliver", "purple", "red", "bronze", "lime", "aqua"];
+    var myArray = JSON.parse(document.getElementById('myData').getAttribute('data-array'));
+    new Chart("myChart", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+            backgroundColor: barColors,
+            data: myArray
+            }]
+        },
+        options: {
+            legend: {display: false},
+            title: {
+            display: true,
+            text: "Store's monthly revenue",
+            }
+        },
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+            backgroundColor: barColors,
+            data: myArray
+            }]
+        },
+        options: {
+            legend: {display: false},
+            title: {
+            display: true,
+            text: "Store's monthly revenue",
+            }
+        }
+    });
+    var xPieValues = ["Age: 10-18", "Age: 18-30", "Age: 30-50", "Other"];
+    var barPieColors = [
+        "#b91d47",
+        "#00aba9",
+        "#2b5797",
+        "#e8c3b9",
+    ];
+    var yPieValues = JSON.parse(document.getElementById('myPieData').getAttribute('data-array'));
+    new Chart("myPieChart", {
+        type: "pie",
+        data: {
+            labels: xPieValues,
+            datasets: [{
+                backgroundColor: barPieColors,
+                data: yPieValues,
+            }
+            ]
+        },
+        options: {
+            title: {
+                display: true,
+                text: "Age Customer in {{month}} - {{year}}"
+            }
+        }
+    });
+</script>
 {% endblock %}
