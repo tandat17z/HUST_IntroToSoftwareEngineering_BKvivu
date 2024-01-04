@@ -11,7 +11,7 @@
 <ul>
     {% for post in postList %}
     
-    <li>
+    <li id="post_{{post.id}}">
         <div class="date">
             <h3>Mar<br><span>06</span></h3>
         </div>
@@ -37,12 +37,12 @@
                 <i class="fa-solid fa-comment"></i> <p>{{post.commentNum}}</p>
             </div>
             <div class="action-product">
-                <a href="#" class="edit-product">
+                <a class="edit-product">
                     <div>
                         <i class="fa-solid fa-pen" aria-hidden="true"></i>
                     </div>
                 </a>
-                <a href="#" class="delete-product">
+                <a class="delete-product" onclick="deletePost(event, {{post.id}})">
                     <div>
                         <i class="fa-solid fa-trash" aria-hidden="true"></i>
                     </div>
@@ -60,4 +60,28 @@
         <h3>Thêm bài viết</h3>
     </div>
 </a>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function deletePost(event, postId){
+        var userChoice = window.confirm("Bạn có chắc muốn xóa bài viết không?");
+        if( userChoice){
+            $.ajax({
+                url: `/settings/posts/delete/${postId}/`,  // Điều chỉnh đúng đường dẫn của view xóa dữ liệu
+                type: 'POST',
+                success: function(response) {
+                    var containerPost = document.getElementById('post_' + postId);
+                    if(response.success === true){
+                        containerPost.remove()
+                        alert("Xóa bài viết thành công")
+                    }
+
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    }
+</script>
 {% endblock %}

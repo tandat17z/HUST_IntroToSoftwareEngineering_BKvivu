@@ -4,7 +4,7 @@
 {% comment %} block của avatar trên header {% endcomment %}
 {% block info_user%}
 <div id="-box-nav">
-    <a href="" id="community"><i class="fa fa-fw fa-users"></i> Cộng đồng</a>
+    <a href="" id="community"><i class="fa fa-fw fa-users"></i> Giới thiệu </a>
     <div class="subnav">
         <a href="{% url 'postspage:restaurants' %}">Cửa hàng</a>
         <a href="{% url 'postspage:posts' %}">Bài chia sẻ</a>
@@ -94,11 +94,13 @@
                             <h2>{{item.author.name}}</h2>
                             <h3>Time: {{item.post.time}}</h3>
                             <p> 
-                                {% if item.post.provider %}
-                                    Đang ở: <a href="{% url 'profilepage:profilePage' item.post.provider.account.id%}"><strong>{{item.post.provider.name}}</strong></a>
-                                {% endif %}
+                                {% if item.post.ward and item.post.district and item.post.city%}
+                                    {% if item.post.provider %}
+                                        Đang ở: <a href="{% url 'profilepage:profilePage' item.post.provider.account.id%}"><strong>{{item.post.provider.name}}</strong></a>
+                                    {% endif %}
                                     <i class="fa-solid fa-location-dot"></i>
-                                    {{item.post.ward}}-{{item.post.district}}-{{item.post.city}} ({{item.post.address}})
+                                        {{item.post.ward}}-{{item.post.district}}-{{item.post.city}} ({{item.post.address}})
+                                {% endif %}
                             </p>
                         </div>
                         <h2 class="title"><strong>{{item.post.title}}</strong></h2>
@@ -299,7 +301,7 @@
                         <img class="img-food" src="${shop.avatar}" alt="">
                         <div class="info" style="padding-left: 10px;">
                             <div class="text">
-                                <h3>Cửa hàng: ${shop.name}</h3>
+                                <h3>${shop.name}</h3>
                                 <p>Đánh giá: ${shop.avgStar}/5 <span><img class="search_imgstar" src="{% static 'images/star.png' %}" alt=""></span></p>
                                 <p>${shop.district}-${shop.ward}</p>
                             </div>
@@ -380,7 +382,7 @@
                         showShop(response.dataShop, containerSearch);
                     }
                     else{
-                        showShop(response.dataProduct, containerSearch);
+                        showProduct(response.dataProduct, containerSearch);
                     }
                     alert("Tìm kiếm thành công")
                 },

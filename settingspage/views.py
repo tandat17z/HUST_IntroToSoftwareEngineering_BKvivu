@@ -20,6 +20,9 @@ from django.http import HttpResponseRedirect
 from func.func import *
 
 from collections import OrderedDict
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 ImageUploadFormSet = modelformset_factory(Image, CreateImgForm, extra=0, can_delete=True)
@@ -358,7 +361,7 @@ def testCreatePosts(request):
     acc = Account.objects.get(user_ptr=request.user)
     if request.method == 'POST':
         post = Post.objects.create(account = acc)
-        form_post = CreatePostForm(request.POST, instance=post)
+        form_post = CreatePostFormTest(request.POST, instance=post)
         if form_post.is_valid :
             # try:
             newPost = form_post.save(commit=False)
@@ -376,6 +379,14 @@ def testCreatePosts(request):
         }
         return render(request, 'posts/addPost.html', context)
 
+@csrf_exempt
+def testDeletePost(request, postId):
+    if request.method == 'POST':
+        post = Post.objects.get(id=postId)
+        post.delete()
+        print("đã xóa bài viết")
+        return JsonResponse({'success': True})
+    
 #Sattistics Page
 def statisticsPage(request):
     acc = Account.objects.get(user_ptr=request.user)

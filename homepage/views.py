@@ -50,13 +50,14 @@ def mainSearch(request):
     if request.method == 'POST':
         type = request.POST.get('choices')
         searchKey = request.POST.get('searchKey')
-        
+        words = unidecode(searchKey.lower()).split()
+        searchKey = ' '.join(words)
         city, district, ward = getArea(
             request.POST.get('city'),
             request.POST.get('district'),
             request.POST.get('ward')
         )
-        print("--" + searchKey +"--", city, district, ward)
+        
         t_open = request.POST.get('t_open')
         t_closed = request.POST.get('t_closed')
         if type == 'shop':
@@ -78,6 +79,7 @@ def mainSearch(request):
                                        },
                                        open=t_open, closed=t_closed)
             dataProduct = getDataProduct(searchProduct)
+            print(dataProduct)
             return JsonResponse({'dataProduct': dataProduct})
 
 
@@ -134,9 +136,6 @@ def searchAndFilter(keyword = '',
     listShop = searchShop
     # Tìm với từ khóa
     if keyword != '':
-        words = unidecode(keyword.lower()).split()
-        keyword = ' '.join(words)
-        
         listShop = list()
         searchProduct = searchProduct.filter(name_stripped__icontains=keyword).order_by('-time')
 

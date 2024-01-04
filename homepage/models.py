@@ -239,7 +239,7 @@ class Post(models.Model):
         return f"{self.account}_{self.title}"
 
     def save(self, *args, **kwargs):
-        words = unidecode((self.title + self.content).lower()).split()
+        words = unidecode((self.title + " " + self.content).lower()).split()
         self.name_stripped = ' '.join(words)
 
         #Tự động tính số like

@@ -8,6 +8,7 @@
     align-items: center;
     justify-content: center;
     display: none;
+    z-index: 10;
 }
 
 .list-comment {
@@ -23,4 +24,17 @@
     background: #4facfe; 
     background: -webkit-linear-gradient(to right, #00f2fe, #4facfe);
     background: linear-gradient(to right, #00f2fe, #4facfe);
+}
+
+.containerPost{
+    display:none; 
+    z-index: 1;
+}
+.detail-post{
+    background-color: azure;
+    width: 800px;
+    height: 600px;
+    overflow-y: scroll;
+    align-items: center;
+    justify-content: center;
 }

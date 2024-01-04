@@ -19,7 +19,6 @@
     border: 1px solid #ccc;
     border-radius: 20px;
     padding: 15px;
-    cursor: pointer;
 }
 
 .restaurant-list .restaurant .avatar {
@@ -39,4 +38,9 @@
     text-align: justify;
 }
 
+.bio-content{
+        width: 100%;
+        height: 125px; /* Kích thước cố định của thẻ p */
+        overflow-y:scroll; /* Ẩn nội dung khi vượt quá kích thước */
+}
 
