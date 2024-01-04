@@ -16,7 +16,7 @@ from .urls import *
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-
+from datetime import datetime
 from func.func import *
 
 from collections import OrderedDict
@@ -125,8 +125,16 @@ def generalPage(request):
 
             user.city, user.district, user.ward = getArea(city_id, district_id, ward_id)
 
-            user.avatar = request.FILES.get('avatar')
+            if 'avatar' in request.FILES: 
+                user.avatar = request.FILES.get('avatar')
             user.save()
+            context = {
+                'role': acc.role,
+                'acc': acc,
+                'user': user,
+            }
+
+            return render(request, 'general.html', context)
         else:
             user.name = request.POST.get('name')
             user.phone = request.POST.get('phone')
@@ -140,20 +148,39 @@ def generalPage(request):
             ward_id = request.POST.get('ward')
 
             user.city, user.district, user.ward = getArea(city_id, district_id, ward_id)
-
-            user.avatar = request.FILES.get('avatar')
-            user.bank = request.FILES.get('bank')
-
+            if 'avatar' in request.FILES: 
+                user.avatar = request.FILES.get('avatar')
+            if 'bank' in request.FILES:
+                user.bank = request.FILES.get('bank')
             user.facebook_link = request.POST.get('facebook_link')
             user.website_link = request.POST.get('website_link')
             user.save()
-        messages.success(request, 'Thông tin đã được cập nhật')
+            context = {
+                'role': acc.role,
+                'acc': acc,
+                'user': user,
+                'time_open': user.t_open,
+                'time_close': user.t_closed,
+            }
 
-    context = {
-        'role': acc.role,
-        'acc': acc,
-        'user': user,
-    }
+            return render(request, 'general.html', context)
+    if acc.role == 'manager':   
+        time_open = user.t_open.strftime("%H:%M")
+        time_close = user.t_closed.strftime("%H:%M")
+        
+        context = {
+            'role': acc.role,
+            'acc': acc,
+            'user': user,
+            'time_open': time_open,
+            'time_close': time_close,
+        }
+    else:
+        context = {
+            'role': acc.role,
+            'acc': acc,
+            'user': user,
+        }
     return render(request, 'general.html', context)
 
 #Bill Page
@@ -412,19 +439,24 @@ def statisticsPage(request):
             for order in  bill.order_set.all():
                 product = Product.objects.get(id=order.product_id)
                 product_quantity[product.name] += order.quantity
-            user_set.add(Sharer.objects.get(account_id=bill.sharer_id))
+            user_set.add(bill.acc)
     age_list = [0]*4
     total_age = len(user_set)
     for u in user_set:
-        age = u.age
-        if age >= 10 and age < 18:
-            age_list[0] += 1        
-        elif age >= 18 and age < 30:
-            age_list[1] += 1
-        elif age >= 30 and age < 50:
-            age_list[2] += 1
-        else:
-            age_list[3] += 1
+        try:
+            u = Sharer.objects.get(account=u)
+            age = u.age
+            if age >= 10 and age < 18:
+                age_list[0] += 1        
+            elif age >= 18 and age < 30:
+                age_list[1] += 1
+            elif age >= 30 and age < 50:
+                age_list[2] += 1
+            else:
+                age_list[3] += 1
+        except:
+            pass
+
     if total_age != 0:
         age_phantram = [round(age_list[0]*100/total_age, 2), round(age_list[1]*100/total_age,2), round(age_list[2]*100/total_age, 2), round(age_list[3]*100/total_age, 2)]
     else:

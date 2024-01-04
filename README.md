@@ -76,6 +76,7 @@ _Đang phát triển_
      - Tạo sản phẩm
      - Tạo bài viết
      - Hiển thị Bill
+<<<<<<< HEAD
 =======
 Setting :
 
@@ -91,3 +92,9 @@ Chat :
     -chưa tích hợp vào shop
     
 >>>>>>> ntThanh
+=======
+- Chat :
+    - Chỉ có người chia sẻ mới có thể nhắn với người quản lí
+    - Khi người dùng nhấn vào phần chat trong cửa hàng thì nó sẽ ra phần chat của người đó và người quản lí, còn ấn vào cái chat nổi nằm phía dưới sẽ hiện ra phần chat mặc định của người chia sẻ
+    - Đang phát triển thêm chat có kèm hình ảnh (continue)
+>>>>>>> master
