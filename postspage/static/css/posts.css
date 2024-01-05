@@ -39,52 +39,58 @@ ul {
 
 }
 
-.item .avatar {
+#showADetailPost{
+  margin:0px 15px 0px 15px;
+}
+.item .avatar, #showADetailPost .avatar {
   width: 70px;
   height: 70px;
   border-radius: 50%; 
   object-fit: cover; 
-  margin: 0 10px 10px 0;
+  margin: 0 20px 10px 0;
 }
 
 .info {
   overflow: hidden;
 }
 
+#showADetailPost .info{
+  margin: 10px auto 0px 20px;
+}
 .info img {
   float: left; 
   margin-right: 10px; 
 }
 
-.item p {
+.item p, #showADetailPost p {
   text-align: justify;
   margin-bottom: 15px;
 }
 
-.item .post-photo {
+.item .post-photo, #showADetailPost .post-photo {
   display: flex;
   overflow-x: auto;
 }
 
-.item .post-photo img {
+.item .post-photo img, #showADetailPost .post-photo img{
   margin-left: 5px;
   max-width: 100%;
   height: 150px;
   border-radius: 15px;
 }
 
-.item .post-actions {
+.item .post-actions, #showADetailPost .post-actions {
   display: flex;
   justify-content: space-around;
   margin-top: 20px;
 }
 
-.item .post-comment {
+.item .post-comment, #showADetailPost .post-comment{
   display: flex;
   align-items: center;
 }
 
-.item .post-comment .avatar {
+.item .post-comment .avatar, #showADetailPost .post-comment .avatar{
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -92,7 +98,7 @@ ul {
   margin: 20px 20px 0px 30px;
 }
 
-.item .post-comment input {
+.item .post-comment input, #showADetailPost .post-comment input{
   display: inline-block; 
   border: 1px solid #ccc;
   border-radius: 20px;
@@ -145,9 +151,7 @@ ul {
   background-color: bisque;
 }
 
-.searching .result :hover {
-  cursor: pointer;
-}
+
 .searching .result .avatar {
   width: 50px;
   height: 50px;
@@ -155,4 +159,25 @@ ul {
   object-fit: cover; 
   margin: 0 10px 10px 0;
   float:left;
+}
+
+.searching .result p{
+  margin-bottom: 5px;
+}
+
+.searching .result .titleLink{
+  cursor: pointer;
+}
+#resultPostSearch{
+  height: calc(100vh - 80px - 102px);;
+  overflow-y: scroll;
+}
+
+.groupInResult{
+  display: flex;
+  text-align: center;
+}
+
+.groupInResult i{
+  margin-right: 10px;
 }

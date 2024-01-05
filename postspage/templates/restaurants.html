@@ -1,97 +1,29 @@
 {% extends "common/layout.html" %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/restaurants.css'%}">
+{% endblock css %}
 {% block content %}
     <div class="restaurants">
         <div class="restaurant-list">
+            {% for shop in managers %}
             <div class="restaurant">
-                <img src="{% static 'img/user1.jpg'%}" alt="" class="avatar" >
+                <a href="{% url 'profilepage:profilePage' shop.account.id%}"><img src="{{shop.avatar.url}}" alt="" class="avatar" ></a>
                 <div class="restaurant-info">
-                    <h3>Restaurant1</h3>
-                    <i class="fa-solid fa-star">    4.5</i>
-                    <h4>Địa chỉ: Hà Nội</h4>
+                    <h4><strong>{{shop.name}}</strong></h4>
+                    <h6><i class="fa-solid fa-star"> </i>   4.5</h6>
+                    <h6><i class="fa-solid fa-location-dot"></i> {{shop.ward}} - {{shop.district}} - {{shop.city}} </h6>
+                    <h6><i class="fa-solid fa-clock"></i> {{shop.t_open}} - {{shop.t_closed}}</h6>
                 </div>
-                <p>Quán nướng có thể được chia thành hai loại chính là quán nướng bình dân và quán nướng cao cấp. Quán nướng bình dân thường có giá cả phải chăng, phù hợp với nhiều đối tượng khách hàng. Quán nướng cao cấp thường có giá cả cao hơn, tập trung vào chất lượng món ăn và dịch vụ.</p>
+                <hr>
+                <p class="bio-content">
+                    {{shop.bio}}
+                    The coefficient estimates for Ordinary Least Squares rely on the independence of the features. When features are correlated and the columns of the design matrix 
+ have an approximately linear dependence, the design matrix becomes close to singular and as a result, the least-squares estimate becomes highly sensitive to random errors in the observed target, producing a large variance. This situation of multicollinearity can arise, for example, when data are collected without an experimental design.
+                </p>
             </div>
-
-            <div class="restaurant">
-                <img src="{% static 'img/user1.jpg'%}" alt="" class="avatar" >
-                <div class="restaurant-info">
-                    <h3>Restaurant1</h3>
-                    <i class="fa-solid fa-star">    4.5</i>
-                    <h4>Địa chỉ: Hà Nội</h4>
-                </div>
-                <p>Quán nướng có thể được chia thành hai loại chính là quán nướng bình dân và quán nướng cao cấp. Quán nướng bình dân thường có giá cả phải chăng, phù hợp với nhiều đối tượng khách hàng. Quán nướng cao cấp thường có giá cả cao hơn, tập trung vào chất lượng món ăn và dịch vụ.</p>
-            </div>
-
-            <div class="restaurant">
-                <img src="{% static 'img/user1.jpg'%}" alt="" class="avatar" >
-                <div class="restaurant-info">
-                    <h3>Restaurant1</h3>
-                    <i class="fa-solid fa-star">    4.5</i>
-                    <h4>Địa chỉ: Hà Nội</h4>
-                </div>
-                <p>Quán nướng có thể được chia thành hai loại chính là quán nướng bình dân và quán nướng cao cấp. Quán nướng bình dân thường có giá cả phải chăng, phù hợp với nhiều đối tượng khách hàng. Quán nướng cao cấp thường có giá cả cao hơn, tập trung vào chất lượng món ăn và dịch vụ.</p>
-            </div>
-
-            <div class="restaurant">
-                <img src="{% static 'img/user1.jpg'%}" alt="" class="avatar" >
-                <div class="restaurant-info">
-                    <h3>Restaurant1</h3>
-                    <i class="fa-solid fa-star">    4.5</i>
-                    <h4>Địa chỉ: Hà Nội</h4>
-                </div>
-                <p>Quán nướng có thể được chia thành hai loại chính là quán nướng bình dân và quán nướng cao cấp. Quán nướng bình dân thường có giá cả phải chăng, phù hợp với nhiều đối tượng khách hàng. Quán nướng cao cấp thường có giá cả cao hơn, tập trung vào chất lượng món ăn và dịch vụ.</p>
-            </div>
-
-            <div class="restaurant">
-                <img src="{% static 'img/user1.jpg'%}" alt="" class="avatar" >
-                <div class="restaurant-info">
-                    <h3>Restaurant1</h3>
-                    <i class="fa-solid fa-star">    4.5</i>
-                    <h4>Địa chỉ: Hà Nội</h4>
-                </div>
-                <p>Quán nướng có thể được chia thành hai loại chính là quán nướng bình dân và quán nướng cao cấp. Quán nướng bình dân thường có giá cả phải chăng, phù hợp với nhiều đối tượng khách hàng. Quán nướng cao cấp thường có giá cả cao hơn, tập trung vào chất lượng món ăn và dịch vụ.</p>
-            </div>
-
-            <div class="restaurant">
-                <img src="{% static 'img/user1.jpg'%}" alt="" class="avatar" >
-                <div class="restaurant-info">
-                    <h3>Restaurant1</h3>
-                    <i class="fa-solid fa-star">    4.5</i>
-                    <h4>Địa chỉ: Hà Nội</h4>
-                </div>
-                <p>Quán nướng có thể được chia thành hai loại chính là quán nướng bình dân và quán nướng cao cấp. Quán nướng bình dân thường có giá cả phải chăng, phù hợp với nhiều đối tượng khách hàng. Quán nướng cao cấp thường có giá cả cao hơn, tập trung vào chất lượng món ăn và dịch vụ.</p>
-            </div>
-
-            <div class="restaurant">
-                <img src="{% static 'img/user1.jpg'%}" alt="" class="avatar" >
-                <div class="restaurant-info">
-                    <h3>Restaurant1</h3>
-                    <i class="fa-solid fa-star">    4.5</i>
-                    <h4>Địa chỉ: Hà Nội</h4>
-                </div>
-                <p>Quán nướng có thể được chia thành hai loại chính là quán nướng bình dân và quán nướng cao cấp. Quán nướng bình dân thường có giá cả phải chăng, phù hợp với nhiều đối tượng khách hàng. Quán nướng cao cấp thường có giá cả cao hơn, tập trung vào chất lượng món ăn và dịch vụ.</p>
-            </div>
-
-            <div class="restaurant">
-                <img src="{% static 'img/user1.jpg'%}" alt="" class="avatar" >
-                <div class="restaurant-info">
-                    <h3>Restaurant1</h3>
-                    <i class="fa-solid fa-star">    4.5</i>
-                    <h4>Địa chỉ: Hà Nội</h4>
-                </div>
-                <p>Quán nướng có thể được chia thành hai loại chính là quán nướng bình dân và quán nướng cao cấp. Quán nướng bình dân thường có giá cả phải chăng, phù hợp với nhiều đối tượng khách hàng. Quán nướng cao cấp thường có giá cả cao hơn, tập trung vào chất lượng món ăn và dịch vụ.</p>
-            </div>
-
-            <div class="restaurant">
-                <img src="{% static 'img/user1.jpg'%}" alt="" class="avatar" >
-                <div class="restaurant-info">
-                    <h3>Restaurant1</h3>
-                    <i class="fa-solid fa-star">    4.5</i>
-                    <h4>Địa chỉ: Hà Nội</h4>
-                </div>
-                <p>Quán nướng có thể được chia thành hai loại chính là quán nướng bình dân và quán nướng cao cấp. Quán nướng bình dân thường có giá cả phải chăng, phù hợp với nhiều đối tượng khách hàng. Quán nướng cao cấp thường có giá cả cao hơn, tập trung vào chất lượng món ăn và dịch vụ.</p>
-            </div>
+            {% endfor %}
+            
         </div>
     </div>
 {% endblock %}

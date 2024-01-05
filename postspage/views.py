@@ -110,6 +110,7 @@ def restaurantsView(request):
         'user': user,
         'managers' : managers,
     }
+    
     return render(request, 'restaurants.html', context)
 
 def test(request):
@@ -178,7 +179,8 @@ def delete_comment(request, comment_id):
         return JsonResponse({'success': False})
     else:
         return JsonResponse({'success': "error"})
-    
+
+@csrf_exempt 
 def get_comments(request, post_id):
     try:
         post = Post.objects.get(id=post_id)
@@ -199,3 +201,58 @@ def get_comments(request, post_id):
     except Exception as e:
         print(f"An error occurred: {e}")
         return JsonResponse({'error': 'An error occurred'})
+
+@csrf_exempt
+def searchPosts(request):
+    searchKey = request.POST.get('searchKey')
+    words = unidecode(searchKey.lower()).split()
+    keyword = ' '.join(words)
+
+    dataSearch = []
+    for post in Post.objects.filter(name_stripped__icontains=keyword).order_by('-like'):
+        if post.account.role == 'manager':
+            user = Manager.objects.get(account= post.account)
+        else:
+            user = Sharer.objects.get(account= post.account)
+
+        dataSearch.append({
+            'id': post.id,
+            'name': user.name,
+            'authorId': post.account.id,
+            'avatar': user.avatar.url,
+            'title': post.title,
+            'address': f"{post.ward} - {post.district}",
+            'provider':{
+                'name': post.provider.name,
+                'id': post.provider.account.id
+            } if post.provider else None,
+            'like': post.like,
+            'cmt': post.commentNum
+        })
+    print(dataSearch)
+    return JsonResponse({'dataSearch': dataSearch})
+
+@csrf_exempt
+def detailPost(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if post.account.role == 'manager':
+        author = Manager.objects.get(account = post.account)
+    else:
+        author = Sharer.objects.get(account = post.account)
+
+    detailPost = {
+        'authorName': author.name,
+        'authorAvatar': author.avatar.url,
+        'time': post.time,
+        'provider': post.provider.name,
+
+        'title': post.title,
+        'content': post.content,
+        'img': list(),
+        'like': post.like,
+        'cmt': post.commentNum,
+    }
+    for img in Image.objects.filter(post=post):
+        detailPost['img'].append(img.img.url)
+
+    return JsonResponse({'detailPost': detailPost})

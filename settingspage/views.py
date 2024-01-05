@@ -10,13 +10,19 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from homepage.models import *
 from .forms import *
+from django.http import JsonResponse
+import json
 from .urls import *
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from datetime import datetime
 from func.func import *
+
 from collections import OrderedDict
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 ImageUploadFormSet = modelformset_factory(Image, CreateImgForm, extra=0, can_delete=True)
@@ -121,7 +127,6 @@ def generalPage(request):
 
             if 'avatar' in request.FILES: 
                 user.avatar = request.FILES.get('avatar')
-    
             user.save()
             context = {
                 'role': acc.role,
@@ -180,13 +185,31 @@ def generalPage(request):
 
 #Bill Page
 def billsPage(request):
+    # if request.method == 'POST':
+    #     data_from_js = request.POST.get('data_from_js', '')
+    #     acc = Account.objects.get(user_ptr=request.user)
+    #     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    #     bills = user.bill_set.all()
+    
+    #     context = {
+    #         "bills" : bills,
+    #         "acc" : acc,
+    #         "user" : user,
+    #         "data_from_js" : data_from_js,
+    #     }
+    #     messages.success(request, data_from_js)
+    #     return render(request, "bills.html", context)
+
+        # return JsonResponse({'data_from_js' : data_from_js})
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     bills = user.bill_set.all()
+    selected_data = request.GET.get('selectedData', 'Waiting')
     context = {
         "bills" : bills,
         "acc" : acc,
         "user" : user,
+        "data_from_js" : selected_data,
     }
     return render(request, "bills.html", context)
 
@@ -217,6 +240,8 @@ def decline(request,billId):
     except :
         messages.success(message='Error happened, try again', request=request)
         return redirect('settingspage:billsPage')
+
+
 
 
 
@@ -336,7 +361,6 @@ def deleteImagePost(request, postId, imageId):
         image = Image.objects.get(id = imageId)
         image.isDelete = True
         image.save()
-        messages.success(request, 'Success')
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
     except:
         messages.error(request, 'Error')
@@ -351,36 +375,126 @@ def unDelete(request, postId, imageId):
     except:
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
     
+
+
 def testPostPage(request):
     acc = Account.objects.get(user_ptr=request.user)
-    postList = Post.objects.filter(account= acc)
+    postList = acc.post_set.all()
     context = {
         'acc': acc,
         'postList': postList,
     }
     return render(request, 'posts/postList.html', context)
 
-def testCreatePosts(request):
+def testEditPost(request, postId):
     acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account=acc) if acc.role=='sharer' else Manager.objects.get(account=acc) 
+    if request.method == 'GET':
+        post = Post.objects.get(id=postId)
+        img = post.image_set.all()
+        form_img = []
+        a = 0
+        for i in img :
+            a = a + 1
+            form_img.append(CreateImgForm(instance=i, prefix=f'form-{a}'))
+        context = {
+            'user': user,
+            'post': post,
+            'img': img,
+            'form_img': form_img,
+            'provider': Manager.objects.all()
+        }
+        return render(request, 'edit_post.html', context)
+    elif request.method == 'POST':
+        post = Post.objects.get(id=postId)
+        post.title = request.POST.get('title_post')
+        post.content = request.POST.get('content_post')
+        if request.POST.get('provider_post') != 'None':
+            post.provider_id = request.POST.get('provider_post')
+        img = post.image_set.all()
+        form_img = []
+        
+        a = 0
+        for i in img :
+            a = a+1
+            if i.isDelete == True :
+                i.delete()
+            else :
+                form_img.append(CreateImgForm(request.POST, request.FILES, prefix=f'form-{a}', instance=i))
+        for form in form_img:
+            form.save()
+        images = request.FILES.getlist('images')
+        for image in images :
+            img = Image.objects.create(post = post, img = image)
+            img.save()
+        city_id = request.POST.get('city')
+        district_id = request.POST.get('district')
+        ward_id = request.POST.get('ward')
+        
+        post.city, post.district, post.ward = getArea(city_id, district_id, ward_id)
+        post.save()
+        return redirect('settingspage:testPostPage')
+    
+def testDeleteImagePost(request, postId, imageId):
+    try:
+        image = Image.objects.get(id = imageId)
+        image.isDelete = True
+        image.save()
+        return HttpResponseRedirect(reverse('settingspage:testEditPost', args=[postId]))
+    except:
+        messages.error(request, 'Error')
+        return HttpResponseRedirect(reverse('settingspage:testEditPost', args=[postId]))
+
+
+def recoverDelete(request, postId):
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account=acc) if acc.role=='sharer' else Manager.objects.get(account=acc) 
+    post = Post.objects.get(id=postId)
+    img = post.image_set.all()
+    for i in img : 
+        i.isDelete = False
+        i.save()
+    return redirect('settingspage:testPostPage')
+
+def testCreatePosts(request):
+
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account=acc) if acc.role=='sharer' else Manager.objects.get(account=acc)
     if request.method == 'POST':
         post = Post.objects.create(account = acc)
-        form_post = CreatePostForm(request.POST, instance=post)
-        if form_post.is_valid :
-            # try:
-            newPost = form_post.save(commit=False)
-            newPost.save()
-            images = request.FILES.getlist('images')
-            for image in images :
-                img = Image.objects.create(post = post, img = image)
-                img.save()
-            messages.success(request, 'Tạo bài viết thành công')
-            return redirect('settingspage:testPostPage')
+        post.title = request.POST.get('title_post')
+        post.content = request.POST.get('content_post')
+        if request.POST.get('provider_post') != 'None':
+            post.provider_id = request.POST.get('provider_post')
+        post.time = timezone.datetime.now()
+        images = request.FILES.getlist('images')
+        for image in images :
+            img = Image.objects.create(post = post, img = image)
+            img.save()
+        city_id = request.POST.get('city')
+        district_id = request.POST.get('district')
+        ward_id = request.POST.get('ward')
+        
+        post.city, post.district, post.ward = getArea(city_id, district_id, ward_id)
+
+        post.save()
+        return redirect('settingspage:testPostPage')
     else:
-        createpostform = CreatePostFormTest()
         context = {
-            'createpostform': createpostform,
+            'acc': acc,
+            'user': user,
+            'time' : timezone.datetime.now(),
+            'provider': Manager.objects.all()
         }
-        return render(request, 'posts/addPost.html', context)
+        return render(request, 'baiviet.html', context)
+
+@csrf_exempt
+def testDeletePost(request, postId):
+    if request.method == 'POST':
+        post = Post.objects.get(id=postId)
+        post.delete()
+        print("đã xóa bài viết")
+        return JsonResponse({'success': True})
     
 #Sattistics Page
 def statisticsPage(request):
@@ -407,23 +521,29 @@ def statisticsPage(request):
             for order in  bill.order_set.all():
                 product = Product.objects.get(id=order.product_id)
                 product_quantity[product.name] += order.quantity
-            user_set.add(Sharer.objects.get(account_id=bill.id)) # who change sharer -> account ()
+            user_set.add(bill.acc)
     age_list = [0]*4
-    total_age = len(user_set)
+    total_age = 0
     for u in user_set:
-        age = u.age
-        if age >= 10 and age < 18:
-            age_list[0] += 1        
-        elif age >= 18 and age < 30:
-            age_list[1] += 1
-        elif age >= 30 and age < 50:
-            age_list[2] += 1
-        else:
-            age_list[3] += 1
+        try:
+            u = Sharer.objects.get(account=u)
+            total_age += 1
+            age = u.age
+            if age >= 10 and age < 18:
+                age_list[0] += 1        
+            elif age >= 18 and age < 30:
+                age_list[1] += 1
+            elif age >= 30 and age < 50:
+                age_list[2] += 1
+            else:
+                age_list[3] += 1
+        except:
+            pass
+
     if total_age != 0:
         age_phantram = [round(age_list[0]*100/total_age, 2), round(age_list[1]*100/total_age,2), round(age_list[2]*100/total_age, 2), round(age_list[3]*100/total_age, 2)]
     else:
-        age_phantram = [0]*4;    
+        age_phantram = [0]*4
     sorted_product_quantity = OrderedDict(sorted(product_quantity.items(), key = lambda item: item[1], reverse=True))
     context = {
         'acc' : acc,
@@ -438,3 +558,4 @@ def statisticsPage(request):
         'age_phantram': json.dumps(age_phantram),
     }
     return render(request, 'statistics.html', context)
+

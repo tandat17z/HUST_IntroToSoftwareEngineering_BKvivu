@@ -77,14 +77,14 @@ class Sharer(models.Model):
 
     def __str__(self):
         return f"{self.account}"
-    # def save(self, *args, **kwargs):
-    #     # Kiểm tra và xóa ảnh cũ (nếu có)
-    #     if self.pk:
-    #         try:
-    #             old_instance = Sharer.objects.get(pk=self.pk)
-    #             check = True
-    #         except:
-    #             check = False
+    def save(self, *args, **kwargs):
+        # Kiểm tra và xóa ảnh cũ (nếu có)
+        if self.pk:
+            try:
+                old_instance = Sharer.objects.get(pk=self.pk)
+                check = True
+            except:
+                check = False
 
     #         if check and old_instance.avatar.name != 'noavatar.png':
     #             if old_instance.avatar:
@@ -129,9 +129,6 @@ class Manager(models.Model):
         avg_star = StarVote.objects.filter(manager=self).aggregate(Avg('stars'))['stars__avg']
         self.avgStar = avg_star if avg_star else 0.0
 
-        
-# commnet hàm save này vì khi ở phần general nếu mình ko chọn ảnh thì nó sẽ tự xóa ảnh cũ và cho về ảnh mặc định
-        
     # def save(self, *args, **kwargs):
     #     # Kiểm tra và xóa ảnh cũ (nếu có)
     #     if self.pk:
@@ -154,15 +151,15 @@ class Manager(models.Model):
         #x     self.rank = 0
 
         # Gọi hàm tính sao trung bình để cập nhật avgStar
-        self.updateAvgStar()
+        # self.updateAvgStar()
 
         # bỏ dấu của name để phục vụ tính năng tìm kiếm
-        if self.name:
-            words = unidecode(self.name.lower()).split()
-            self.name_stripped = ' '.join(words)
+        # if self.name:
+        #     words = unidecode(self.name.lower()).split()
+        #     self.name_stripped = ' '.join(words)
 
         # Gọi hàm save của lớp cha (object)
-        super().save(*args, **kwargs)
+        # super().save(*args, **kwargs)
 
 class Product(models.Model):
     TYPES = [
@@ -242,7 +239,7 @@ class Post(models.Model):
         return f"{self.account}_{self.title}"
 
     def save(self, *args, **kwargs):
-        words = unidecode((self.title + self.content).lower()).split()
+        words = unidecode((self.title + " " + self.content).lower()).split()
         self.name_stripped = ' '.join(words)
 
         #Tự động tính số like

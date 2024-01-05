@@ -12,44 +12,144 @@ from .models import *
 from .forms import *
 
 from func.func import *
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
-def searchTag(type): # Tìm kiếm theo tag -> list product
+def searchTag__(type): # Tìm kiếm theo tag -> list product
     searchShop = []
     # Tên có chưa tag hoặc type = tag
     searchProduct = Product.objects.filter(Q(name_stripped__icontains=type) | Q(type__icontains=type))
     return searchShop, searchProduct
+
+@csrf_exempt
+def searchTag(request, tag):
+    tag = tag.replace("_", " ")
+    searchShop = []
+    searchProduct = []
+
+    searchProduct = Product.objects.filter(Q(name_stripped__icontains=tag) | Q(type__icontains=tag)).order_by('price')
+    if request.method == 'POST':
+        choices = request.POST.get('choices')
+        if choices == 'shop':
+            for shop in  Manager.objects.filter(name_stripped__icontains=tag):
+                searchShop.append(shop)
+            for product in searchProduct:
+                if product.provider not in searchShop:
+                    searchShop.append(product.provider)
+            searchShop = sorted(searchShop, key=lambda obj: -obj.avgStar)
+            dataShop = getDataShop(searchShop)
+            return JsonResponse({'dataShop': dataShop})
+        
+        elif choices == 'product':
+            dataProduct = getDataProduct(searchProduct)
+            return JsonResponse({'dataProduct': dataProduct})
+
+@csrf_exempt 
+def mainSearch(request):
+    if request.method == 'POST':
+        type = request.POST.get('choices')
+        searchKey = request.POST.get('searchKey')
+        words = unidecode(searchKey.lower()).split()
+        searchKey = ' '.join(words)
+        city, district, ward = getArea(
+            request.POST.get('city'),
+            request.POST.get('district'),
+            request.POST.get('ward')
+        )
+        
+        t_open = request.POST.get('t_open')
+        t_closed = request.POST.get('t_closed')
+        if type == 'shop':
+            searchShop = searchAndFilter(searchKey, type='shop',
+                                       area={
+                                           'ward': ward,
+                                           'district': district,
+                                           'city': city
+                                       },
+                                       open=t_open, closed=t_closed)
+            dataShop = getDataShop(searchShop)
+            return JsonResponse({'dataShop': dataShop})
+        else:
+            searchProduct = searchAndFilter(searchKey, type='product',
+                                       area={
+                                           'ward': ward,
+                                           'district': district,
+                                           'city': city
+                                       },
+                                       open=t_open, closed=t_closed)
+            dataProduct = getDataProduct(searchProduct)
+            print(dataProduct)
+            return JsonResponse({'dataProduct': dataProduct})
+
+
+def getDataShop(searchShop):
+    dataShop = list()
+    for item in searchShop:
+        print(item.account.id)
+        dataShop.append( {
+            'id': item.account.id,
+            'avatar': item.avatar.url,
+            'name': item.name,
+            'avgStar': item.avgStar,
+            'district': item.district,
+            'ward': item.ward
+        })
+    return dataShop
+
+def getDataProduct(searchProduct):
+    dataProduct = list()
+    for product in searchProduct:
+        dataProduct.append({
+            'name': product.name,
+            'provider': {
+                'id': product.provider.account.id,
+                'name': product.provider.name,
+                'avatar': product.provider.avatar.url,
+            },
+            'img': product.img.url,
+            'price': product.price
+        })
+    return dataProduct
+
 
 def searchAndFilter(keyword = '', 
                     type='product', 
                     area={'ward': 'all', 'district': 'all', 'city': 'all'}, 
                     open="00:00", closed="23:59"):
     '''
-    Tìm các shop hợp lệ, tìm sản phẩm của shop đó
+    Tìm các shop hợp lệ, tìm sản phẩm của shop đó (dk thoi gian + vitri)
     '''
-    searchShop = []
-    searchProduct = []
+    # if open <= closed: # tìm bình thường
+    searchShop = Manager.objects.filter(
+        Q(t_open__gte=open, t_open__lte=closed ) 
+        | Q(t_closed__gte=open, t_closed__lte=closed ) 
+        | Q(t_open__lte=open, t_closed__gte=closed)
+    )
     
-    # print("in", keyword, type, area, open, closed)
-    #Những shop đang mở cửa và ở trong khu vực tìm kiếm
-    searchShop = Manager.objects.filter(Q(t_open__gte=open, t_open__lte=closed ) | Q(t_closed__gte=open, t_closed__lte=closed ))
+
     if area['ward'] != 'all': searchShop = searchShop.filter(ward=area['ward'])
     elif area['district'] != 'all': searchShop = searchShop.filter(district=area['district'])
     elif area['city'] != 'all': searchShop = searchShop.filter(city=area['city'])
+
     searchProduct = Product.objects.filter(provider__in=searchShop)
-    print(keyword, area)
-    print(searchShop)
-    print(searchProduct)
+    listShop = searchShop
     # Tìm với từ khóa
     if keyword != '':
-        searchShop = searchShop.filter(name_stripped__icontains=keyword)
-        searchProduct = searchProduct.filter(name_stripped__icontains=keyword)
+        listShop = list()
+        searchProduct = searchProduct.filter(name_stripped__icontains=keyword).order_by('-time')
 
-    print(searchShop)
-    print(searchProduct)
+        for shop in  searchShop.filter(name_stripped__icontains=keyword).order_by('-avgStar'):
+            listShop.append(shop)
+        for product in searchProduct:
+            if product.provider not in listShop:
+                listShop.append(product.provider)
+        listShop = sorted(listShop, key=lambda obj: -obj.avgStar)
+
     if type == 'shop':
-        return searchShop.order_by('-avgStar'), []
+        return listShop
     else:
-        return [], searchProduct.order_by('-time')
+        return searchProduct
 
 # Create your views here.
 def homePage(request):
@@ -77,58 +177,14 @@ def homePage(request):
             'img': Image.objects.filter(post = p)
         })
 
-    # search ----------------
-    if request.method == 'POST': # Ở trang thái tìm kiếm sản phẩm, lọc
-        # Tìm kiếm ở header
-        if 'btnHeaderSearch' in request.POST:
-            keyword = request.POST.get('headerSearch')
-            keyword_stripped = unidecode(keyword).strip().lower() # Tìm kiếm không dấu
-            
-            searchShop, searchProduct = searchAndFilter(keyword_stripped)
-        # Tìm kiếm theo tag ------------------
-        elif 'bundau' in request.POST:
-            searchShop, searchProduct = searchTag('bun dau')
-        elif 'comrang' in request.POST:
-            searchShop, searchProduct = searchTag('com rang')
-        elif 'nemnuong' in request.POST:
-            searchShop, searchProduct = searchTag('nem nuong')
-        elif 'congvien' in request.POST:
-            searchShop, searchProduct = searchTag('cong vien')
-        elif 'baotang' in request.POST:
-            searchShop, searchProduct = searchTag('bao tang')
-        # Tìm kiếm chuẩn --------------------
-        elif 'btnSearch' in request.POST:
-            print(request.POST)
-            keyword = request.POST.get('search')
-            words = unidecode(keyword.lower()).split()
-            keyword_stripped = ' '.join(words) # Tìm kiếm không dấu
-            type = request.POST.get('type')
-            city, district, ward = getArea(
-                request.POST.get('city'),
-                request.POST.get('district'),
-                request.POST.get('ward')
-            )
-            area = {
-                'ward': ward, 
-                'district': district, 
-                'city': city
-            }
-            open = request.POST.get("t_open")
-            closed = request.POST.get("t_closed")
-            print("vào phần tìm kiếm rồi")
-            # print(type, area, open, closed, keyword_stripped)
-            searchShop, searchProduct = searchAndFilter(keyword_stripped, type, area, open, closed)
-    
-    else: # Mặc định trả ra list sản phẩm mới nhất
-        searchShop = []
-        searchProduct = Product.objects.order_by('-like')
+    # Mặc định chưa tìm kiếm là hiển thị các sản phẩm mới nhất
+    searchProduct = Product.objects.order_by('-time')
 
     context = {
         'acc': acc,
         'user': user,
         'top_shops': top_shops,
         'topPosts': info,
-        'searchShop': searchShop,
         'searchProduct': searchProduct,
     }
     return render(request, 'homepage.html', context)
@@ -242,11 +298,6 @@ def registerPage(request):
             'role' :  acc.role,
         }
         return render(request, 'register.html', context)
-
-
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
 
 @csrf_exempt
 def update_likes(request, post_id):

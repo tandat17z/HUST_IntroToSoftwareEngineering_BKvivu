@@ -2,11 +2,21 @@
 {% load static %}
 
 {% block post%}
+<style>
+    @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+</style>
 <div class="container">
     <ul>
         {% for post in acc.post_set.all %}
             <li>
-            <div style="display: flex;">
+            <div style="display: flex; justify-content: space-between;">
                 <div>
                     <div style="display: block;">
                         <p style="font-weight: bold; font-size: 30px; color: red;">&#9812;  {{post.title}}</p>
@@ -20,8 +30,9 @@
                         <p style="font-weight: bold;">&#128078; {{post.dislike}}</p>
                     </div>
                 </div>
-                <hr style="height: 200px; border-left: 2px solid black;">
-                <div style="align-items: center; justify-content: center;">
+                
+                <div style="align-items: center; justify-content: center; display: flex;">
+                    <hr style="height: 200px; border-left: 2px solid black; ">
                     <a style="text-decoration: none; font-size: 30px; " href="{% url 'settingspage:changePost' post.id %}">&#9998;</a>
                     <a style="text-decoration: none; font-size: 30px; margin-left: auto;" href="{% url 'settingspage:deletePost' post.id %}">
                         <div>
@@ -33,7 +44,7 @@
             </li>
         {% endfor %} 
     </ul>
-    <a style="text-decoration: none;" href="{% url 'settingspage:addPost' %}"><button style="font-size: 30px;">&#10010; Tạo bài viết</button></a>
+    <a style="text-decoration: none; right: 20px; bottom: 20px; position: fixed;" href="{% url 'settingspage:addPost' %}"><button style="font-size: 30px;">&#10010; Tạo bài viết</button></a>
     </div>
  {% endblock %}
  {% load static %}
