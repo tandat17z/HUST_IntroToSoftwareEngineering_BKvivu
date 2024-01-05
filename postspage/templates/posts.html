@@ -37,20 +37,18 @@
                     <div class="post-actions">
                         <!-- LIKE -->
                         {% if item.userLike %}
-                        <button value="true" onclick="likeAction(event, {{item.post.id}})" style="background-color: #f00;"> 
+                        <button class="_{{item.post.id}}_btnLike" value="true" onclick="likeAction(event, {{item.post.id}})" style="background-color: #f00;"> 
                         {% else %}
-                        <button value="false" onclick="likeAction(event, {{item.post.id}})"> 
+                        <button class="_{{item.post.id}}_btnLike" value="false" onclick="likeAction(event, {{item.post.id}})"> 
                         {% endif %}
-                            <big id="{{item.post.id}}_like">{{item.post.like}} </big> 
+                            <big class="_{{item.post.id}}_like">{{item.post.like}} </big> 
                             <i class="far fa-thumbs-up"></i>
                         </button>
                         <!-- Comment -->
                         <button onclick="showComment(event, {{ item.post.id }})"> 
-                            <big id="{{item.post.id}}_commentNum">{{item.post.commentNum}} </big> 
+                            <big class="_{{item.post.id}}_commentNum">{{item.post.commentNum}} </big> 
                             <i class="far fa-comment"></i> 
                         </button>
-                        <!-- Heart -->
-                        <i class="fa-regular fa-heart"></i>
                     </div>
 
                     <div class="post-comment">
@@ -89,38 +87,61 @@
             </div>
         </div> 
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         function likeAction(event, postId) {
-            const button = event.currentTarget;
-            const likeElement = document.getElementById(postId + "_like");
-            const like = parseInt(likeElement.innerText, 10);   
-            let newLike = like;
-            if( button.value === "false"){
-                newLike = like + 1;
-                button.value = "true";
-                button.style.backgroundColor = '#f00';
+            var btnLikeElements = document.querySelectorAll("._" + postId + "_btnLike");
+            var likeNumElms = document.querySelectorAll("._" + postId + "_like");
+            var liked = btnLikeElements[0].value;
+            btnLikeElements.forEach(function(btnLike){
+                if( btnLike.value === "false"){
+                    btnLike.value = "true";
+                    btnLike.style.backgroundColor = '#f00';
+                }
+                else{
+                    btnLike.value = "false";
+                    btnLike.style.backgroundColor = '#fff';
+                }
+            });
+
+            var likeNum;
+            if( liked === 'true'){
+                likeNumElms.forEach(function(likeElm){
+                    likeNum = parseInt(likeElm.innerText, 10) - 1;
+                    likeElm.innerText = likeNum;
+                });
             }
             else{
-                newLike = like - 1;
-                button.value = "false";
-                button.style.backgroundColor = '#fff';
+                likeNumElms.forEach(function(likeElm){
+                    likeNum = parseInt(likeElm.innerText, 10) + 1;
+                    likeElm.innerText = likeNum;
+                });
             }
-            likeElement.innerText = newLike
-
+            
             // Gửi yêu cầu AJAX để cập nhật số lượng like trên server
             const xhr = new XMLHttpRequest();
             xhr.open("POST", `/postspage/update_likes/${postId}/`, true);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhr.send(JSON.stringify({ like: newLike}));
+            xhr.send(JSON.stringify({ like: likeNum}));
         }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<script>
     function insertComment(event, postId){
-        const inputCmt = document.getElementById(postId + "_comment");
-        const contentCmd = inputCmt.value;
+        var inputCmt = document.getElementById(postId + "_comment_detailPost");
+        if (inputCmt){
+            var contentCmd = inputCmt.value;
+        }
+        else{
+            inputCmt = document.getElementById(postId + "_comment");
+            contentCmd = inputCmt.value;
+        }
+
+        if(contentCmd.length === 0){
+            alert("Hãy nhập comment");
+            return;
+        }
+
         inputCmt.value = '';
+
         // Gửi yêu cầu AJAX để cập nhật số lượng like trên server
         const xhr = new XMLHttpRequest();
         xhr.open("POST", `/postspage/insert_comment/${postId}/`, true);
@@ -129,8 +150,11 @@
         alert("Comment thành công rồi nhé");
 
         // Tăng _commentNum
-        const cmtNum = document.getElementById(postId + "_commentNum");
-        cmtNum.innerText = parseInt(cmtNum.innerText, 10) + 1
+        const cmtNumElms = document.querySelectorAll("._" + postId + "_commentNum");
+        cmtNumElms.forEach(function(cmtNum){
+            cmtNum.innerText = parseInt(cmtNum.innerText, 10) + 1
+        });
+
         showCmt(postId)
     }
     function showComment(event, postId){
@@ -170,9 +194,7 @@
                                 </p>
                                 <button onclick="deleleCmt(event, ${comment.id})"><i class="fa-solid fa-xmark"></i> </button>
                                 </div>
-                                <p class="small mb-0">
-                                ${comment.content}
-                                </p>
+                                <p class="small mb-0"  style="white-space: pre-line;">${comment.content}</p>
                             </div>
                             </div>
                         </div>
@@ -201,8 +223,10 @@
                 if(response.success === true){
                     containerComment.remove()
                     // Giảm _commentNum
-                    const cmtNum = document.getElementById(response.postId + "_commentNum");
-                    cmtNum.innerText = parseInt(cmtNum.innerText, 10) - 1
+                    const cmtNumElms = document.querySelectorAll("._" + response.postId + "_commentNum");
+                    cmtNumElms.forEach(function(cmtNum){
+                        cmtNum.innerText = parseInt(cmtNum.innerText, 10) - 1
+                    });
                     alert("Xóa bình luận của bạn thành công")
                 }
                 else{
@@ -308,7 +332,7 @@
                         </p>
                     </div>
                     <h3><strong>${detailPost.title}</strong></h3>
-                    <p>${detailPost.content}</p>
+                    <p  style="white-space: pre-line;">${detailPost.content}</p>
                     <div class="post-photo">
                 `;
                 // vòng for hiển thị các ảnh
@@ -322,22 +346,29 @@
                     </div>
 
                     <div class="post-actions">
-                        <button value="false" onclick="likeAction(event, {{item.post.id}})"> 
-                            <big id="${detailPost.like}_like">${detailPost.like}</big> 
+                `;
+                
+                if(detailPost.userLike){
+                    div1 += `<button class="_${postId}_btnLike" value="true" onclick="likeAction(event, ${postId})" style="background-color: #f00;">`; 
+                }
+                else{
+                    div1 += `<button class="_${postId}_btnLike" value="false" onclick="likeAction(event, ${postId})"> `;
+                }
+
+                div1 += `
+                            <big class="_${postId}_like">${detailPost.like}</big> 
                             <i class="far fa-thumbs-up"></i>
                         </button>
                         <!-- Comment -->
-                        <button onclick="showComment(event, {{ item.post.id }})"> 
-                            <big id="${detailPost.cmt}_commentNum">${detailPost.cmt} </big> 
+                        <button onclick="showComment(event, ${postId})"> 
+                            <big class="_${postId}_commentNum">${detailPost.cmt} </big> 
                             <i class="far fa-comment"></i> 
                         </button>
-                        <!-- Heart -->
-                        <i class="fa-regular fa-heart"></i>
                     </div>
 
                     <div class="post-comment">
-                        <img src="" alt="" class="avatar">
-                        <input type="text" placeholder="Viết bình luận ..." class="comment" id="${postId}_comment">
+                        <img src="${detailPost.user.avatar}" alt="" class="avatar">
+                        <input type="text" placeholder="Viết bình luận ..." class="comment" id="${postId}_comment_detailPost">
                         <button class="sendCmt" onclick="insertComment(event, ${postId})"> Gửi</button>
                     </div>
                 `;

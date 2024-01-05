@@ -78,6 +78,7 @@
 .post .info p{
     text-align: left;
     margin: 0px;
+    font-size: 14px;
 }
 .post .info hr{
     margin-bottom: 2px;

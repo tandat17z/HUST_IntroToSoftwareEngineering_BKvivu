@@ -1,3 +1,11 @@
+#containerComment{
+    z-index: 10;
+}
+
+#containerPost{
+    z-index: 9;
+}
+
 .list-comment-container {
     position: fixed;
     top: 0;
@@ -8,7 +16,6 @@
     align-items: center;
     justify-content: center;
     display: none;
-    z-index: 10;
 }
 
 .list-comment {
