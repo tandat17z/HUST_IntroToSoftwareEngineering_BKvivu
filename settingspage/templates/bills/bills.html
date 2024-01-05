@@ -9,6 +9,7 @@
         <option value="Waiting">Waiting</option>
         <option value="Accept">Accept</option>
         <option value="Decline">Decline</option>
+        <option value="DeclineByUser">DeclineByUser</option>
     </select>
 <button id="getDataButton" style="height: 50px; width: 50px;">Lọc</button>
 </div>
@@ -20,7 +21,7 @@
         {% if bill.status == data_from_js %}
         <li>
             <i style="color: red; font-weight: bold; font-size: large;">{{bill.time}}</i>
-            Khách hàng <i style="color: red; font-weight: bold;">{{bill.sharer.name}}</i> đã gửi yêu cầu xác nhận đơn hàng, ấn vào để xem chi tiết &#8681;
+            Khách hàng đã gửi yêu cầu xác nhận đơn hàng, ấn vào để xem chi tiết &#8681;
             <p style="font-weight: bold;">Status : 
 
                 <i style="color:red">{{bill.status}}</i>
@@ -32,7 +33,7 @@
                     {% elif bill.status == "Waiting" %}
                     &#10227;
                     {% elif bill.status == "DeclineByUser" %}
-                    <p style="color : red;">Người dùng đã hủy đơn hàng</p>
+                    <p style="color : red; font-weight: bold;">Người dùng đã hủy đơn hàng</p>
                     {% endif %}
                 </i>
             </p>

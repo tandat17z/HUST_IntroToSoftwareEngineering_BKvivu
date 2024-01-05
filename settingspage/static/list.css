@@ -4,7 +4,7 @@ ul {
     margin: 30px;
 }
 
- li {
+li {
     display: block;
     cursor: pointer;
     text-align: center;

@@ -185,22 +185,7 @@ def generalPage(request):
 
 #Bill Page
 def billsPage(request):
-    # if request.method == 'POST':
-    #     data_from_js = request.POST.get('data_from_js', '')
-    #     acc = Account.objects.get(user_ptr=request.user)
-    #     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-    #     bills = user.bill_set.all()
-    
-    #     context = {
-    #         "bills" : bills,
-    #         "acc" : acc,
-    #         "user" : user,
-    #         "data_from_js" : data_from_js,
-    #     }
-    #     messages.success(request, data_from_js)
-    #     return render(request, "bills.html", context)
-
-        # return JsonResponse({'data_from_js' : data_from_js})
+   
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     bills = user.bill_set.all()
@@ -213,11 +198,12 @@ def billsPage(request):
     }
     return render(request, "bills/bills.html", context)
 
-
 def viewBill(request, billId):
     if request.method == 'GET' :
         bill = Bill.objects.get(id = billId)
-        return render(request, "bills/bill.html", {"bill" : bill})
+        user = Sharer.objects.get(account_id=bill.acc_id) if bill.acc.role=='sharer' else Manager.objects.get(account_id=bill.acc_id) 
+        return render(request, "bills/bill.html", {"bill" : bill, 'user': user})
+    
 def accept(request, billId):
     try :
         bill = Bill.objects.get(pk = billId)
@@ -450,7 +436,7 @@ def testDeleteImagePost(request, postId, imageId):
         return HttpResponseRedirect(reverse('settingspage:testEditPost', args=[postId]))
 
 
-def recoverDelete(request, postId):
+def testRecoverDelete(request, postId):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account=acc) if acc.role=='sharer' else Manager.objects.get(account=acc) 
     post = Post.objects.get(id=postId)

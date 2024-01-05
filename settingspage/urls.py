@@ -13,7 +13,7 @@ urlpatterns = [
     path('posts/delete/<int:postId>/', views.testDeletePost, name='testDeletePost'),
     path('posts/edit/<int:postId>/', views.testEditPost, name="testEditPost"),
     path('posts/edit/<int:postId>/testDeleteImagePost/<int:imageId>', views.testDeleteImagePost, name='testDeleteImagePost'),
-    path('posts/edit/<int:postId>/recoverDelete/', views.recoverDelete, name="recoverDelete"),
+    path('posts/edit/<int:postId>/testRecoverDelete/', views.testRecoverDelete, name="testRecoverDelete"),
 
 
     # path('posts/', views.postPage, name='postPage'),
