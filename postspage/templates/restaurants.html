@@ -6,7 +6,6 @@
 {% block content %}
     <div class="restaurants">
         <div class="restaurant-list">
-            <button class="button_id">Load Data</button>
             {% for shop in managers %}
             <div class="restaurant">
                 <a href="{% url 'profilepage:profilePage' shop.account.id%}"><img src="{{shop.avatar.url}}" alt="" class="avatar" ></a>
