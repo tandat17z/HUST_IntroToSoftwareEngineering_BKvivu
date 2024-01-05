@@ -88,6 +88,7 @@ ul {
 .item .post-comment, #showADetailPost .post-comment{
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .item .post-comment .avatar, #showADetailPost .post-comment .avatar{

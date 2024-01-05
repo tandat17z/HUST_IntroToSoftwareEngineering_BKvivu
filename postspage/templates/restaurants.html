@@ -6,6 +6,7 @@
 {% block content %}
     <div class="restaurants">
         <div class="restaurant-list">
+            <button class="button_id">Load Data</button>
             {% for shop in managers %}
             <div class="restaurant">
                 <a href="{% url 'profilepage:profilePage' shop.account.id%}"><img src="{{shop.avatar.url}}" alt="" class="avatar" ></a>
@@ -16,11 +17,7 @@
                     <h6><i class="fa-solid fa-clock"></i> {{shop.t_open}} - {{shop.t_closed}}</h6>
                 </div>
                 <hr>
-                <p class="bio-content">
-                    {{shop.bio}}
-                    The coefficient estimates for Ordinary Least Squares rely on the independence of the features. When features are correlated and the columns of the design matrix 
- have an approximately linear dependence, the design matrix becomes close to singular and as a result, the least-squares estimate becomes highly sensitive to random errors in the observed target, producing a large variance. This situation of multicollinearity can arise, for example, when data are collected without an experimental design.
-                </p>
+                <p class="bio-content"  style="white-space: pre-line;">{{shop.bio}}</p>
             </div>
             {% endfor %}
             
