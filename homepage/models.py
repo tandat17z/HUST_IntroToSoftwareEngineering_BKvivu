@@ -77,14 +77,14 @@ class Sharer(models.Model):
 
     def __str__(self):
         return f"{self.account}"
-    def save(self, *args, **kwargs):
-        # Kiểm tra và xóa ảnh cũ (nếu có)
-        if self.pk:
-            try:
-                old_instance = Sharer.objects.get(pk=self.pk)
-                check = True
-            except:
-                check = False
+    # def save(self, *args, **kwargs):
+    #     # Kiểm tra và xóa ảnh cũ (nếu có)
+    #     if self.pk:
+    #         try:
+    #             old_instance = Sharer.objects.get(pk=self.pk)
+    #             check = True
+    #         except:
+    #             check = False
 
     #         if check and old_instance.avatar.name != 'noavatar.png':
     #             if old_instance.avatar:
