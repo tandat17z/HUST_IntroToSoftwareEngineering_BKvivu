@@ -23,7 +23,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from homepage.models import Post, Comment
 
-from django.utils import timezone
 # @csrf_exempt
 # @login_required
 # def like_post(request):
@@ -66,7 +65,7 @@ from django.utils import timezone
 def postsPage(request):
     posts = Post.objects.filter().order_by('-time')
     managers = Manager.objects.filter().order_by('-avgStar')
-    
+
     return render(request, 'index.html', {'posts' : posts, 'managers' : managers})
 
 # Posts -------------------------------------------------------------
@@ -81,12 +80,12 @@ def postsView(request):
     for p in posts:
         author = Sharer.objects.get(account= p.account) if p.account.role == 'sharer' else Manager.objects.get(account= p.account)
         try:
-            userLike = UserLike.objects.get(account=acc, post=p) 
+            userLike = UserLike.objects.get(account=acc, post=p)
         except:
             userLike = None
         info.append({
-            'post': p, 
-            'author': author, 
+            'post': p,
+            'author': author,
             'userLike': userLike,
             'img': Image.objects.filter(post = p)
         })
@@ -111,7 +110,7 @@ def restaurantsView(request):
         'user': user,
         'managers' : managers,
     }
-    
+
     return render(request, 'restaurants.html', context)
 
 def test(request):
@@ -135,20 +134,18 @@ def update_likes(request, post_id):
                 account = acc,
                 post = post
             )
-            print("Tạo userlike")
         else:
             userLike = UserLike.objects.get(
                 account = acc,
                 post = post
             )
             userLike.delete()
-            print("Xóa userlike")
         post.like = data['like']
         post.save()
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False})
-    
+
 @csrf_exempt
 def insert_comment(request, post_id):
     acc = Account.objects.get(user_ptr=request.user)
@@ -160,7 +157,6 @@ def insert_comment(request, post_id):
         comment = Comment.objects.create(
             account = acc,
             post = post,
-            time = timezone.now(),
             content = data['comment']
         )
         post.commentNum += 1
@@ -184,7 +180,7 @@ def delete_comment(request, comment_id):
     else:
         return JsonResponse({'success': "error"})
 
-@csrf_exempt 
+@csrf_exempt
 def get_comments(request, post_id):
     try:
         post = Post.objects.get(id=post_id)
@@ -200,7 +196,7 @@ def get_comments(request, post_id):
                 'time': comment.time,
                 'content': comment.content
             })
-        
+
         return JsonResponse({'comments': data})
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -238,24 +234,13 @@ def searchPosts(request):
 
 @csrf_exempt
 def detailPost(request, post_id):
-    acc = Account.objects.get(user_ptr=request.user)
-    user = Manager.objects.get(account = acc) if acc.role == 'manager' else Sharer.objects.get(account = acc) 
     post = Post.objects.get(id=post_id)
     if post.account.role == 'manager':
         author = Manager.objects.get(account = post.account)
     else:
         author = Sharer.objects.get(account = post.account)
 
-    try:
-        isLike = UserLike.objects.get(account=acc, post=post)
-        isLike = True
-    except:
-        isLike = False
-        
     detailPost = {
-        'user': {
-            'avatar': user.avatar.url,
-        },
         'authorName': author.name,
         'authorAvatar': author.avatar.url,
         'time': post.time,
@@ -266,15 +251,8 @@ def detailPost(request, post_id):
         'img': list(),
         'like': post.like,
         'cmt': post.commentNum,
-
-        'userLike': isLike,
-
     }
     for img in Image.objects.filter(post=post):
         detailPost['img'].append(img.img.url)
 
     return JsonResponse({'detailPost': detailPost})
-
-def testAutoLoad(request):
-    data = {"key": "value"}
-    return JsonResponse(data)

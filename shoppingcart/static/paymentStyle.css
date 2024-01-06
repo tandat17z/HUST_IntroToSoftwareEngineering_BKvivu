@@ -1,0 +1,127 @@
+body{
+    margin: 0;
+}
+.flex{
+    display: flex;
+}
+a, a:active{
+    color: black;
+    text-decoration: none;
+}
+a:hover{
+    color: rgb(0, 70, 145);
+    text-decoration: none;
+}
+/* header style */
+
+/* Container body */
+.container-body{
+    justify-content: space-between;
+    margin: 30px auto 0px;
+    padding: 25px;
+    width: 90%;
+    background-color: #8bbdd1;
+    border-radius: 20px;
+}
+
+/* Container Left */
+.container-left{
+    flex-direction: column;
+    width: 37%;
+    border-radius: 20px;
+    background-color: #fff;
+}
+.container-left h2{
+    text-align: center;
+    margin: 15px auto;
+}
+.container-left img{
+    margin: 10px auto;
+    max-width: 85%;
+    border: 1px solid #808080;
+    height: auto;
+    width: auto;
+}
+.payment-form{
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.payment-input{
+    justify-content: space-between;
+    margin: 10px 0 10px 15px;
+}
+.payment-input label{
+    font-size: 17px;
+}
+.payment-form button{
+    padding: 5px 10px;
+    margin: 5px auto;
+    border-radius: 15px;
+    background-color: #95ffd4;
+}
+.payment-form button:hover{
+    padding: 5px 10px;
+    margin: 5px auto;
+    border-radius: 15px;
+    background-color: #3be09e;
+}
+
+
+
+/* Container Right */
+.container-right{
+    flex-direction: column;
+    width: 60%;
+    border-radius: 20px;
+    background-color: #fff;
+}
+.container-right h2{
+    margin-left: 15px;
+}
+.list-order{
+    flex-direction: column;
+}
+.order{
+    padding: 5px;
+    justify-content: space-between;
+    margin: 10px 15px;
+    background-color: #e7e7e7;
+    border-radius: 20px;
+}
+.product{
+}
+.product img{
+    margin: auto 5px;
+    width: 70px;
+}
+.info-product{
+    margin-left: 10px;
+}
+.info-product h3, h5{
+    margin: 10px 0;
+}
+.quantity-product{
+    margin: auto 5px auto 0;
+}
+.total-price h3{
+    text-align: right;
+    margin-right: 15px;
+}
+.notes h4{
+    margin: 0 15px;
+    font-style: italic;
+    color: rgb(187, 0, 0);
+}
+
+/* Order list */
+.order-list {
+    margin: 30px 50px 30px 0;
+    text-align: right!important;
+}
+.order-list a{
+    padding: 15px 25px;
+    font-size: 20px;
+    color: whitesmoke;
+    background-color: #002f8d;
+    border-radius: 20px;
+}

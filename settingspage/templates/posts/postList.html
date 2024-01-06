@@ -7,7 +7,7 @@
 {% endblock css %}
 
 {% block post%} 
-<h1 style="text-align: center; margin-top: 50px;">Bài viết của bạn</h1>
+<h1>Bài viết của bạn</h1>
 <ul>
     {% for post in postList %}
     
@@ -37,7 +37,7 @@
                 <i class="fa-solid fa-comment"></i> <p>{{post.commentNum}}</p>
             </div>
             <div class="action-product">
-                <a class="edit-product" href="{% url 'settingspage:testEditPost' post.id %}">
+                <a class="edit-product">
                     <div>
                         <i class="fa-solid fa-pen" aria-hidden="true"></i>
                     </div>

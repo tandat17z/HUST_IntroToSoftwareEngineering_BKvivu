@@ -1,0 +1,351 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager</title>
+    <link rel="stylesheet" href="{% static 'css_settings/register.css'%}">
+</head>
+<body>
+    {% for message in messages %}
+        <div id="alert-message" js-message="{{message}}"></div>
+    {% endfor %}
+    <script>
+        var message = document.getElementById('alert-message').getAttribute('js-message');
+        alert(message);
+    </script>
+    <div class="header_fixed">
+        <header class="header_settings">
+            <a href="{% url 'profilepage:profilePage' acc.id%}" class="profile_link" style="position:absolute; left:10px; color:white; text-decoration:none; border:2px solid white; padding:5px">
+                ← back to profile
+            </a>
+            <h1>Settings</h1>
+        </header>
+    
+        <nav>
+            <a href="{% url 'settingspage:gerenalPage'%}">General</a>
+            {% if acc.role == 'manager' %}
+            <a href="{% url 'settingspage:product'%}">Products</a>
+            <a href="{% url 'settingspage:billsPage'%}">Bills</a>
+            <a href="{% url 'settingspage:statisticsPage'%}">Statistics</a>
+            {% endif %}
+            <a href="{% url 'settingspage:testPostPage'%}">Posts</a>
+        </nav>
+    </div>
+
+{% if role == 'sharer' %} <!-- hàm if vai trò để hiển thị -->
+<div class="container">
+  <header class="header_container">
+    <h1 id="title" class="text-center"><b>Thông tin với vai trò người chia sẻ</b></h1>
+    <p id="description" class="description text-center">
+      Vui lòng cung cấp cho chúng tôi những thông tin dưới đây!
+    </p>
+  </header>
+  
+  <form id="survey-form" method = "POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label id="name-label" for="name">Tên của bạn: </label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        class="form-control"
+        placeholder="Nhập tên của bạn"
+        value="{{user.name}}"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label id="name-label" for="name">Độ tuổi: </label>
+      <input
+        type="age"
+        name="age"
+        id="age"
+        class="form-control"
+        placeholder="Nhập tuổi của bạn"
+        value="{{user.age}}"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <p>Khu vực của bạn: </p>
+      <select class="form-select form-select-sm mb-3" id="city" name="city" aria-label=".form-select-sm">
+        <option value="{{user.city}}" selected>{{user.city}}</option>           
+        </select>
+                  
+        <select class="form-select form-select-sm mb-3" id="district" name="district" aria-label=".form-select-sm">
+        <option value="{{user.district}}" selected>{{user.district}}</option>
+        </select>
+        
+        <select class="form-select form-select-sm" id="ward" name="ward" aria-label=".form-select-sm">
+        <option value="{{user.ward}}" selected>{{user.ward}}</option>
+        </select>
+    </div>
+
+
+    <div class="form-group">
+      <label for="avatar">Avatar:</label>
+      <img id="img-avatar" style="height: 100px; width: 100px;" alt="" src="{{user.avatar.url}}" >
+      <input
+          type="file"
+          name="avatar"
+          id="avatar"
+          class="form-control"
+          placeholder="Hình ảnh avatar"
+          accept="image/*"
+          onchange="displayImageAvatar()"
+          
+      ></input>
+    </div>
+
+    <div class="form-group">
+      <p>Giới thiệu về bạn: </p>
+      <textarea
+        id="comments"
+        class="input-textarea"
+        name="comment"
+        placeholder="Giới thiệu về bạn"
+      >{{user.bio}}</textarea>
+    </div>
+    
+    <div class="form-group">
+      <button type="submit" id="submit" class="submit-button">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+{% else %} <!-- Nếu với vai trò người quản lý manager-->
+<div class="container">
+    <header class="header_container">
+      <h1 id="title" class="text-center"><b>Thông tin người quản lý</b></h1>
+      <p id="description" class="description text-center">
+        Vui lòng cung cấp cho chúng tôi những thông tin dưới đây!
+      </p>
+    </header>
+    <form id="survey-form" method = "POST" enctype="multipart/form-data">
+        {% csrf_token %}
+      <div class="form-group">
+        <label id="name-label" for="name">Tên cửa hàng: </label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          class="form-control"
+          placeholder="Nhập tên của cửa hàng"
+          required
+          value="{{user.name}}"
+        />
+      </div>
+      <div class="form-group">
+        <label id="phone-label" for="phone">
+            Số điện thoại:
+        </label>
+        <input type="tel"
+        name="phone"
+        id="phone"
+        minlength="10"
+        maxlength="12"
+        required
+        value="{{user.phone}}"
+        >
+      </div>
+      <div class="form-group">
+        <p>Khu vực của cửa hàng: </p>
+        <select class="form-select form-select-sm mb-3" id="city" name="city" aria-label=".form-select-sm">
+            <option value="{{user.city}}" selected>{{user.city}}</option>           
+            </select>
+                      
+            <select class="form-select form-select-sm mb-3" id="district" name="district" aria-label=".form-select-sm">
+            <option value="{{user.district}}" selected>{{user.district}}</option>
+            </select>
+            
+            <select class="form-select form-select-sm" id="ward" name="ward" aria-label=".form-select-sm">
+            <option value="{{user.ward}}" selected>{{user.ward}}</option>
+            </select>
+      </div>
+      <div class="form-group">
+        <label id="name-label" for="name">Địa chỉ cụ thể: </label>
+        <input
+          type="text"
+          name="address"
+          id="address"
+          class="form-control"
+          placeholder="Nhập địa chỉ của cửa hàng"
+          value="{{user.address}}"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="avatar">Avatar:</label>
+        <img id="img-avatar" style="height: 100px; width: 100px;" alt="" src="{{user.avatar.url}}" >
+        <input
+            type="file"
+            name="avatar"
+            id="avatar"
+            class="form-control"
+            placeholder="Hình ảnh avatar"
+            accept="image/*"
+            onchange="displayImageAvatar()"
+            
+        ></input>
+      </div>
+      <div class="form-group">
+        <label for="bank">QR:</label>
+        <img id="img-bank" style="height: 100px; width: 100px;" src="{{user.bank.url}}" alt="" >
+        <input
+            type="file"
+            name="bank"
+            id="bank"
+            class="form-control"
+            accept="image/*"
+            onchange="displayImageBank()"
+            
+        ></input>
+      </div>
+      <div class="form-group">
+        <p>Thời điểm mở cửa: </p>
+        <input
+            type="time"
+            name="t_open"
+            id="bank"
+            class="form-control"
+            value="{{time_open}}"
+        required
+        ></input>
+      </div>
+      <div class="form-group">
+        <p>Thời điểm đóng cửa: </p>
+        <input
+            type="time"
+            name="t_closed"
+            id="t_closed"
+            class="form-control"
+            value={{time_close}}
+        required
+        ></input>
+      </div>
+      <div class="form-group">
+        <p>Link Facebook: </p>
+        <input
+            type="url"
+            name="facebook_link"
+            id="facebook_link"
+            class="form-control"
+            placeholder="Link facebook"
+            value={{user.facebook_link}}
+        required
+        ></input>
+      </div>
+      <div class="form-group">
+        <p>Link website: </p>
+        <input
+            type="url"
+            name="website_link"
+            id="website_link"
+            class="form-control"
+            placeholder="Link website"
+            value={{user.website_link}}
+        required
+        ></input>
+      </div>
+      <div class="form-group">
+        <p>Giới thiệu về cửa hàng: </p>
+        <textarea
+          id="comments"
+          class="input-textarea"
+          name="comment"
+          placeholder="Giới thiệu về cửa hàng của bạn"
+        >{{user.bio}}</textarea>
+      </div>
+  
+      <div class="form-group">
+        <button type="submit" id="submit" class="submit-button">
+          Submit
+        </button>
+        
+      </div>
+    </form>
+    
+  </div>
+{% endif %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+    var citis = document.getElementById("city");
+    var districts = document.getElementById("district");
+    var wards = document.getElementById("ward");
+    var Parameter = {
+        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
+        method: "GET", 
+        responseType: "application/json", 
+    };
+    var promise = axios(Parameter);
+    promise.then(function (result) {
+    renderCity(result.data);
+    });
+
+    function renderCity(data) {
+    for (const x of data) {
+        citis.options[citis.options.length] = new Option(x.Name, x.Id);
+    }
+    citis.onchange = function () {
+        district.length = 1;
+        ward.length = 1;
+        if(this.value != ""){
+        const result = data.filter(n => n.Id === this.value);
+
+        for (const k of result[0].Districts) {
+            district.options[district.options.length] = new Option(k.Name, k.Id);
+        }
+        }
+    };
+    district.onchange = function () {
+        ward.length = 1;
+        const dataCity = data.filter((n) => n.Id === citis.value);
+        if (this.value != "") {
+        const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+
+        for (const w of dataWards) {
+            wards.options[wards.options.length] = new Option(w.Name, w.Id);
+        }
+        }
+    };
+    }
+    
+	</script>
+  <script>
+    
+    
+    function displayImageAvatar() {
+      var input = document.getElementById('avatar');
+      var image = document.getElementById('img-avatar');
+      var selectedFile = input.files[0];
+      if (selectedFile) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('img-avatar').src = e.target.result;
+          
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+      document.getElementById('t_open').setAttribute('value', '{{user.t_open}}');
+    document.getElementById('t_closed').setAttribute('value','{{user.t_closed}}');
+    }
+    
+    function displayImageBank() {
+      var input = document.getElementById('bank');
+      var image = document.getElementById('img-bank');
+      var selectedFile = input.files[0];
+      if (selectedFile) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          image.src = e.target.result;
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    }
+  </script>
+</body>
+</html>

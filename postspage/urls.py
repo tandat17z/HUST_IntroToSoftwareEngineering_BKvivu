@@ -17,7 +17,5 @@ urlpatterns = [
     path('get_comments/<int:post_id>/', views.get_comments, name='get_comments'),
     path('search/', views.searchPosts, name='search_post'),
     path('search/detail/<int:post_id>/', views.detailPost, name='detail_post'),
-
-    path('test/', views.testAutoLoad, name='testAutoLoad'),
     # path('test', views.test, name='test')
 ]   + static(settings.MEDIA_URL, document_root = settings.MEDIA_URL) # 3/12

@@ -43,7 +43,7 @@ def ProductManager(request):
         'acc' : acc,
         'user' : user
     }
-    return render(request, 'products/product.html', context)
+    return render(request, 'product.html', context)
 #Tạo sản phẩm mới
 class CreateProduct(View):
     def get(self, request):
@@ -53,7 +53,7 @@ class CreateProduct(View):
             'acc' : acc,
             'form_product':form_product
         }
-        return render(request, 'products/addproduct.html', context)
+        return render(request, 'addproduct.html', context)
     def post(self, request):
         acc = Account.objects.get(user_ptr=request.user)
         if acc.role == 'sharer':
@@ -97,7 +97,7 @@ class editProduct(View):
             'form_product': pform,
             'acc': acc,
         }
-        return render(request, 'products/addproduct.html', context)
+        return render(request, 'addproduct.html', context)
     def post(self, request, product_id):
         _product = Product.objects.get(pk = product_id)
         pform = ProductForm(request.POST, request.FILES, instance = _product)
@@ -134,7 +134,7 @@ def generalPage(request):
                 'user': user,
             }
 
-            return render(request, 'general/general.html', context)
+            return render(request, 'general.html', context)
         else:
             user.name = request.POST.get('name')
             user.phone = request.POST.get('phone')
@@ -163,7 +163,7 @@ def generalPage(request):
                 'time_close': user.t_closed,
             }
 
-            return render(request, 'general/general.html', context)
+            return render(request, 'general.html', context)
     if acc.role == 'manager':   
         time_open = user.t_open.strftime("%H:%M")
         time_close = user.t_closed.strftime("%H:%M")
@@ -181,11 +181,26 @@ def generalPage(request):
             'acc': acc,
             'user': user,
         }
-    return render(request, 'general/general.html', context)
+    return render(request, 'general.html', context)
 
 #Bill Page
 def billsPage(request):
-   
+    # if request.method == 'POST':
+    #     data_from_js = request.POST.get('data_from_js', '')
+    #     acc = Account.objects.get(user_ptr=request.user)
+    #     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    #     bills = user.bill_set.all()
+    
+    #     context = {
+    #         "bills" : bills,
+    #         "acc" : acc,
+    #         "user" : user,
+    #         "data_from_js" : data_from_js,
+    #     }
+    #     messages.success(request, data_from_js)
+    #     return render(request, "bills.html", context)
+
+        # return JsonResponse({'data_from_js' : data_from_js})
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     bills = user.bill_set.all()
@@ -196,14 +211,13 @@ def billsPage(request):
         "user" : user,
         "data_from_js" : selected_data,
     }
-    return render(request, "bills/bills.html", context)
+    return render(request, "bills.html", context)
+
 
 def viewBill(request, billId):
     if request.method == 'GET' :
         bill = Bill.objects.get(id = billId)
-        user = Sharer.objects.get(account_id=bill.acc_id) if bill.acc.role=='sharer' else Manager.objects.get(account_id=bill.acc_id) 
-        return render(request, "bills/bill.html", {"bill" : bill, 'user': user})
-    
+        return render(request, "bill.html", {"bill" : bill})
 def accept(request, billId):
     try :
         bill = Bill.objects.get(pk = billId)
@@ -233,175 +247,51 @@ def decline(request,billId):
 
 
 #Post Page
-# def postPage(request):
-#     acc = Account.objects.get(user_ptr=request.user)
-#     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-#     context = {
-#         'acc' : acc,
-#         'user' : user,
-#     }
-#     return render(request, 'post.html', context)
-
-# def deletePost(request, postId):
-#     post = Post.objects.get(id = postId)
-#     try:
-#         post.delete()
-#         messages.success(request, 'Xóa bài viết thành công')
-#         return redirect('settingspage:postPage')
-#     except:
-#         messages.error(request, 'Xóa bài viết thất bại')
-#         return redirect('settingspage:postPage')
-
-# def changePost(request, postId):
-#     if request.method == 'GET':
-#         acc = Account.objects.get(user_ptr=request.user)
-#         user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-#         post = Post.objects.get(id = postId)
-#         img = post.image_set.all()
-#         form_post = CreatePostForm(instance=post)
-#         form_img = []
-#         a = 0
-#         for i in img :
-#             a = a + 1
-#             form_img.append(CreateImgForm(instance=i, prefix=f'form-{a}'))
-#         context = {
-#             'acc' : acc,
-#             'user' : user,
-#             'form_post' : form_post,
-#             'form_img' : form_img,
-#             'post': post,
-#             'img' : img,
-#         }
-#         return render(request, 'add_post.html', context)
-#     elif request.method == 'POST':
-#         post = Post.objects.get(id = postId)
-#         img = post.image_set.all()
-#         form_post = CreatePostForm(request.POST, request.FILES, instance=post)
-#         form_img = []
-#         a = 0
-#         for i in img :
-#             a = a+1
-#             if i.isDelete == True :
-#                 i.delete()
-#             else :
-#                 form_img.append(CreateImgForm(request.POST, request.FILES, prefix=f'form-{a}', instance=i))
-#         if form_post.is_valid :
-#             for form in form_img :
-#                 if not form.is_valid :
-#                     messages.error(request, 'Error')
-#                     return redirect('settingspage:postPage')
-
-#             newFormPost = form_post.save(commit=False)
-#             newFormPost.save()
-#             for form in form_img :
-#                 newImg = form.save(commit=False)
-#                 newImg.save()
-
-#             images = request.FILES.getlist('images')
-#             for image in images :
-#                 img = Image.objects.create(post = post, img = image)
-#                 img.save()
-
-#             return redirect('settingspage:postPage')
-#         else :
-#             messages.error(request, 'Error')
-#             return redirect('settingspage:postPage')
-
-
-
-# def addPost(request):
-#     acc = Account.objects.get(user_ptr=request.user)
-#     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
-#     if request.method == 'POST':
-#         post = Post.objects.create(account = acc)
-#         form_post = CreatePostForm(request.POST, request.FILES, instance=post)
-#         if form_post.is_valid :
-#             # try:
-#             newPost = form_post.save(commit=False)
-#             newPost.save()
-#             images = request.FILES.getlist('images')
-#             for image in images :
-#                 img = Image.objects.create(post = post, img = image)
-#                 img.save()
-
-#             messages.success(request, 'Success')
-#             return redirect('settingspage:postPage')
-#             # except:
-#             #     messages.error(request, 'Error')
-#             #     return redirect('settingspage:postPage')
-#         else :
-#             post.delete()
-#             messages.error(request, 'Error')
-#             return redirect('settingspage:postPage')
-
-
-#     form_post = CreatePostForm()
-#     context = {
-#         'form_post': form_post,
-#         'acc': acc,
-#     }
-#     return render(request, 'add_post.html', context)
-
-# def deleteImagePost(request, postId, imageId):
-#     try:
-#         image = Image.objects.get(id = imageId)
-#         image.isDelete = True
-#         image.save()
-#         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
-#     except:
-#         messages.error(request, 'Error')
-#         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
-
-# def unDelete(request, postId, imageId):
-#     try:
-#         image = Image.objects.get(id = imageId)
-#         image.isDelete = False
-#         image.save()
-#         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
-#     except:
-#         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
-    
-
-# postPage
-def testPostPage(request):
+def postPage(request):
     acc = Account.objects.get(user_ptr=request.user)
-    postList = acc.post_set.all()
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     context = {
-        'acc': acc,
-        'postList': postList,
+        'acc' : acc,
+        'user' : user,
     }
-    return render(request, 'posts/postList.html', context)
+    return render(request, 'post.html', context)
 
-def testEditPost(request, postId):
-    acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account=acc) if acc.role=='sharer' else Manager.objects.get(account=acc) 
+def deletePost(request, postId):
+    post = Post.objects.get(id = postId)
+    try:
+        post.delete()
+        messages.success(request, 'Xóa bài viết thành công')
+        return redirect('settingspage:postPage')
+    except:
+        messages.error(request, 'Xóa bài viết thất bại')
+        return redirect('settingspage:postPage')
+
+def changePost(request, postId):
     if request.method == 'GET':
-        post = Post.objects.get(id=postId)
+        acc = Account.objects.get(user_ptr=request.user)
+        user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+        post = Post.objects.get(id = postId)
         img = post.image_set.all()
+        form_post = CreatePostForm(instance=post)
         form_img = []
         a = 0
         for i in img :
             a = a + 1
             form_img.append(CreateImgForm(instance=i, prefix=f'form-{a}'))
         context = {
-            'user': user,
+            'acc' : acc,
+            'user' : user,
+            'form_post' : form_post,
+            'form_img' : form_img,
             'post': post,
-            'img': img,
-            'form_img': form_img,
-            'provider': Manager.objects.all()
+            'img' : img,
         }
-        return render(request, 'posts/edit_post.html', context)
+        return render(request, 'add_post.html', context)
     elif request.method == 'POST':
-        post = Post.objects.get(id=postId)
-        post.title = request.POST.get('title_post')
-        post.content = request.POST.get('content_post')
-        if request.POST.get('provider_post') != 'None':
-            post.provider_id = request.POST.get('provider_post')
-        else:
-            post.provider_id = None
+        post = Post.objects.get(id = postId)
         img = post.image_set.all()
+        form_post = CreatePostForm(request.POST, request.FILES, instance=post)
         form_img = []
-        
         a = 0
         for i in img :
             a = a+1
@@ -409,74 +299,112 @@ def testEditPost(request, postId):
                 i.delete()
             else :
                 form_img.append(CreateImgForm(request.POST, request.FILES, prefix=f'form-{a}', instance=i))
-        for form in form_img:
-            form.save()
-        images = request.FILES.getlist('images')
-        for image in images :
-            img = Image.objects.create(post = post, img = image)
-            img.save()
-        city_id = request.POST.get('city')
-        district_id = request.POST.get('district')
-        ward_id = request.POST.get('ward')
-        
-        post.city, post.district, post.ward = getArea(city_id, district_id, ward_id)
-        post.save()
-        return redirect('settingspage:testPostPage')
-    
-def testDeleteImagePost(request, postId, imageId):
+        if form_post.is_valid :
+            for form in form_img :
+                if not form.is_valid :
+                    messages.error(request, 'Error')
+                    return redirect('settingspage:postPage')
+
+            newFormPost = form_post.save(commit=False)
+            newFormPost.save()
+            for form in form_img :
+                newImg = form.save(commit=False)
+                newImg.save()
+
+            images = request.FILES.getlist('images')
+            for image in images :
+                img = Image.objects.create(post = post, img = image)
+                img.save()
+
+            return redirect('settingspage:postPage')
+        else :
+            messages.error(request, 'Error')
+            return redirect('settingspage:postPage')
+
+
+
+def addPost(request):
+    acc = Account.objects.get(user_ptr=request.user)
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
+    if request.method == 'POST':
+        post = Post.objects.create(account = acc)
+        form_post = CreatePostForm(request.POST, request.FILES, instance=post)
+        if form_post.is_valid :
+            # try:
+            newPost = form_post.save(commit=False)
+            newPost.save()
+            images = request.FILES.getlist('images')
+            for image in images :
+                img = Image.objects.create(post = post, img = image)
+                img.save()
+
+            messages.success(request, 'Success')
+            return redirect('settingspage:postPage')
+            # except:
+            #     messages.error(request, 'Error')
+            #     return redirect('settingspage:postPage')
+        else :
+            post.delete()
+            messages.error(request, 'Error')
+            return redirect('settingspage:postPage')
+
+
+    form_post = CreatePostForm()
+    context = {
+        'form_post': form_post,
+        'acc': acc,
+    }
+    return render(request, 'add_post.html', context)
+
+def deleteImagePost(request, postId, imageId):
     try:
         image = Image.objects.get(id = imageId)
         image.isDelete = True
         image.save()
-        # JsonResponse()
-        return HttpResponseRedirect(reverse('settingspage:testEditPost', args=[postId]))
+        return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
     except:
         messages.error(request, 'Error')
-        # JsonResponse()
-        return HttpResponseRedirect(reverse('settingspage:testEditPost', args=[postId]))
+        return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
 
-
-def testRecoverDelete(request, postId):
+def unDelete(request, postId, imageId):
+    try:
+        image = Image.objects.get(id = imageId)
+        image.isDelete = False
+        image.save()
+        return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
+    except:
+        return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
+    
+def testPostPage(request):
     acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account=acc) if acc.role=='sharer' else Manager.objects.get(account=acc) 
-    post = Post.objects.get(id=postId)
-    img = post.image_set.all()
-    for i in img : 
-        i.isDelete = False
-        i.save()
-    return redirect('settingspage:testPostPage')
+    postList = Post.objects.filter(account= acc)
+    context = {
+        'acc': acc,
+        'postList': postList,
+    }
+    return render(request, 'posts/postList.html', context)
 
 def testCreatePosts(request):
-
     acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account=acc) if acc.role=='sharer' else Manager.objects.get(account=acc)
     if request.method == 'POST':
         post = Post.objects.create(account = acc)
-        post.title = request.POST.get('title_post')
-        post.content = request.POST.get('content_post')
-        if request.POST.get('provider_post') != 'None':
-            post.provider_id = request.POST.get('provider_post')
-        post.time = timezone.datetime.now()
-        images = request.FILES.getlist('images')
-        for image in images :
-            img = Image.objects.create(post = post, img = image)
-            img.save()
-        city_id = request.POST.get('city')
-        district_id = request.POST.get('district')
-        ward_id = request.POST.get('ward')
-        
-        post.city, post.district, post.ward = getArea(city_id, district_id, ward_id)
-
-        post.save()
-        return redirect('settingspage:testPostPage')
+        form_post = CreatePostFormTest(request.POST, instance=post)
+        if form_post.is_valid :
+            # try:
+            newPost = form_post.save(commit=False)
+            newPost.save()
+            images = request.FILES.getlist('images')
+            for image in images :
+                img = Image.objects.create(post = post, img = image)
+                img.save()
+            messages.success(request, 'Tạo bài viết thành công')
+            return redirect('settingspage:testPostPage')
     else:
+        createpostform = CreatePostFormTest()
         context = {
-            'acc': acc,
-            'user': user,
-            'time' : timezone.datetime.now(),
-            'provider': Manager.objects.all()
+            'createpostform': createpostform,
         }
-        return render(request, 'posts/add_post.html', context)
+        return render(request, 'posts/addPost.html', context)
 
 @csrf_exempt
 def testDeletePost(request, postId):
@@ -513,11 +441,10 @@ def statisticsPage(request):
                 product_quantity[product.name] += order.quantity
             user_set.add(bill.acc)
     age_list = [0]*4
-    total_age = 0
+    total_age = len(user_set)
     for u in user_set:
         try:
             u = Sharer.objects.get(account=u)
-            total_age += 1
             age = u.age
             if age >= 10 and age < 18:
                 age_list[0] += 1        
@@ -547,5 +474,5 @@ def statisticsPage(request):
         'best_seller_quantity' : next(iter(sorted_product_quantity.items()))[1],
         'age_phantram': json.dumps(age_phantram),
     }
-    return render(request, 'statistics/statistics.html', context)
+    return render(request, 'statistics.html', context)
 

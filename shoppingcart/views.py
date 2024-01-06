@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 import json
+from collections import OrderedDict
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
@@ -21,7 +22,7 @@ def viewShoppingCart(request):
     if request.user.is_authenticated:
         #Tài khoản đang đăng nhập hệ thống
         acc = Account.objects.get(user_ptr=request.user)
-        user_cart_items = CartItem.objects.filter(account= acc)
+        user_cart_items = CartItem.objects.filter(account= acc).order_by('-id')
         #Tạo danh sách products theo cửa hàng
         items_in_cart = dict()
         for item in user_cart_items:
@@ -138,10 +139,36 @@ class Payment(View):
             'form_pay' : form_pay,
             'manager' : manager
         }
-        return HttpResponse("Hóa đơn thanh toán của bạn đang được xác nhận")
+        return redirect('shoppingcart:orderList')
 
 # Xóa bill và các order liên quan ở database
 def cancelPayment(request, bill_id):
     bill = Bill.objects.get(pk = bill_id)
-    bill.delete()
-    return redirect('shoppingcart:shoppingCart')
+    bill.status = "DeclineByUser"
+    bill.save()
+    return redirect('shoppingcart:orderList')
+
+# Xem danh sách đơn hàng đã đặt
+class OrderList(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            _acc = Account.objects.get(user_ptr=request.user)
+            listbills = Bill.objects.filter(acc = _acc).order_by('-time')
+            productsOfBill = OrderedDict()
+            for _bill in listbills:
+                orders = Order.objects.filter(bill = _bill)
+                productsOfBill[_bill] = []
+                for order in orders:
+                    productsOfBill[_bill].append(order)
+
+
+            context = {
+                'acc' : _acc,
+                'productOfBill' : productsOfBill
+            }
+            return render(request, "shoppingcart/orderlist.html", context)
+        else:
+            return redirect('homepage:loginPage')
+    def post(self, request):
+        pass
+        return HttpResponse("Post Orderlist")

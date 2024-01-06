@@ -47,15 +47,6 @@
 </script>
 {% endblock headerSearch %}
 
-{% block slideShowTopShop %}
-    {% for shop in top_shops|slice:":3" %}
-    <div class="mySlides fade">
-        <img src="{{shop.avatar.url}}" style="width:100%; height: 600px">
-    </div>
-    {% endfor %}
-
-{% endblock slideShowTopShop %}
-
 {% block feature %}
         {% comment %} Phần hiển thị top các cửa hàng/ dịch vụ ---------------------------------------{% endcomment %}
         <div id="top-shop">
@@ -113,7 +104,9 @@
                             </p>
                         </div>
                         <h2 class="title"><strong>{{item.post.title}}</strong></h2>
-                        <p class="content">{{item.post.content}}</p>
+                        <p class="content">
+                            {{item.post.content}}
+                        </p>
 
                         {% if item.img|length > 0 %}
                     <div class="post-photo">
@@ -132,7 +125,8 @@
                                 <span id="{{item.post.id}}_like">{{item.post.like}} </span>
                                 <i class="far fa-thumbs-up"></i> 
                             </button>
-                            <button onclick="showComment(event, {{item.post.id}})">{{item.post.commentNum}} <i class="far fa-comment"></i></button>
+                            <button>{{item.post.commentNum}} <i class="far fa-comment"></i></button>
+                            <i class="fas fa-share"></i>
                         </div>
                     </li>
                     {% endfor %}
@@ -146,6 +140,7 @@
             </div>
         </div>
         <script>
+                
                 function likeAction(event, postId) {
                     const button = event.currentTarget;
                     const likeElement = document.getElementById(postId + "_like");
@@ -168,9 +163,6 @@
                     xhr.open("POST", `/homepage/update_likes/${postId}/`, true);
                     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                     xhr.send(JSON.stringify({ like: newLike}));
-                }
-                function showComment(event, postId){
-                    alert("(Đang phát triển) xem chi tiết trang cá nhân để Comment")
                 }
         </script>
         <br>
@@ -288,16 +280,12 @@
                 success: function(response) {
                     var containerSearch = document.getElementById("containerSearch");
                     containerSearch.innerHTML = '';
-                    var lengthData;
                     if ( selectedValue === 'shop'){
                         showShop(response.dataShop, containerSearch);
-                        lengthData = response.dataShop.length;
                     }
                     else{
                         showProduct(response.dataProduct, containerSearch);
-                        lengthData = response.dataProduct.length;
                     }
-                    if(lengthData === 0) alert("Không tìm kiếm được gì!!");
                 },
                 error: function(error) {
                     console.log(error);
@@ -390,16 +378,13 @@
                 success: function(response) {
                     var containerSearch = document.getElementById("containerSearch");
                     containerSearch.innerHTML = '';
-                    var lengthData ;
                     if ( selectedValue === 'shop'){
                         showShop(response.dataShop, containerSearch);
-                        lengthData = response.dataShop.length;
                     }
                     else{
                         showProduct(response.dataProduct, containerSearch);
-                        lengthData = response.dataProduct.length;
                     }
-                    if(lengthData === 0) alert("Không tìm kiếm được gì!!");
+                    alert("Tìm kiếm thành công")
                 },
                 error: function(error) {
                     console.log(error);
