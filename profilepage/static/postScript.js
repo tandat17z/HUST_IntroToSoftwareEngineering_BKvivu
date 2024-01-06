@@ -1,26 +1,26 @@
-        function likeAction(event, postId) {
-            const button = event.currentTarget;
-            const likeElement = document.getElementById(postId + "_like");
-            const like = parseInt(likeElement.innerText, 10);
-            let newLike = like;
-            if( button.value === "false"){
-                newLike = like + 1;
-                button.value = "true";
-                button.style.backgroundColor = '#f00';
-            }
-            else{
-                newLike = like - 1;
-                button.value = "false";
-                button.style.backgroundColor = '#fff';
-            }
-            likeElement.innerText = newLike
-
-            // Gửi yêu cầu AJAX để cập nhật số lượng like trên server
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", `/postspage/update_likes/${postId}/`, true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhr.send(JSON.stringify({ like: newLike}));
+    function likeAction(event, postId) {
+        const button = event.currentTarget;
+        const likeElement = document.getElementById(postId + "_like");
+        const like = parseInt(likeElement.innerText, 10);
+        let newLike = like;
+        if( button.value === "false"){
+            newLike = like + 1;
+            button.value = "true";
+            button.style.backgroundColor = '#f00';
         }
+        else{
+            newLike = like - 1;
+            button.value = "false";
+            button.style.backgroundColor = '#fff';
+        }
+        likeElement.innerText = newLike
+        // Gửi yêu cầu AJAX để cập nhật số lượng like trên server
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("POST", `/postspage/update_likes/${postId}/`, true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify({ like: newLike}));
+    }
     function insertComment(event, postId){
         const inputCmt = document.getElementById(postId + "_comment");
         const contentCmd = inputCmt.value;

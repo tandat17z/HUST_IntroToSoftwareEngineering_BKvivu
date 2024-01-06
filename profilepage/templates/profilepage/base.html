@@ -114,9 +114,9 @@
         </div>
         <div class="list-contents">
 
-            {% if target_user.account and target_user.account.post_set.all%}
+            {% if target_user.account and listPosts%}
             <ul>
-                {% for posts in target_user.account.post_set.all %}
+                {% for posts in listPosts %}
                     <!-- Post # -->
                     <li class="item">
                         <div class="info-post">
@@ -149,7 +149,7 @@
 
                         <div class="post-actions">
                             <!-- LIKE -->
-                            {% if item.userLike %}
+                            {% if posts in listPostsLike %}
                             <button value="true" onclick="likeAction(event, {{posts.id}})" style="background-color: #f00;">
                             {% else %}
                             <button value="false" onclick="likeAction(event, {{posts.id}})">

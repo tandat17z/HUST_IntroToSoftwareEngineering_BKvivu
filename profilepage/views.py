@@ -29,10 +29,18 @@ def profilePage(request, acc_id):
             starsvotetarget = voteobj.stars
         except:
             pass
+    # Danh sách những bài viết mà người dùng đã like
+    listPosts = Post.objects.filter(account = target_acc)
+    listPostsLike = []
+    for _posts in listPosts:
+        if UserLike.objects.filter(account= acc, post = _posts):
+            listPostsLike.append(_posts)
     context = {
         'target_user': target_user,
         'user': user,
-        'starsvotetarget': starsvotetarget
+        'starsvotetarget': starsvotetarget,
+        'listPosts': listPosts,
+        'listPostsLike' : listPostsLike
     }
     return render(request, 'profile.html', context)
 
