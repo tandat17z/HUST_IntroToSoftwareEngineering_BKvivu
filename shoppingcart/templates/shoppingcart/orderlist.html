@@ -5,26 +5,79 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Danh sách đơn hàng</title>
+  <script src="https://kit.fontawesome.com/bc4d8a1311.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static 'headerStyle.css' %}">
   <link rel="stylesheet" href="{% static 'orderlistStyle.css' %}">
   <script src="{% static 'orderlistScript.js' %}"></script>
 </head>
 <body>
-    <div>
-        <a href="{% url 'homepage:homePage' %}">
-            <h1> Return to homePage</h1>
-        </a>
-    </div>
+  <!-- Header -->
+<div class="topnav">
+  <a href="{% url 'homepage:homePage' %}" class="logo-home">
+      <div class="logo">
+          <img src="" alt="">
+      </div>
+      <div class="app-name">
+          <h4>BKvivu</h4>
+          <span class="">Nền tảng chia sẻ dịch vụ hàng đầu</span>
+      </div>
+  </a>
+  <div class="option">
+      <a href="{% url 'profilepage:profilePage' user.account.id%}" class="my-profile">
+          <div>
+          <i class="fa-solid fa-user"></i>
+          <span>My Profile</span>
+          </div>
+      </a>
+
+      <a href="{% url 'settingspage:settingsPage' %}" class="setting">
+          <div >
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+          </div>
+      </a>
+      <!-- Shopping Cart Icon-->
+      {% if user.account.role == "sharer" %}
+      <a href="{% url 'shoppingcart:shoppingCart'%}" class="log-out">
+          <div>
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Giỏ hàng</span>
+          </div>
+      </a>
+      {% endif %}
+      <!-- Logout -->
+      <a href="{% url 'profilepage:logoutPage'%}" class="log-out">
+          <div>
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Log out</span>
+          </div>
+      </a>
+
+  </div>
+</div>
 {% comment %} Vòng for duyệt tất cả các đơn hàng {% endcomment %}
     {% for bill, orders in productOfBill.items %}
     <div class="order-container">
         <div class="order-header">
           <div class="store-info">
-            <img src="{{bill.provider.avatar.url}}" alt="{{bill.provider.name}}">
+            <div class="avatar-manager">
+              <img src="{{bill.provider.avatar.url}}" alt="{{bill.provider.name}}">
+            </div>
             <div>
               <h3>{{bill.provider.name}}</h3>
             </div>
           </div>
-          <div class="order-status pending">{{bill.status}}</div>
+          <div class="order-status">
+            {% if bill.status == "Waiting" %}
+                <h4 class="pending">Chờ xác nhận</h4>
+            {% elif bill.status == "DeclineByUser" %}
+                <h4 class="cancelled">Đã hủy</h4>
+            {% elif bill.status == "Decline" %}
+                <h4 class="cancelled">Bị từ chối</h4>
+            {% else %}
+                <h4 class="paid">Đã xác nhận</h4>
+            {% endif %}
+          </div>
         </div>
         {% for order in orders %}
         <!-- Sản phẩm 1 -->
@@ -32,7 +85,7 @@
           <img src="{{order.product.img.url}}" alt="{{order.product.name}}">
           <div class="product-details">
             <h4>{{order.product.name}}</h4>
-            <p>{{order.product.price}}</p>
+            <p>Giá: {{order.product.price}} VNĐ</p>
           </div>
           <div class="product-quantity">Số lượng: {{order.quantity}}</div>
         </div>
@@ -41,13 +94,55 @@
         <!-- Khối tổng tiền và nút thanh toán, hủy đơn -->
         <div class="order-total">
           <div>Tổng Tiền: {{bill.price}} VNĐ</div>
-          <div class="action-buttons">
-            <button onclick="payOrder()">Thanh Toán</button>
-            <button onclick="cancelOrder()">Hủy Đơn</button>
-          </div>
+          {% if bill.status == "Waiting" %}
+            <div class="action-buttons">
+              {% if not bill.img %}
+              <!--người dùng chưa thực hiện thanh toán-->
+              <button onclick="payOrder({{bill.id}})">Thanh Toán</button>
+              {% else %}
+              <h4 class="paid">Đã thanh toán</h4>
+              {% endif %}
+              <button onclick="cancelOrder({{bill.id}})">Hủy Đơn</button>
+            </div>
+          {% endif %}
         </div>
     </div>
     {% endfor %}
 
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="waves">
+        <div class="wave" id="wave1"></div>
+        <div class="wave" id="wave2"></div>
+        <div class="wave" id="wave3"></div>
+        <div class="wave" id="wave4"></div>
+      </div>
+      <ul class="social-icon">
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-facebook"></ion-icon>
+          </a></li>
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </a></li>
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-linkedin"></ion-icon>
+          </a></li>
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-instagram"></ion-icon>
+          </a></li>
+      </ul>
+      <ul class="menu">
+        <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">About</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
+        <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
+
+      </ul>
+      <p>&copy;2023 BKvivu | BaoDungDatDatThanhTruong</p>
+  </footer>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

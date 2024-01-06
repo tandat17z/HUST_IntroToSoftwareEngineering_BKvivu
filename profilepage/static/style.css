@@ -7,9 +7,6 @@ body {
 .blue {
     border: 1px solid blue;
 }
-img{
-    width: 100%;
-}
 /* Chat icon css */
 .chatbox{
     width: 70px;
@@ -49,14 +46,13 @@ img{
 .chat-label span{
 
 }
-
 /*  Top navbar CSS */
 .topnav{
     width: 100%;
     height: 80px;
     display: flex;
     justify-content: space-between;
-    background-color: white;
+    background-color: #e1e1e1;
     box-sizing: border-box;
     position: sticky;
     top: 0px;
@@ -67,12 +63,17 @@ img{
     text-decoration: none;
 }
 .logo{
-    width: 50px;
-    min-width: 50px;
-    height: 50px;
-    background-image: url('/img/hitmeup.jpg');
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
     margin: auto 20px auto 100px;
-    border: 1px solid rgb(255, 255, 255);
+    border: 1px solid #002f8d;
+    border-radius: 20px;
+}
+.logo img{
+    max-width: 60px;
+    width: auto;
+    height: auto;
 }
 .app-name{
     margin: auto;
@@ -80,12 +81,12 @@ img{
 .app-name h4{
     margin: 0;
     font-size: 26px;
-    color: #155069;
+    color: #002f8d;
     text-shadow: 1px 1px 3px #56a7c9;
 }
 .app-name span{
-    color: #40698e;
-    text-shadow: 1px 1px 3px #155069;
+    color: #002f8d;
+    text-shadow: 1px 1px 3px #2e436b;
 }
 
 .option{
@@ -102,11 +103,11 @@ img{
     padding: 10px;
 }
 .option a:link, .option a:visited{
-    color: #155069;
-    border: 1px solid #86c8cd;
+    color: #002f8d;
+    border: 2px solid #002f8d;
 }
 .option a:hover{
-    border: 1px solid #6db2c8;
+    border: 2px solid #002f8d;
     background-color: #6db2c8;
     margin: auto 10px;
     padding: 10px;
@@ -115,7 +116,7 @@ img{
 .option a:active{
     color: white;
     background-color: #40698e;
-    border: 1px solid #86c8cd;
+    border: 2px solid #86c8cd;
 }
 
 /* Top profile */
@@ -136,12 +137,24 @@ img{
 .avatar{
     width: 160px;
     height: 160px;
-    margin: auto 20px;
+    margin: auto 35px auto 20px;
     border: 1px solid black;
+    position: relative;
     border-radius: 50%;
+    display: inline-block;
 }
 .avatar img{
     border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+.avatar i{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 40px;
+    color: #155069;
+    border: #333;
 }
 .name{
     margin: auto 0;
@@ -159,6 +172,8 @@ img{
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: right;
 }
 .contacts-list{
     display: flex;
@@ -192,8 +207,7 @@ img{
 }
 /*buttom-profile left */
 .bio{
-
-    width: 39%;
+    width: 35%;
     padding: 10px;
     margin: 10px;
     background-color: antiquewhite;
@@ -208,7 +222,7 @@ img{
 
 /*buttom-profile right */
 .buttom-profile .menu{
-    width: 59%;
+    width: 63%;
     max-height: 500px;
     padding: 10px 10px 30px;
     margin: 10px;
@@ -268,20 +282,24 @@ img{
 
 .product{
     width: 121px;
-    height: 170px;
-    padding: 2px;
+    height: 190px;
+    padding: 8px 3px;
     margin: 10px 10px;
     background-color: rgb(255, 234, 182);
     border: 1px solid whitesmoke;
     border-radius: 20px;
 }
 .product-img{
-    max-width: 100%;
+    border-radius: 10px;
+    margin: 5px;
+    width: 90%;
+    height: 100px;
+    overflow: hidden;
 }
 .product-img img{
     width: 100%;
-    height: 100px;
-    border-radius: 20px;
+    height: 100%;
+    object-fit: cover;
 }
 .product-name{
     max-height: 40px;
@@ -296,11 +314,17 @@ img{
     position: static;
     top: 10px;
 }
+.price{
+    margin: auto 0;
+}
 .product.price{
 
 }
 .buy{
-
+    margin: 5px;
+}
+.buy i{
+    font-size: 15px;
 }
 
 /* Contents */
@@ -387,7 +411,7 @@ img{
     width: 99%;
     height: 500px;
 }
-img{
+.content-post .images img{
     width: 100%;
     height: 100%;
 }
@@ -549,28 +573,28 @@ img{
   }
 
   .wave#wave1 {
-    z-index: 50;
+    z-index: 2;
     opacity: 1;
     bottom: 0;
     animation: animateWaves 4s linear infinite;
   }
 
   .wave#wave2 {
-    z-index: 49;
+    z-index: 1;
     opacity: 0.5;
     bottom: 10px;
     animation: animate 4s linear infinite !important;
   }
 
   .wave#wave3 {
-    z-index: 50;
+    z-index: 2;
     opacity: 0.2;
     bottom: 15px;
     animation: animateWaves 3s linear infinite;
   }
 
   .wave#wave4 {
-    z-index: 49;
+    z-index: 1;
     opacity: 0.7;
     bottom: 20px;
     animation: animate 3s linear infinite;

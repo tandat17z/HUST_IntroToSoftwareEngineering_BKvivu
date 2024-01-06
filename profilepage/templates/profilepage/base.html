@@ -7,8 +7,11 @@
     <title>Profile</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="{% static 'votestyle.css' %}">
+    <link rel="stylesheet" href="{% static 'postStyle.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://kit.fontawesome.com/bc4d8a1311.js" crossorigin="anonymous"></script>
     <script src="{% static 'votescript.js' %}"></script>
+    <script src="{% static 'postScript.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
@@ -48,12 +51,14 @@
                 </div>
             </a>
             <!-- Shopping Cart Icon-->
+            {% if user.account.role == "sharer" %}
             <a href="{% url 'shoppingcart:shoppingCart'%}" class="log-out">
                 <div>
                 <i class="fa-solid fa-cart-shopping"></i>
                 <span>Giỏ hàng</span>
                 </div>
             </a>
+            {% endif %}
             <!-- Logout -->
             <a href="{% url 'profilepage:logoutPage'%}" class="log-out">
                 <div>
@@ -64,11 +69,12 @@
 
         </div>
     </div>
-<!-- Info profile -->
-    <div class="top-profile">
+    <!-- Info profile -->
+    <div class="top-profile" {% if target_user.account.role == 'sharer' %}style="background-color: white;"{% endif %}>
         <div class="avatar-name">
             <div class="avatar">
                 <img src = "{{ target_user.avatar.url}}" alt="">
+                {% if target_user.account.role == 'manager' %}<i class="fa-solid fa-shop"></i>{% endif %}
             </div>
             <div class="name">
                 <h1 id="name-profile">{{ target_user.name }}</h2>
@@ -108,66 +114,85 @@
         </div>
         <div class="list-contents">
 
-            {% if target_user.account %}
+            {% if target_user.account and target_user.account.post_set.all%}
+            <ul>
                 {% for posts in target_user.account.post_set.all %}
                     <!-- Post # -->
-                    <div class="posts">
-                        <div class="top-posts">
-                            <div class="left">
-                                <div class="left-avatar avatar">
-                                    <img src = "{{ target_user.avatar.url }}" alt="">
-                                </div>
-                                <div class="left-name-time">
-                                    <div class="name">
-                                        <h4>{{ target_user.name }}</h4>
-                                    </div>
-                                    <div class="time">
-                                        <span> {{ posts.time }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="right">
+                    <li class="item">
+                        <div class="info-post">
+                            <a href="{% url 'profilepage:profilePage' target_user.account.id%}">
+                                <img src="{{target_user.avatar.url}}" alt="{{target_user.name}}" class="avatar-post">
+                            </a>
+                            <h3><strong>{{target_user.name}}</strong></h3>
+                            <h6>Time: <strong>{{posts.time}}</strong></h6>
+                            <p>
+                            {% if posts.provider %}
+                                Đang ở: <a href="{% url 'profilepage:profilePage' posts.provider.account.id%}"><strong>{{posts.provider.name}}</strong></a>
+                            {% else %}
+                                {% if posts.ward and posts.district and posts.city%}
+                                    <i class="fa-solid fa-location-dot"></i>
+                                        {{posts.ward}} - {{posts.district}} - {{posts.city}} ({{posts.address}})
+                                {% endif %}
+                            {% endif %}
+                            </p>
+                        </div>
+                        <h3 style="margin: 5px 0;"><strong>{{posts.title}}</strong></h3>
+                        <p style="white-space: pre-line;">{{posts.content}}</p>
 
-                            </div>
+                        {% if posts.image_set.all %}
+                        <div class="post-photo">
+                            {% for image in posts.image_set.all %}
+                            <img src="{{image.img.url}}" alt="{{posts.title}} 1" class="photo">
+                            {% endfor %}
                         </div>
-                        <div class="content-post">
-                            <div class="text-title">
-                                <h3>{{ posts.title }}</h3>
-                            </div>
-                            <div class="text">
-                                <p>{{ posts.content }}</p>
-                            </div>
-                            <div class="images">
-                                {% for image in posts.image_set.all %}
-                                    <img src="{{ image.img.url }}" alt="">
-                                {% endfor %}
-                            </div>
+                        {% endif %}
+
+                        <div class="post-actions">
+                            <!-- LIKE -->
+                            {% if item.userLike %}
+                            <button value="true" onclick="likeAction(event, {{posts.id}})" style="background-color: #f00;">
+                            {% else %}
+                            <button value="false" onclick="likeAction(event, {{posts.id}})">
+                            {% endif %}
+                                <big id="{{posts.id}}_like">{{posts.like}} </big>
+                                <i class="far fa-thumbs-up"></i>
+                            </button>
+                            <!-- Comment -->
+                            <button onclick="showComment(event, {{ posts.id }})">
+                                <big id="{{posts.id}}_commentNum">{{posts.commentNum}} </big>
+                                <i class="far fa-comment"></i>
+                            </button>
+                            <!-- Heart -->
+                            <i class="fa-regular fa-heart"></i>
                         </div>
-                        <div class="bottom-posts">
-                            <a href="#like" class="like-posts">
-                                <div class="like-btn">
-                                    <i class="fa-solid fa-heart"></i>
-                                    <span>Thích</span>
-                                </div>
-                            </a>
-                            <div class="cmt-posts">
-                                <i class="fa-solid fa-comment"></i>
-                                <form action="#submitcmt" method="POST">
-                                    <textarea class="comment"> Type your comment here.</textarea>
-                                    <input type="submit" name="submit" value="Send">
-                                </form>
-                            </div>
-                            <a href="#share" class="share-posts">
-                                <div class="share-btn">
-                                    <i class="fa-solid fa-share"></i>
-                                    <span>Share</span>
-                                </div>
-                            </a>
+
+                        <div class="post-comment">
+                            <img src="{{user.avatar.url}}" alt="" class="avatar">
+                            <input type="text" placeholder="Viết bình luận ..." class="comment-input" id="{{posts.id}}_comment">
+                            <button class="sendCmt" onclick="insertComment(event, {{posts.id}})"> Gửi</button>
+                        </div>
+                        {% comment %} ----------Comments----------- {% endcomment %}
+                    </li>
+                    {% comment %} End post {% endcomment %}
+                {% endfor %}
+            </ul>
+            <div class="list-comment-container" id="containerComment">
+                <div class="list-comment">
+                    <div class="close-comment">
+                        <button id="cancelButton" onclick="cancelComment()"><i class="fa-solid fa-rectangle-xmark"></i></button>
+                    </div>
+                  <section class="gradient-custom">
+                    <div class="container-comment" style="display: block;">
+                        <h4>Comments</h4>
+                        <div class="col" id="allCommentOfPostId">
+                            {% comment %} List Comments {% endcomment %}
                         </div>
                     </div>
-                {% endfor %}
+                  </section>
+                </div>
+              </div>
             {% else %}
-                <h4>Lỗi tài khoản âhah</h4>
+                <h3 style="padding: 20px 20px 20px 20px;">Người này hiện chưa có bài viết nào!</h3>
             {% endif %}
             <!-- End listpost -->
         </div>

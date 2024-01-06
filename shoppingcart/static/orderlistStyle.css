@@ -1,5 +1,4 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
@@ -23,7 +22,7 @@ body {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     background-color: #b3e0ff;
-    padding: 15px;
+    padding: 10px;
   }
 
   .store-info {
@@ -31,13 +30,20 @@ body {
     align-items: center;
   }
 
-  .store-info img {
-    max-width: 50px;
-    max-height: 50px;
-    margin-right: 10px;
-    border-radius: 50%;
+  .avatar-manager {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
   }
 
+.avatar-manager img {
+    max-width: 100%;
+    max-height: 100%; /* Ảnh tự động điều chỉnh kích thước */
+    display: block; /* Để tránh các không gian trống xung quanh ảnh */
+    margin: auto; /* Căn giữa ảnh bên trong div */
+}
   .store-info h3 {
     margin: 0;
     color: #333;
@@ -51,7 +57,7 @@ body {
   }
 
   .pending {
-    color: #ff8c00;
+    color: #ff9900;
   }
 
   .paid {
@@ -66,7 +72,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 7px;
     border: 1px solid #ddd;
     padding: 10px;
     border-radius: 4px;
@@ -74,8 +80,8 @@ body {
   }
 
   .product-item img {
-    max-width: 70px;
-    max-height: 70px;
+    max-width: 65px;
+    max-height: 65px;
     margin-right: 15px;
     border-radius: 4px;
   }
@@ -98,7 +104,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 20px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     background-color: #ffccbc;
@@ -118,4 +124,10 @@ body {
 
   .action-buttons button:hover {
     background-color: #333;
+  }
+
+  .action-buttons h4 {
+    padding: 9.2px 0;
+    display: inline;
+    margin-right: 10px;
   }

@@ -22,7 +22,7 @@ def viewShoppingCart(request):
     if request.user.is_authenticated:
         #Tài khoản đang đăng nhập hệ thống
         acc = Account.objects.get(user_ptr=request.user)
-        user_cart_items = CartItem.objects.filter(account= acc)
+        user_cart_items = CartItem.objects.filter(account= acc).order_by('-id')
         #Tạo danh sách products theo cửa hàng
         items_in_cart = dict()
         for item in user_cart_items:
@@ -144,8 +144,9 @@ class Payment(View):
 # Xóa bill và các order liên quan ở database
 def cancelPayment(request, bill_id):
     bill = Bill.objects.get(pk = bill_id)
-    bill.delete()
-    return redirect('shoppingcart:shoppingCart')
+    bill.status = "DeclineByUser"
+    bill.save()
+    return redirect('shoppingcart:orderList')
 
 # Xem danh sách đơn hàng đã đặt
 class OrderList(View):

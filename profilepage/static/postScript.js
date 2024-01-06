@@ -1,95 +1,3 @@
-{% extends "common/layout.html" %}
-{% load static %}
-{% block content %}
-    <div class="posts">
-        <div class="post-list">
-            <ul>
-                {% for item in info %}
-                <li class="item">
-                    <div class="info">
-                        <a href="{% url 'profilepage:profilePage' item.post.account.id%}">
-                            <img src="{{item.author.avatar.url}}" alt="{{item.post.account.username}}" class="avatar">
-                        </a>
-                        <h3><strong>{{item.author.name}}</strong></h3>
-                        <h6>Time: <strong>{{item.post.time}}</strong></h6>
-                        <p>
-                        {% if item.post.provider %}
-                            Đang ở: <a href="{% url 'profilepage:profilePage' item.post.provider.account.id%}"><strong>{{item.post.provider.name}}</strong></a>
-                        {% else %}
-                            {% if item.post.ward and item.post.district and item.post.city%}
-                                <i class="fa-solid fa-location-dot"></i>
-                                    {{item.post.ward}} - {{item.post.district}} - {{item.post.city}} ({{item.post.address}})
-                            {% endif %}
-                        {% endif %}
-                        </p>
-                    </div>
-                    <h3><strong>{{item.post.title}}</strong></h3>
-                    <p style="white-space: pre-line;">{{item.post.content}}</p>
-
-                    {% if item.img|length > 0 %}
-                    <div class="post-photo">
-                        {% for image in item.img %}
-                        <img src="{{image.img.url}}" alt="Post 1" class="photo">
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    <div class="post-actions">
-                        <!-- LIKE -->
-                        {% if item.userLike %}
-                        <button value="true" onclick="likeAction(event, {{item.post.id}})" style="background-color: #f00;">
-                        {% else %}
-                        <button value="false" onclick="likeAction(event, {{item.post.id}})">
-                        {% endif %}
-                            <big id="{{item.post.id}}_like">{{item.post.like}} </big>
-                            <i class="far fa-thumbs-up"></i>
-                        </button>
-                        <!-- Comment -->
-                        <button onclick="showComment(event, {{ item.post.id }})">
-                            <big id="{{item.post.id}}_commentNum">{{item.post.commentNum}} </big>
-                            <i class="far fa-comment"></i>
-                        </button>
-                        <!-- Heart -->
-                        <i class="fa-regular fa-heart"></i>
-                    </div>
-
-                    <div class="post-comment">
-                        <img src="{{user.avatar.url}}" alt="" class="avatar">
-                        <input type="text" placeholder="Viết bình luận ..." class="comment" id="{{item.post.id}}_comment">
-                        <button class="sendCmt" onclick="insertComment(event, {{item.post.id}})"> Gửi</button>
-                    </div>
-                    {% comment %} ----------Comments----------- {% endcomment %}
-                </li>
-                {% endfor %}
-            </ul>
-            <!-- Hidden: click để hiển thị comment-->
-            {% include "listComment.html" %}
-
-            <!-- Hidden: click để hiển thị chi tiết bài viết khi tìm kiếm-->
-            <div class="list-comment-container" id="containerPost">
-                <div class="detail-post">
-                  <button id="cancelButton" onclick="cancelDetailPost()" class="btn btn-secondary mt-2 float-end"><i class="fa-solid fa-xmark"></i></button>
-                  <div id="showADetailPost">
-
-                  </div>
-                </div>
-            </div>
-        </div>
-
-        {% comment %} -------------------------------Searching------------------------------- {% endcomment %}
-        <div class="searching">
-            <div class="search-container">
-                <label for="search">Search: </label>
-                <input type="search" id="searchPosts" name="search" placeholder="Tìm kiếm ở đây...">
-                <button onclick="search_post(event)">Tìm kiếm</button>
-            </div>
-
-            <div class="result-search" id = 'resultPostSearch'>
-
-            </div>
-        </div>
-    </div>
-    <script>
         function likeAction(event, postId) {
             const button = event.currentTarget;
             const likeElement = document.getElementById(postId + "_like");
@@ -113,10 +21,6 @@
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             xhr.send(JSON.stringify({ like: newLike}));
         }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<script>
     function insertComment(event, postId){
         const inputCmt = document.getElementById(postId + "_comment");
         const contentCmd = inputCmt.value;
@@ -156,24 +60,20 @@
                 // Thêm các comment mới vào containerComment
                 comments.forEach(function(comment) {
                     var commentHTML = `
-                        <div id="comment_${comment.id}" class="d-flex flex-start mt-4">
+                        <div id="comment_${comment.id}" class="comment">
                             <a href="/profile/${comment.authorId}">
-                            <img class="rounded-circle shadow-1-strong me-3"
-                            src="${comment.img}" alt="avatar" width="65"
-                            height="65" />
+                                <img class="avatar-comment" src="${comment.img}" alt="avatar"/>
                             </a>
-                            <div class="flex-grow-1 flex-shrink-1">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                <p class="mb-1">
-                                    ${comment.name} <span class="small"> <i class="fa-solid fa-clock"></i> ${formatTime(comment.time)}</span>
-                                </p>
-                                <button onclick="deleleCmt(event, ${comment.id})"><i class="fa-solid fa-xmark"></i> </button>
+                            <div class="comment-main-container">
+                                <div class="comment-main">
+                                    <p class="mb-1">
+                                    <b>${comment.name}</b> <span class="small"> <i class="fa-solid fa-clock"></i> ${formatTime(comment.time)}</span>
+                                    </p>
+                                    <button onclick="deleleCmt(event, ${comment.id})"><i class="fa-solid fa-xmark"></i> </button>
                                 </div>
-                                <p class="small mb-0">
+                                <p class="comment-content">
                                 ${comment.content}
                                 </p>
-                            </div>
                             </div>
                         </div>
                     `;
@@ -225,65 +125,6 @@
         //const formattedTime = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
         const formattedTime = `${date} ${time}`;
         return formattedTime;
-    }
-</script>
-
-<script>// Tìm kiếm bài viết
-    function search_post(event){
-        var searchElement = document.getElementById("searchPosts");
-        var searchKey = searchElement.value;
-        $.ajax({
-            url: `/postspage/search/`,
-            type: 'POST',
-            data: {'searchKey': searchKey},  // Truyền id của dữ liệu cần xóa
-            success: function(response) {
-                var resultSearchElement = document.getElementById("resultPostSearch");
-                resultSearchElement.innerHTML = '';
-
-                dataSearch = response.dataSearch;
-                dataSearch.forEach(function (post){
-                    var resultElement1 = `
-                        <div class="result">
-                            <a href="/profile/${post.authorId}">
-                                <img src="${post.avatar}" alt="User 1" class="avatar">
-                            </a>
-                            <div class="info">
-                                <h5><strong>${post.name}</strong></h5>
-                                <p>Tiêu đề:
-                                    <strong class="titleLink" onclick = "showDetailPosts(event, ${post.id} )">${post.title}</strong>
-                                </p>
-                                <div class="groupInResult">
-                                    <i class="fa-solid fa-location-dot"></i>
-                    `;
-
-                    var address;
-                    if( post.provider){
-                        address = `
-                                    <a href="/profile/${post.provider.id}"><p>${post.provider.name}</p></a>
-                        `;
-                    }
-                    else{
-                        address = `
-                                    <p>${post.address}</p>
-                        `;
-                    }
-                    var resultElement2 = `
-                                </div>
-                                <div class="groupInResult">
-                                    <i class="fa-solid fa-thumbs-up"> ${post.like} </i>
-                                    <i class="fa-solid fa-comment"> ${post.cmt} </i>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    resultSearchElement.innerHTML += (resultElement1 + address + resultElement2);
-
-                })
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
     }
 
     function showDetailPosts(event, postId ){
@@ -352,5 +193,7 @@
         var containerComment = document.getElementById('containerPost');
         containerComment.style.display = 'none'; // hoặc 'block' tùy thuộc vào yêu cầu của bạn
     }
-</script>
-{% endblock %}
+  function cancelComment(){
+    var containerComment = document.getElementById('containerComment');
+    containerComment.style.display = 'none'; // hoặc 'block' tùy thuộc vào yêu cầu của bạn
+  }
