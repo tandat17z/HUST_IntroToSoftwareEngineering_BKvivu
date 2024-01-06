@@ -90,7 +90,7 @@ def chatPageDefault(request, acc_id):
             'user1' : user1,
             'all_user': list_all_user
         }
-        return render(request, "chat_base.html", context)
+        return render(request, "chat/chat_base.html", context)
     
 def chatPage(request, acc_id, user_id):
     if request.method == 'GET': 
@@ -132,7 +132,7 @@ def chatPage(request, acc_id, user_id):
             'message' : message, 
             'all_user': list_all_user
         }
-        return render(request, "chat.html", context)
+        return render(request, "chat/chat.html", context)
 #send message
 def save_message(request, acc_id, user_id):
     if request.method == 'POST':

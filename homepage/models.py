@@ -77,7 +77,6 @@ class Sharer(models.Model):
 
     def __str__(self):
         return f"{self.account}"
-    
     # def save(self, *args, **kwargs):
     #     # Kiểm tra và xóa ảnh cũ (nếu có)
     #     if self.pk:
