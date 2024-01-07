@@ -11,7 +11,7 @@
                 <a href="{% url 'profilepage:profilePage' shop.account.id%}"><img src="{{shop.avatar.url}}" alt="" class="avatar" ></a>
                 <div class="restaurant-info">
                     <h4><strong>{{shop.name}}</strong></h4>
-                    <h6><i class="fa-solid fa-star"> </i>   4.5</h6>
+                    <h6><i class="fa-solid fa-star"> </i>   {{shop.avgStar}}</h6>
                     <h6><i class="fa-solid fa-location-dot"></i> {{shop.ward}} - {{shop.district}} - {{shop.city}} </h6>
                     <h6><i class="fa-solid fa-clock"></i> {{shop.t_open}} - {{shop.t_closed}}</h6>
                 </div>

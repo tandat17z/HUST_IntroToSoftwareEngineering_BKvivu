@@ -1,0 +1,103 @@
+{% extends "settingspage/base.html" %}
+{% load static %}
+
+{% block bills%}
+<div style="display: flex;">
+<div style="position: fixed; align-items: center; justify-content: center; display: flex; flex-direction: column; z-index: 1000;" >
+<label for="choices">Select Mode</label>
+    <select id="choices" name="choices" style="height: 50px; width: 70px;">
+        <option value="Waiting">Waiting</option>
+        <option value="Accept">Accept</option>
+        <option value="Decline">Decline</option>
+        <option value="DeclineByUser">DeclineByUser</option>
+        <option value="Timeout">Timeout</option>
+    </select>
+<button id="getDataButton" style="height: 50px; width: 50px;">Lọc</button>
+</div>
+
+<div class="container" style="margin-left: 20%;">
+
+<ul>
+    {% for bill in bills %}
+        {% if bill.status == data_from_js %}
+        <li>
+            <i style="color: red; font-weight: bold; font-size: large;">{{bill.time}}</i>
+            Xem chi tiết đơn hàng &#8681;
+            <p style="font-weight: bold;">Status : 
+
+                {% if bill.status == "Accept" %}
+                <i style="color:green">{{bill.status}}</i>
+                &#10004;
+                {% else %}
+                <i style="color:red">{{bill.status}}</i>
+                <i>
+                    {% if bill.status == "Decline" %}
+                    &#10006;
+                    {% elif bill.status == "Waiting" %}
+                    &#10227;
+                    {% elif bill.status == "DeclineByUser" %}
+                    <p style="color : red; font-weight: bold;">Người dùng đã hủy đơn hàng.</p>
+                    {% elif bill.status == "Timeout" %}
+                    <p style="color : purple; font-weight: bold;">Thời gian chờ thanh toán đã hết.</p>
+                    {% endif %}
+                </i>
+                {% endif %}
+            </p>
+            <a style="text-decoration: none;" href="{% url 'settingspage:viewBill' bill.id %}"><button>Details</button></a>
+            
+        </li>
+        {% endif %}
+        
+        
+    {% endfor %} 
+</ul>
+</div>
+<script>
+    defaultValue = "{{data_from_js}}";
+    var dataSelector = document.getElementById('choices');
+    var defaultOption = dataSelector.querySelector('option[value="' + defaultValue + '"]');
+    if (defaultOption) {
+        defaultOption.selected = true;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+    var getDataButton = document.getElementById('getDataButton');
+
+    getDataButton.addEventListener('click', function() {
+        var dataFromJavaScript = document.getElementById('choices').value;
+        window.location.href = window.location.pathname + '?selectedData=' + encodeURIComponent(dataFromJavaScript);
+        // fetch("{% url 'settingspage:billsPage' %}", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //         'X-CSRFToken': getCookie('csrftoken')
+        //     },
+        //     body: 'data_from_js=' + encodeURIComponent(dataFromJavaScript),
+        // });
+        // .then(response => response.json())
+        // .then(data => {
+        //     // window.location.hred = 'settings/billsPage';
+        // })
+        // .catch(error => console.error('Error:', error));
+
+    });
+
+    // function getCookie(name) {
+    //     var cookieValue = null;
+    //     if (document.cookie && document.cookie !== '') {
+    //         var cookies = document.cookie.split(';');
+    //         for (var i = 0; i < cookies.length; i++) {
+    //             var cookie = cookies[i].trim();
+    //             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+    //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     return cookieValue;
+    // }
+});
+
+</script>
+</div>
+{% endblock%}

@@ -12,13 +12,15 @@
                         </a>
                         <h3><strong>{{item.author.name}}</strong></h3>
                         <h6>Time: <strong>{{item.post.time}}</strong></h6>
-                        <p>
+
                         {% if item.post.provider %}
                             Đang ở: <a href="{% url 'profilepage:profilePage' item.post.provider.account.id%}"><strong>{{item.post.provider.name}}</strong></a>
                         {% else %}
                             {% if item.post.ward and item.post.district and item.post.city%}
                                 <i class="fa-solid fa-location-dot"></i>
-                                    {{item.post.ward}} - {{item.post.district}} - {{item.post.city}} ({{item.post.address}})
+                                    {{item.post.ward}} - {{item.post.district}} - {{item.post.city}}
+                                <div style="display: flex;justify-content: center;">({{item.post.address}})
+                                </div>
                             {% endif %}
                         {% endif %}
                         </p>

@@ -30,7 +30,7 @@
         xhr.open("POST", `/postspage/insert_comment/${postId}/`, true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send(JSON.stringify({comment: contentCmd}));
-        alert("Comment thành công rồi nhé");
+        alert("Đã comment thành công");
 
         // Tăng _commentNum
         const cmtNum = document.getElementById(postId + "_commentNum");

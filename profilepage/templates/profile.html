@@ -139,7 +139,7 @@
                                     {% if user.account.role == 'sharer' %}
                                     <form action="{% url 'shoppingcart:addItem' product.id %}" method="post">
                                         {% csrf_token %}
-                                        <button class="buy" type="submit">
+                                        <button onclick=actionBuy() class="buy" type="submit">
                                             <i class="fa-solid fa-circle-plus"></i>
                                         </button>
                                     </form>
@@ -154,4 +154,9 @@
             </div>
         </div>
     </div>
+    <script>
+        function actionBuy(){
+            alert("Sản phẩm đã được thêm vào giỏ hàng");
+        }
+    </script>
     {% endblock buttom_profile %}

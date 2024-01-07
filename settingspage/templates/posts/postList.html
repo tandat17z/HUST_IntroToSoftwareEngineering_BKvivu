@@ -7,18 +7,18 @@
 {% endblock css %}
 
 {% block post%} 
-<h1>Bài viết của bạn</h1>
+<h1 style="text-align: center; margin-top: 50px;">Bài viết của bạn</h1>
 <ul>
     {% for post in postList %}
     
     <li id="post_{{post.id}}">
         <div class="date">
-            <h3>Mar<br><span>06</span></h3>
+            <h2>{{post.time.date}}</h2>
         </div>
         <div class="info">
             <div class="time">
                 <i class="fa-solid fa-clock"></i>
-                <p>5.pm</p>
+                <p>{{post.time.time}}</p>
             </div>
             <div class="shop">
                 <i class="fa-solid fa-shop"></i>
@@ -26,7 +26,7 @@
             </div>
             <div class="location">
                 <i class="fa-solid fa-location-dot"></i>
-                <a href="#"><p>{{post.ward}} - {{post.district}} - {{post.city}} ({{post.address}})</p></a>
+                <a href="#"><p>{{post.ward}} - {{post.district}} - {{post.city}} <br>({{post.address}})</p></a>
             </div>
             <div class="title">
                 <i class="fa-solid fa-bars-staggered"></i>
@@ -37,7 +37,7 @@
                 <i class="fa-solid fa-comment"></i> <p>{{post.commentNum}}</p>
             </div>
             <div class="action-product">
-                <a class="edit-product">
+                <a class="edit-product" href="{% url 'settingspage:testEditPost' post.id %}">
                     <div>
                         <i class="fa-solid fa-pen" aria-hidden="true"></i>
                     </div>

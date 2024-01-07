@@ -77,7 +77,6 @@ class Sharer(models.Model):
 
     def __str__(self):
         return f"{self.account}"
-
     # def save(self, *args, **kwargs):
     #     # Kiểm tra và xóa ảnh cũ (nếu có)
     #     if self.pk:
@@ -136,6 +135,7 @@ class Manager(models.Model):
             words = unidecode(self.name.lower()).split()
             self.name_stripped = ' '.join(words)
         super().save(*args, **kwargs)
+        
     # def save(self, *args, **kwargs):
     #     # Kiểm tra và xóa ảnh cũ (nếu có)
     #     if self.pk:
