@@ -8,8 +8,6 @@
     <script src="https://kit.fontawesome.com/bc4d8a1311.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'headerStyle.css' %}">
     <link rel="stylesheet" href="{% static 'paymentStyle.css' %}">
-    <script src="{% static 'paymentScript.js' %}"></script>
-
 </head>
 <body>
 <!-- Header -->
@@ -71,6 +69,7 @@
         </form>
     </div>
     <div class="container-right flex ">
+        <h3 id="countdown"></h3>
         <h2 class="text-qr">Đơn hàng của bạn tại <a href="{% url 'profilepage:profilePage' manager.account.id%}"><b>{{manager.name}}</b></a> bao gồm:</h2>
         <div class="list-order flex">
             {% for order in bill.order_set.all %}
@@ -136,5 +135,32 @@
     </footer>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+{% comment %} -----Thời gian thanh toán -------- {% endcomment %}
+    <script>
+        let timeRemaining = {{ time_remaining }};
+        // Hàm cập nhật thời gian
+        function updateCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+
+            const displayMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+            const displaySeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+
+            // Hiển thị thời gian còn lại
+            countdownElement.textContent = `Thời gian thanh toán còn lại: ${displayMinutes}:${displaySeconds}`;
+            timeRemaining--;// Giảm thời gian
+            if (timeRemaining >= 0) {
+                setTimeout(updateCountdown, 1000);
+            } else {
+                alert("Đơn hàng tự động hủy vì quá hạn thanh toán!");
+                const bill_id = {{bill.id}};
+                const timeoutPaymentUrl = `/shoppingcart/timeoutpayment/${bill_id}/`;
+                const absolutePaymentUrl = window.location.origin + timeoutPaymentUrl;
+                window.location.href = absolutePaymentUrl;
+            }
+        }
+        document.addEventListener('DOMContentLoaded', updateCountdown);
+    </script>
 </body>
 </html>

@@ -70,6 +70,8 @@
           <div class="order-status">
             {% if bill.status == "Waiting" %}
                 <h4 class="pending">Chờ xác nhận</h4>
+            {% elif bill.status == "Timeout" %}
+              <h4 class="cancelled">Quá hạn thanh toán</h4>
             {% elif bill.status == "DeclineByUser" %}
                 <h4 class="cancelled">Đã hủy</h4>
             {% elif bill.status == "Decline" %}

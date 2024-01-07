@@ -75,8 +75,12 @@ a:hover{
     border-radius: 20px;
     background-color: #fff;
 }
+#countdown{
+    color: red;
+    margin: 15px 15px 0;
+}
 .container-right h2{
-    margin-left: 15px;
+    margin: 10px 15px;
 }
 .list-order{
     flex-direction: column;

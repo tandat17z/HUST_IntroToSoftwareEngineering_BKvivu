@@ -77,7 +77,7 @@ class Sharer(models.Model):
 
     def __str__(self):
         return f"{self.account}"
-    
+
     # def save(self, *args, **kwargs):
     #     # Kiểm tra và xóa ảnh cũ (nếu có)
     #     if self.pk:
@@ -130,6 +130,9 @@ class Manager(models.Model):
         avg_star = StarVote.objects.filter(manager=self).aggregate(Avg('stars'))['stars__avg']
         self.avgStar = avg_star if avg_star else 0.0
 
+    def save(self, *args, **kwargs):
+        self.updateAvgStar()
+        super().save(*args, **kwargs)
     # def save(self, *args, **kwargs):
     #     # Kiểm tra và xóa ảnh cũ (nếu có)
     #     if self.pk:
@@ -197,7 +200,7 @@ class Product(models.Model):
 
 class Bill(models.Model):
     STATUS = [
-        
+
     ]
     acc = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, verbose_name='Người mua')
     provider = models.ForeignKey(Manager, on_delete=models.SET_NULL, null=True)

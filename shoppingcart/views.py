@@ -15,6 +15,7 @@ from collections import defaultdict
 from .models import *
 from .forms import *
 from homepage.models import *
+from django.utils import timezone
 
 
 #Shopping Cart
@@ -119,11 +120,14 @@ class Payment(View):
         bill = Bill.objects.get(pk = bill_id)
         manager = bill.provider
         form_pay = BillForm(instance= bill)
+        # Thời hạn thanh toán còn lại
+        time_remaining = int(((bill.time + timezone.timedelta(minutes=10)) - timezone.now()).total_seconds())
         context = {
             'acc' : acc,
             'bill' : bill,
             'form_pay' : form_pay,
-            'manager' : manager
+            'manager' : manager,
+            'time_remaining' : time_remaining
         }
         return render(request, 'shoppingcart/paymentPage.html', context)
     def post(self, request, bill_id):
@@ -148,12 +152,23 @@ def cancelPayment(request, bill_id):
     bill.save()
     return redirect('shoppingcart:orderList')
 
+def timeoutPayment(request, bill_id):
+    bill = Bill.objects.get(pk = bill_id)
+    bill.status = "Timeout"
+    bill.save()
+    return redirect('shoppingcart:orderList')
+
 # Xem danh sách đơn hàng đã đặt
 class OrderList(View):
     def get(self, request):
         if request.user.is_authenticated:
             _acc = Account.objects.get(user_ptr=request.user)
             listbills = Bill.objects.filter(acc = _acc).order_by('-time')
+            for bill in listbills:
+                # Kiểm tra nếu bill không có img và đã quá 10 phút
+                if not bill.img and (timezone.now() - bill.time).total_seconds() > 600:
+                    bill.status = "Timeout"
+                    bill.save()
             productsOfBill = OrderedDict()
             for _bill in listbills:
                 orders = Order.objects.filter(bill = _bill)
