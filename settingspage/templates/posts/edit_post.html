@@ -53,7 +53,6 @@
                     <div>
                         <p style="color: blue; font-weight: bold; font-size: 20px; ">Change: </p>
                         <input type="file" name="{{form.prefix}}-img" accept="image/*" id="id_{{form.prefix}}-img" onchange="setImage({{form.prefix}})">
-                        
                     </div>
                      {% if form.instance.isDelete == False%}
                     <a href="{% url 'settingspage:testDeleteImagePost' post.id form.instance.id %}" onclick="deleteImagePost({{post.id}}, {{form.instance.id}})" style="color: red; font-weight: bold; text-decoration: none; font-size: large;" ><i style="font-size: 30px; margin-top: 40px;" class="fas fa-trash" ></i></a>

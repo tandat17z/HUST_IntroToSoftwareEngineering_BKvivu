@@ -15,15 +15,6 @@ urlpatterns = [
     path('posts/edit/<int:postId>/testDeleteImagePost/<int:imageId>', views.testDeleteImagePost, name='testDeleteImagePost'),
     path('posts/edit/<int:postId>/testRecoverDelete/', views.testRecoverDelete, name="testRecoverDelete"),
 
-
-    # path('posts/', views.postPage, name='postPage'),
-    # path('posts/changePost/<int:postId>', views.changePost, name='changePost'),
-    # path('posts/addPost', views.addPost, name='addPost'),
-    # path('posts/deletePost/<int:postId>', views.deletePost, name='deletePost'),
-    # path('posts/changePost/<int:postId>/deleteImagePost/<int:imageId>', views.deleteImagePost, name='deleteImagePost'),
-    # path('posts/changePost/<int:postId>/unDelete/<int:imageId>', views.unDelete, name='unDelete'),
-    
-
     path('product/', views.ProductManager, name='product'),
     path('product/add', views.CreateProduct.as_view(), name='addProduct'),
     path('product/delete/<int:product_id>', views.deleteProduct, name='deleteProduct'),
@@ -38,7 +29,5 @@ urlpatterns = [
 
     path('statistics/', views.statisticsPage, name='statisticsPage'),
 
-    # path('test', views.test, name='test'),
-    # path('test/addPosts', views.testCreatePosts, name='testCreatePosts'),
     
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_URL)
