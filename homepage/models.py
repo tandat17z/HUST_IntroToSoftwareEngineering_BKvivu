@@ -129,7 +129,7 @@ class Manager(models.Model):
         avg_star = StarVote.objects.filter(manager=self).aggregate(Avg('stars'))['stars__avg']
         self.avgStar = avg_star if avg_star else 0.0
 
-    # def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
     #     # Kiểm tra và xóa ảnh cũ (nếu có)
     #     if self.pk:
     #         try:
@@ -151,15 +151,15 @@ class Manager(models.Model):
         #x     self.rank = 0
 
         # Gọi hàm tính sao trung bình để cập nhật avgStar
-        # self.updateAvgStar()
+        self.updateAvgStar()
 
         # bỏ dấu của name để phục vụ tính năng tìm kiếm
-        # if self.name:
-        #     words = unidecode(self.name.lower()).split()
-        #     self.name_stripped = ' '.join(words)
+        if self.name:
+            words = unidecode(self.name.lower()).split()
+            self.name_stripped = ' '.join(words)
 
         # Gọi hàm save của lớp cha (object)
-        # super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 class Product(models.Model):
     TYPES = [

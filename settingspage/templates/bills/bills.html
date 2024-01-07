@@ -10,6 +10,7 @@
         <option value="Accept">Accept</option>
         <option value="Decline">Decline</option>
         <option value="DeclineByUser">DeclineByUser</option>
+        <option value="Timeout">Timeout</option>
     </select>
 <button id="getDataButton" style="height: 50px; width: 50px;">Lọc</button>
 </div>
@@ -33,8 +34,11 @@
                     {% elif bill.status == "Waiting" %}
                     &#10227;
                     {% elif bill.status == "DeclineByUser" %}
-                    <p style="color : red; font-weight: bold;">Người dùng đã hủy đơn hàng</p>
+                    <p style="color : red; font-weight: bold;">Khách hàng đã hủy đơn hàng</p>
+                    {% elif bill.status == "Timeout" %}
+                    <p style="color: red; font-weight: bold;">Đang chờ khách hàng thanh toán</p>
                     {% endif %}
+
                 </i>
             </p>
             <a style="text-decoration: none;" href="{% url 'settingspage:viewBill' bill.id %}"><button>Details</button></a>
@@ -60,36 +64,7 @@
     getDataButton.addEventListener('click', function() {
         var dataFromJavaScript = document.getElementById('choices').value;
         window.location.href = window.location.pathname + '?selectedData=' + encodeURIComponent(dataFromJavaScript);
-        // fetch("{% url 'settingspage:billsPage' %}", {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //         'X-CSRFToken': getCookie('csrftoken')
-        //     },
-        //     body: 'data_from_js=' + encodeURIComponent(dataFromJavaScript),
-        // });
-        // .then(response => response.json())
-        // .then(data => {
-        //     // window.location.hred = 'settings/billsPage';
-        // })
-        // .catch(error => console.error('Error:', error));
-
     });
-
-    // function getCookie(name) {
-    //     var cookieValue = null;
-    //     if (document.cookie && document.cookie !== '') {
-    //         var cookies = document.cookie.split(';');
-    //         for (var i = 0; i < cookies.length; i++) {
-    //             var cookie = cookies[i].trim();
-    //             if (cookie.substring(0, name.length + 1) === (name + '=')) {
-    //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     return cookieValue;
-    // }
 });
 
 </script>
