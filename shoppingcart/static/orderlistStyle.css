@@ -1,0 +1,133 @@
+body {
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+
+  .order-container {
+    width: 70%;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    background-color: #e3f2fd;
+  }
+
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background-color: #b3e0ff;
+    padding: 10px;
+  }
+
+  .store-info {
+    display: flex;
+    align-items: center;
+  }
+
+  .avatar-manager {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+  }
+
+.avatar-manager img {
+    max-width: 100%;
+    max-height: 100%; /* Ảnh tự động điều chỉnh kích thước */
+    display: block; /* Để tránh các không gian trống xung quanh ảnh */
+    margin: auto; /* Căn giữa ảnh bên trong div */
+}
+  .store-info h3 {
+    margin: 0;
+    color: #333;
+  }
+
+  .order-status {
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-left: auto; /* Di chuyển thanh trạng thái đơn hàng về phía bên phải */
+  }
+
+  .pending {
+    color: #ff9900;
+  }
+
+  .paid {
+    color: #4caf50;
+  }
+
+  .cancelled {
+    color: #f44336;
+  }
+
+  .product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+  }
+
+  .product-item img {
+    max-width: 65px;
+    max-height: 65px;
+    margin-right: 15px;
+    border-radius: 4px;
+  }
+
+  .product-details {
+    flex-grow: 1;
+  }
+
+  .product-details h4 {
+    margin: 0;
+    color: #333;
+  }
+
+  .product-details p {
+    margin: 5px 0;
+    color: #777;
+  }
+
+  .order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background-color: #ffccbc;
+    padding: 15px;
+  }
+
+  .action-buttons button {
+    padding: 12px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    background-color: #f44336; /* Màu đỏ */
+  }
+
+  .action-buttons button:hover {
+    background-color: #333;
+  }
+
+  .action-buttons h4 {
+    padding: 9.2px 0;
+    display: inline;
+    margin-right: 10px;
+  }

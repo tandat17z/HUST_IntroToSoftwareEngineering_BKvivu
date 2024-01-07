@@ -1,0 +1,361 @@
+/* ----------posts----------- */
+.posts {
+    display: flex;
+  }
+
+  button{
+    background-color: #fff;
+    border: none;
+  }
+
+
+  .sendCmt{
+    font-size: 18px;
+    margin-left: 25px;
+  }
+  /* -----------post-list------------ */
+  .post-list{
+    flex: 2;
+    height: calc(100vh - 80px);
+    padding-top: 30px;
+    overflow-y: scroll
+  }
+
+  ul {
+    list-style-type: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0px 40px 40px 40px;
+  }
+
+  .item {
+    margin: 15px 40px 0px 40px;
+    padding: 30px 30px 30px 30px;
+    border: 2px solid #ccc;
+    border-radius: 30px;
+    background-color: #fff;
+  }
+
+  #showADetailPost{
+    margin:0px 15px 0px 15px;
+  }
+  .item .avatar, #showADetailPost .avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: auto 10px;
+  }
+
+  .info-post {
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .avatar-post{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+  .info-post h6{
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .info-post a{
+    text-decoration: none;
+  }
+
+  #showADetailPost .info-post{
+    margin: 10px auto 0px 20px;
+  }
+  .info-post img {
+    float: left;
+    margin-right: 10px;
+  }
+
+  .item p, #showADetailPost p {
+    text-align: justify;
+    margin-bottom: 15px;
+  }
+
+  .item .post-photo, #showADetailPost .post-photo {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .item .post-photo img, #showADetailPost .post-photo img{
+    margin-left: 5px;
+    max-width: 100%;
+    height: 150px;
+    border-radius: 15px;
+  }
+
+  .item .post-actions, #showADetailPost .post-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+
+  .item .post-comment, #showADetailPost .post-comment{
+    display: flex;
+    align-items: center;
+  }
+
+  .item .avatar, #showADetailPost .post-comment .avatar{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    float: left;
+  }
+
+  .item .post-comment input, #showADetailPost .post-comment input{
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-top: 25px;
+    padding: 10px;
+    width: 80%;
+  }
+  .list-comment-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+    display: none;
+    z-index: 10;
+}
+
+.list-comment {
+    background-color: azure;
+    width: 800px;
+    height: 500px;
+    overflow-y: scroll;
+    align-items: center;
+    justify-content: center;
+}
+
+.gradient-custom {
+    padding: 48px 70px;
+    background: #4facfe;
+    background: -webkit-linear-gradient(to right, #00f2fe, #4facfe);
+    background: linear-gradient(to right, #00f2fe, #4facfe);
+}
+
+.containerPost{
+    display:none;
+    z-index: 1;
+}
+.detail-post{
+    background-color: azure;
+    width: 800px;
+    height: 600px;
+    overflow-y: scroll;
+    align-items: center;
+    justify-content: center;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* header */
+.header {
+  height: 80px;
+  background-color: #bcd3a3d2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.header img {
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 50%;
+  float: left;
+}
+
+.header h1 {
+  line-height: 60px;
+  text-align: center;
+  margin-left: 80px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #333;
+  padding: 10px;
+  border: 1px solid #b09e9e;
+  border-radius: 15px;
+}
+
+.nav a:hover {
+  background-color: #ccc;
+}
+
+/* .container */
+.container {
+  display: flex;
+  height: calc(100vh - 80px);
+}
+
+.content .col {
+  width: 50%;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+.content .post {
+  display: flex;
+  flex-direction: column; /* cac post se sx theo cot */
+  gap: 20px; /* khoang cac giua cac post */
+}
+
+.post-content {
+  margin: 10px;
+  padding: 20px 20px 30px 20px;
+  border: 2px solid #ccc;
+  border-radius: 30px;
+}
+
+.post-content .sharer-info {
+  padding: 10px;
+}
+
+.post-content .provider-info {
+  margin: 10px 10px 0px 10px;
+}
+
+.post h3 {
+  font-size: 16px;
+  font-weight: lighter;
+  margin-bottom: 5px;
+}
+
+.post-content p {
+  padding: 10px;
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.post-photo {
+  width: 100%;
+  height: 200px;
+}
+
+.post .post-photo img {
+  width: calc(33% - 8px);
+  height: 200px;
+  border-radius: 10%;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.post-actions i {
+  margin: auto 0;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.post-content .avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 10px;
+}
+
+.post-comment {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 20px 0px 40px;
+}
+.post-comment input {
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-top: 5px;
+  padding: 10px;
+}
+
+.comment-input{
+  margin: auto;
+}
+
+/* Comment Style */
+.list-comment-container{
+
+}
+.close-comment{
+  display: flex;
+  flex-direction: row-reverse;
+}
+#cancelButton{
+  padding: 0;
+  color: red;
+}
+#cancelButton:hover{
+  color: rgb(227, 78, 78);
+}
+#cancelButton:active{
+}
+#cancelButton i{
+  font-size: 40px;
+  padding:0;
+}
+.container-comment{
+
+  background-color: white;
+}
+.container-comment h4{
+  font-size: 20px;
+  padding: 15px 0;
+  text-align: center;
+}
+
+.comment{
+  display: flex;
+  margin: 24px 15px;
+}
+.avatar-comment{
+  border-radius: 50%;
+  margin-right: 20px;
+  width: 65px;
+  height: 65px;
+}
+.comment-main-container{
+  width: 100%;
+}
+.comment-main{
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.comment-main h5{
+  display: inline;
+  margin: 0;
+}
+.comment-content{
+
+}

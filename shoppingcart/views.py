@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 import json
+from collections import OrderedDict
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
@@ -14,6 +15,7 @@ from collections import defaultdict
 from .models import *
 from .forms import *
 from homepage.models import *
+from django.utils import timezone
 
 
 #Shopping Cart
@@ -21,7 +23,7 @@ def viewShoppingCart(request):
     if request.user.is_authenticated:
         #Tài khoản đang đăng nhập hệ thống
         acc = Account.objects.get(user_ptr=request.user)
-        user_cart_items = CartItem.objects.filter(account= acc)
+        user_cart_items = CartItem.objects.filter(account= acc).order_by('-id')
         #Tạo danh sách products theo cửa hàng
         items_in_cart = dict()
         for item in user_cart_items:
@@ -118,11 +120,14 @@ class Payment(View):
         bill = Bill.objects.get(pk = bill_id)
         manager = bill.provider
         form_pay = BillForm(instance= bill)
+        # Thời hạn thanh toán còn lại
+        time_remaining = int(((bill.time + timezone.timedelta(minutes=10)) - timezone.now()).total_seconds())
         context = {
             'acc' : acc,
             'bill' : bill,
             'form_pay' : form_pay,
-            'manager' : manager
+            'manager' : manager,
+            'time_remaining' : time_remaining
         }
         return render(request, 'shoppingcart/paymentPage.html', context)
     def post(self, request, bill_id):
@@ -138,10 +143,47 @@ class Payment(View):
             'form_pay' : form_pay,
             'manager' : manager
         }
-        return HttpResponse("Hóa đơn thanh toán của bạn đang được xác nhận")
+        return redirect('shoppingcart:orderList')
 
 # Xóa bill và các order liên quan ở database
 def cancelPayment(request, bill_id):
     bill = Bill.objects.get(pk = bill_id)
-    bill.delete()
-    return redirect('shoppingcart:shoppingCart')
+    bill.status = "DeclineByUser"
+    bill.save()
+    return redirect('shoppingcart:orderList')
+
+def timeoutPayment(request, bill_id):
+    bill = Bill.objects.get(pk = bill_id)
+    bill.status = "Timeout"
+    bill.save()
+    return redirect('shoppingcart:orderList')
+
+# Xem danh sách đơn hàng đã đặt
+class OrderList(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            _acc = Account.objects.get(user_ptr=request.user)
+            listbills = Bill.objects.filter(acc = _acc).order_by('-time')
+            for bill in listbills:
+                # Kiểm tra nếu bill không có img và đã quá 10 phút
+                if not bill.img and (timezone.now() - bill.time).total_seconds() > 600:
+                    bill.status = "Timeout"
+                    bill.save()
+            productsOfBill = OrderedDict()
+            for _bill in listbills:
+                orders = Order.objects.filter(bill = _bill)
+                productsOfBill[_bill] = []
+                for order in orders:
+                    productsOfBill[_bill].append(order)
+
+
+            context = {
+                'acc' : _acc,
+                'productOfBill' : productsOfBill
+            }
+            return render(request, "shoppingcart/orderlist.html", context)
+        else:
+            return redirect('homepage:loginPage')
+    def post(self, request):
+        pass
+        return HttpResponse("Post Orderlist")

@@ -125,7 +125,7 @@ def generalPage(request):
 
             user.city, user.district, user.ward = getArea(city_id, district_id, ward_id)
 
-            if 'avatar' in request.FILES: 
+            if 'avatar' in request.FILES:
                 user.avatar = request.FILES.get('avatar')
             user.save()
             context = {
@@ -148,7 +148,7 @@ def generalPage(request):
             ward_id = request.POST.get('ward')
 
             user.city, user.district, user.ward = getArea(city_id, district_id, ward_id)
-            if 'avatar' in request.FILES: 
+            if 'avatar' in request.FILES:
                 user.avatar = request.FILES.get('avatar')
             if 'bank' in request.FILES:
                 user.bank = request.FILES.get('bank')
@@ -164,10 +164,10 @@ def generalPage(request):
             }
 
             return render(request, 'general.html', context)
-    if acc.role == 'manager':   
+    if acc.role == 'manager':
         time_open = user.t_open.strftime("%H:%M")
         time_close = user.t_closed.strftime("%H:%M")
-        
+
         context = {
             'role': acc.role,
             'acc': acc,
@@ -190,7 +190,7 @@ def billsPage(request):
     #     acc = Account.objects.get(user_ptr=request.user)
     #     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     #     bills = user.bill_set.all()
-    
+
     #     context = {
     #         "bills" : bills,
     #         "acc" : acc,
@@ -204,6 +204,11 @@ def billsPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     bills = user.bill_set.all()
+    # Cập nhật trạng thái thanh toán nếu quá hạn
+    for bill in bills:
+        if not bill.img and (timezone.now() - bill.time).total_seconds() > 600:
+            bill.status = "Timeout"
+            bill.save()
     selected_data = request.GET.get('selectedData', 'Waiting')
     context = {
         "bills" : bills,
@@ -374,7 +379,7 @@ def unDelete(request, postId, imageId):
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
     except:
         return HttpResponseRedirect(reverse('settingspage:changePost', args=[postId]))
-    
+
 def testPostPage(request):
     acc = Account.objects.get(user_ptr=request.user)
     postList = Post.objects.filter(account= acc)
@@ -413,17 +418,17 @@ def testDeletePost(request, postId):
         post.delete()
         print("đã xóa bài viết")
         return JsonResponse({'success': True})
-    
+
 #Sattistics Page
 def statisticsPage(request):
     acc = Account.objects.get(user_ptr=request.user)
-    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc) 
+    user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     bills = user.bill_set.all()
     monthOfYear = [0]*12
     year = datetime.now().year
     month = datetime.now().month
     total = 0
-    for bill in bills : 
+    for bill in bills :
         if bill.status == 'Accept' and bill.time.year == year :
             month = bill.time.month
             monthOfYear[month-1] += bill.price
@@ -447,7 +452,7 @@ def statisticsPage(request):
             u = Sharer.objects.get(account=u)
             age = u.age
             if age >= 10 and age < 18:
-                age_list[0] += 1        
+                age_list[0] += 1
             elif age >= 18 and age < 30:
                 age_list[1] += 1
             elif age >= 30 and age < 50:

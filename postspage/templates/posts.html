@@ -12,11 +12,11 @@
                         </a>
                         <h3><strong>{{item.author.name}}</strong></h3>
                         <h6>Time: <strong>{{item.post.time}}</strong></h6>
-                        <p> 
+                        <p>
                         {% if item.post.provider %}
                             Đang ở: <a href="{% url 'profilepage:profilePage' item.post.provider.account.id%}"><strong>{{item.post.provider.name}}</strong></a>
                         {% else %}
-                            {% if item.post.ward and item.post.district and item.post.city%}  
+                            {% if item.post.ward and item.post.district and item.post.city%}
                                 <i class="fa-solid fa-location-dot"></i>
                                     {{item.post.ward}} - {{item.post.district}} - {{item.post.city}} ({{item.post.address}})
                             {% endif %}
@@ -25,7 +25,7 @@
                     </div>
                     <h3><strong>{{item.post.title}}</strong></h3>
                     <p style="white-space: pre-line;">{{item.post.content}}</p>
- 
+
                     {% if item.img|length > 0 %}
                     <div class="post-photo">
                         {% for image in item.img %}
@@ -68,24 +68,24 @@
                 <div class="detail-post">
                   <button id="cancelButton" onclick="cancelDetailPost()" class="btn btn-secondary mt-2 float-end"><i class="fa-solid fa-xmark"></i></button>
                   <div id="showADetailPost">
-                    
+
                   </div>
                 </div>
             </div>
         </div>
-        
+
         {% comment %} -------------------------------Searching------------------------------- {% endcomment %}
         <div class="searching">
             <div class="search-container">
                 <label for="search">Search: </label>
-                <input type="search" id="searchPosts" name="search" placeholder="Tìm kiếm ở đây..."> 
+                <input type="search" id="searchPosts" name="search" placeholder="Tìm kiếm ở đây...">
                 <button onclick="search_post(event)">Tìm kiếm</button>
             </div>
 
             <div class="result-search" id = 'resultPostSearch'>
-                
+
             </div>
-        </div> 
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
@@ -161,7 +161,7 @@
         showCmt(postId)
     }
     function showCmt(postId) {
-        // Ngăn chặn hành động mặc định của nút  event.preventDefault(); 
+        // Ngăn chặn hành động mặc định của nút  event.preventDefault();
         const cmtElm = document.getElementById("containerComment");
         console.log("ấn show comment rồi")
         cmtElm.style.display = "flex";
@@ -173,7 +173,7 @@
                 // Xử lý dữ liệu JSON nhận được
                 var comments = response.comments;
                 var containerComment = document.getElementById('allCommentOfPostId');
-                
+
                 // Xóa nội dung cũ trong containerComment
                 containerComment.innerHTML = '';
 
@@ -242,7 +242,7 @@
 
     function formatTime(timeString) {
         // Chuyển đổi chuỗi thời gian sang đối tượng Date
-        
+
         const date = timeString.substring(0, timeString.indexOf('T'));
         const time = timeString.substring(timeString.indexOf('T') + 1, timeString.indexOf('T') + 6);
         // Định dạng lại thời gian theo ý muốn (ví dụ: dd/MM/yyyy HH:mm:ss)
@@ -257,7 +257,7 @@
         var searchElement = document.getElementById("searchPosts");
         var searchKey = searchElement.value;
         $.ajax({
-            url: `/postspage/search/`,  
+            url: `/postspage/search/`,
             type: 'POST',
             data: {'searchKey': searchKey},  // Truyền id của dữ liệu cần xóa
             success: function(response) {
@@ -273,7 +273,7 @@
                             </a>
                             <div class="info">
                                 <h5><strong>${post.name}</strong></h5>
-                                <p>Tiêu đề: 
+                                <p>Tiêu đề:
                                     <strong class="titleLink" onclick = "showDetailPosts(event, ${post.id} )">${post.title}</strong>
                                 </p>
                                 <div class="groupInResult">
@@ -282,26 +282,26 @@
 
                     var address;
                     if( post.provider){
-                        address = ` 
+                        address = `
                                     <a href="/profile/${post.provider.id}"><p>${post.provider.name}</p></a>
                         `;
                     }
                     else{
-                        address = ` 
+                        address = `
                                     <p>${post.address}</p>
                         `;
                     }
-                    var resultElement2 = ` 
+                    var resultElement2 = `
                                 </div>
                                 <div class="groupInResult">
-                                    <i class="fa-solid fa-thumbs-up"> ${post.like} </i> 
-                                    <i class="fa-solid fa-comment"> ${post.cmt} </i> 
+                                    <i class="fa-solid fa-thumbs-up"> ${post.like} </i>
+                                    <i class="fa-solid fa-comment"> ${post.cmt} </i>
                                 </div>
                             </div>
                         </div>
                     `;
                     resultSearchElement.innerHTML += (resultElement1 + address + resultElement2);
-                    
+
                 })
             },
             error: function(error) {
@@ -312,7 +312,7 @@
 
     function showDetailPosts(event, postId ){
         $.ajax({
-            url: `/postspage/search/detail/${postId}/`,  
+            url: `/postspage/search/detail/${postId}/`,
             type: 'POST',
             success: function(response) {
                 var containerPost = document.getElementById("containerPost");
@@ -327,7 +327,7 @@
                         </a>
                         <h3><strong>${detailPost.authorName}</strong></h3>
                         <h6>Time: <strong> ${formatTime(detailPost.time)}</strong></h6>
-                        <p> 
+                        <p>
                         Đang ở: <a href=""><strong>${detailPost.provider}</strong></a>
                         </p>
                     </div>

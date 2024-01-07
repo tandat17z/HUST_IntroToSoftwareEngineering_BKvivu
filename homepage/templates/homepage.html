@@ -19,7 +19,7 @@
     </a>
 </div>
 <a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user">
-    <p style="font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
+    <p style="width: 125px; overflow: hidden; font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
     <img class="img-user" src = "{{user.avatar.url}}"/>
 </a>
 
@@ -203,11 +203,10 @@
             <div class="box-right">
                 <div class="searchcontent">
                     <p>Tìm kiếm nhanh:</p>
-                    <button class="btnTag" name="bundau" onclick="searchTag(event, 'bun dau')">Bún đậu</button>
-                    <button class="btnTag" name="comrang" onclick="searchTag(event, 'com rang')">Cơm rang</button>
-                    <button class="btnTag" name="nemnuong" onclick="searchTag(event, 'nem nuong')">Nem nướng</button>
-                    <button class="btnTag" name="congvien"  onclick="searchTag(event, 'cong vien')">Công viên</button>
-                    <button class="btnTag" name="baotang" onclick="searchTag(event, 'bao tang')">Bảo tàng</button>
+                    <button class="btnTag" name="food" onclick="searchTag(event, 'food')">Đồ ăn</button>
+                    <button class="btnTag" name="drink" onclick="searchTag(event, 'drink')">Đồ uống</button>
+                    <button class="btnTag" name="entertainment"  onclick="searchTag(event, 'entertainment')">Giải trí</button>
+                    <button class="btnTag" name="service" onclick="searchTag(event, 'service')">Dịch vụ khác</button>
                     <hr>
                 </div>
                 <div class="search">

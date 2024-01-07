@@ -134,6 +134,7 @@ def searchAndFilter(keyword = '',
 
     searchProduct = Product.objects.filter(provider__in=searchShop)
     listShop = searchShop
+    print(listShop)
     # Tìm với từ khóa
     if keyword != '':
         listShop = list()
@@ -141,11 +142,12 @@ def searchAndFilter(keyword = '',
 
         for shop in  searchShop.filter(name_stripped__icontains=keyword).order_by('-avgStar'):
             listShop.append(shop)
+
         for product in searchProduct:
             if product.provider not in listShop:
                 listShop.append(product.provider)
         listShop = sorted(listShop, key=lambda obj: -obj.avgStar)
-
+        print(listShop)
     if type == 'shop':
         return listShop
     else:

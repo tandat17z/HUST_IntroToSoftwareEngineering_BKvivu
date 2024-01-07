@@ -69,8 +69,23 @@ _Đang phát triển_
       - Hiện giao diện **ok**
       - (Đang làm)
 - Profile:
-    - Hiển thị bài viết/ sản phẩm
-    - Vote
+    - Hiển thị thông tin cơ bản
+    - Hiển thị sản phẩm (đối với cửa hàng)
+    - Hiển thị bài viết
+    - Đánh giá cửa hàng:
+      - Hiển thị số sao đã đánh giá cho cửa hàng
+      - Hiển thị số sao của cửa hàng
+- Mua hàng:
+    - Giỏ hàng:
+      - Hiển thị sản phẩm đã thêm vào giỏ hàng theo từng cửa hàng
+      - Tích chọn sản phẩm, số lượng và đặt hàng theo từng cửa hàng
+    - Đơn hàng đã mua:
+      - Hiển thị những đơn hàng đã mua
+      - Thanh toán (nếu chưa thực hiện thanh toán)
+      - Hủy đơn hàng (nếu cửa hàng chưa xác nhận)
+    - Thanh toán đơn hàng:
+      - Hiển thị Mã Qr thanh toán và gửi ảnh thanh toán
+      - Hiển thị cửa hàng, những sản phẩm và số tiền của đơn hàng này
 - settings:
      - Chỉnh sửa thông tin
      - Tạo sản phẩm

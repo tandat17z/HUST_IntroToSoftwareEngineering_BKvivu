@@ -29,10 +29,18 @@ def profilePage(request, acc_id):
             starsvotetarget = voteobj.stars
         except:
             pass
+    # Danh sách những bài viết mà người dùng đã like
+    listPosts = Post.objects.filter(account = target_acc)
+    listPostsLike = []
+    for _posts in listPosts:
+        if UserLike.objects.filter(account= acc, post = _posts):
+            listPostsLike.append(_posts)
     context = {
         'target_user': target_user,
         'user': user,
-        'starsvotetarget': starsvotetarget
+        'starsvotetarget': starsvotetarget,
+        'listPosts': listPosts,
+        'listPostsLike' : listPostsLike
     }
     return render(request, 'profile.html', context)
 
@@ -71,14 +79,14 @@ def logout_view(request):
 
 #Chat
 def chatPageDefault(request, acc_id):
-    if request.method == 'GET': 
+    if request.method == 'GET':
         acc1 = Account.objects.get(user_ptr=request.user)
         user1 = Sharer.objects.get(account= acc1) if acc1.role == 'sharer' else Manager.objects.get(account= acc1)
-        
+
         all_user = Message.objects.filter(
         models.Q(sender=acc1) | models.Q(receiver=acc1)).values('receiver').exclude(receiver=acc1.id).distinct() if acc1.role == 'manager' else Message.objects.filter(
         models.Q(sender=acc1) | models.Q(receiver=acc1)).values('sender').exclude(sender=acc1.id).distinct()
-         
+
         #default : tuong tac 2 chieu roi, i send you , you send me
         list_all_user = []
         for user in all_user:
@@ -91,34 +99,34 @@ def chatPageDefault(request, acc_id):
             'all_user': list_all_user
         }
         return render(request, "chat_base.html", context)
-    
+
 def chatPage(request, acc_id, user_id):
-    if request.method == 'GET': 
+    if request.method == 'GET':
         acc1 = Account.objects.get(user_ptr=request.user)
         acc2 = Account.objects.get(id = user_id)
         user1 = Sharer.objects.get(account= acc1) if acc1.role == 'sharer' else Manager.objects.get(account= acc1)
         user2 = Sharer.objects.get(account= acc2) if acc2.role == 'sharer' else Manager.objects.get(account= acc2)
-        # check if user2 has conversation with user1, if not initialize it 
+        # check if user2 has conversation with user1, if not initialize it
         all_user_filter = Message.objects.filter(
         models.Q(sender=acc1) | models.Q(receiver=acc1)).values('receiver').exclude(receiver=acc1.id).distinct() if acc1.role == 'manager' else Message.objects.filter(
         models.Q(sender=acc1) | models.Q(receiver=acc1)).values('sender').exclude(sender=acc1.id).distinct()
         has = False
         if acc1.role == 'sharer':
             for user in all_user_filter:
-                if user['sender'] == user_id : 
+                if user['sender'] == user_id :
                     has = True
-            if not has: 
+            if not has:
                 Message.objects.create(content="Xin chào bạn, bạn đang quan tâm đến sản phẩm nào của chúng mình ạ.", sender=acc2, receiver=acc1, time=timezone.datetime.now())
-        
+
         message = Message.objects.filter(
-            (models.Q(receiver=acc1) & models.Q(sender=acc2)) | 
+            (models.Q(receiver=acc1) & models.Q(sender=acc2)) |
             (models.Q(receiver=acc2) & models.Q(sender=acc1))).order_by('time')
-        
+
         all_user = Message.objects.filter(
         models.Q(sender=acc1) | models.Q(receiver=acc1)).values('receiver').exclude(receiver=acc1.id).distinct() if acc1.role == 'manager' else Message.objects.filter(
         models.Q(sender=acc1) | models.Q(receiver=acc1)).values('sender').exclude(sender=acc1.id).distinct()
-        
-  
+
+
         list_all_user = []
         for user in all_user:
             add_user = Manager.objects.get(pk=user['sender']) if acc1.role == 'sharer' else Sharer.objects.get(pk=user['receiver'])
@@ -129,7 +137,7 @@ def chatPage(request, acc_id, user_id):
             'user_id': user_id,
             'user1' : user1,
             'user2' : user2,
-            'message' : message, 
+            'message' : message,
             'all_user': list_all_user
         }
         return render(request, "chat.html", context)
@@ -153,7 +161,7 @@ def get_message(request, acc_id, user_id):
     user1 = Sharer.objects.get(account= acc1) if acc1.role == 'sharer' else Manager.objects.get(account= acc1)
     user2 = Sharer.objects.get(account= acc2) if acc2.role == 'sharer' else Manager.objects.get(account= acc2)
     messages = Message.objects.filter(
-            (models.Q(receiver=acc1) & models.Q(sender=acc2)) | 
+            (models.Q(receiver=acc1) & models.Q(sender=acc2)) |
             (models.Q(receiver=acc2) & models.Q(sender=acc1))).order_by('time')
     message_list = list(messages.values())
     user1_dic = {
@@ -167,5 +175,5 @@ def get_message(request, acc_id, user_id):
         'success': True,
         'user1': user1_dic,
         'user2': user2_dic,
-    } 
+    }
     return JsonResponse(data)
