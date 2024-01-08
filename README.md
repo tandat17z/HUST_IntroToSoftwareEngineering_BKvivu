@@ -1,4 +1,4 @@
-# BKvivu
+ # BKvivu - Nền tảng chia sẻ trải nghiệm và quản lý dịch vụ
 # Hust_AIproject_PathfindingProblem
 - [Giới thiệu](#angel-giới-thiệu)
 - [Cài đặt](#gear-cài-đặt)
@@ -6,7 +6,7 @@
 - [Cách sử dụng](#anchor-cách-sử-dụng)
 - [Tính năng](#anger-tính-năng)
 ## :angel: Giới thiệu
-Đây là một project ...
+Đây là một project mà teams phát triển đã làm trong quá trình học môn Nhập môn công nghệ phần mềm tại HUST. Dự án được triển khai trên web dựa vào framework `django`. Hệ thống sẽ giúp cho người dùng dựa trên 2 vai trò chính (người chia sẻ, người quản lý). Người chia sẻ có thể tìm kiếm, mua và chia sẻ những trải nghiệm dịch vụ của mình thông qua tạo bài viết... .Còn đối với người quản lý, nền tảng sẽ cung cấp tính năng để người dùng quảng bá dịch vụ của mình cũng như kinh doanh, thống kê doanh thu....
 ## :gear: Cài đặt
 (Đảm bảo rằng bạn đã thiết lập môi trường để chạy python và git)
 
