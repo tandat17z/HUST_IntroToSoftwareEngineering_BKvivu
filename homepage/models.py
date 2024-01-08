@@ -158,15 +158,15 @@ class Manager(models.Model):
         #x     self.rank = 0
 
         # Gọi hàm tính sao trung bình để cập nhật avgStar
-        # self.updateAvgStar()
+        self.updateAvgStar()
 
         # bỏ dấu của name để phục vụ tính năng tìm kiếm
-        # if self.name:
-        #     words = unidecode(self.name.lower()).split()
-        #     self.name_stripped = ' '.join(words)
+        if self.name:
+            words = unidecode(self.name.lower()).split()
+            self.name_stripped = ' '.join(words)
 
         # Gọi hàm save của lớp cha (object)
-        # super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 class Product(models.Model):
     TYPES = [
