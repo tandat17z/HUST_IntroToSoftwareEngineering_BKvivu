@@ -127,7 +127,7 @@ class Manager(models.Model):
     def updateAvgStar(self):
         self.num_votes = self.starvote_set.count()
         avg_star = StarVote.objects.filter(manager=self).aggregate(Avg('stars'))['stars__avg']
-        self.avgStar = avg_star if avg_star else 0.0
+        self.avgStar = round(avg_star,1) if avg_star else 0.0
 
     def save(self, *args, **kwargs):
         self.updateAvgStar()

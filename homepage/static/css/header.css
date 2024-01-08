@@ -59,7 +59,8 @@ button{
 .header .right{
     display: flex;
     margin-right: 50px;
-    justify-content: center;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .header .right a{

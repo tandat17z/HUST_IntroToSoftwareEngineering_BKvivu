@@ -34,25 +34,14 @@ def viewShoppingCart(request):
                 items_in_cart[manager] = [item,]
 
         context = {
+            'acc': acc,
+            'user': Manager.objects.get(account=acc) if acc.role == 'manager' else Sharer.objects.get(account=acc),
             'items_in_cart' : items_in_cart,
         }
         return render(request, 'shoppingcart/shoppingCart.html', context)
     else :
         messages.error("Bạn cần đăng nhập để thực hiện thao tác này")
         return redirect('homepage:loginPage')
-
-# Thêm sản phẩm vào giỏ hàng
-def addItemToCart(request, product_id):
-    # acc, user : Bản thân người đang đăng nhập
-    acc = Account.objects.get(user_ptr=request.user)
-    product = Product.objects.get(pk = product_id)
-    target_acc_id = product.provider.account.id
-    # Lấy (Tạo) cartItem
-    cart_item, created = CartItem.objects.get_or_create(account=acc, product=product)
-    if not created:
-        cart_item.quantity += 1
-        cart_item.save()
-    return redirect('profilepage:profilePage', acc_id=target_acc_id)
 
 # Cập nhật, xóa dữ liệu sản phẩm trong giỏ hàng
 @csrf_exempt
@@ -124,6 +113,7 @@ class Payment(View):
         time_remaining = int(((bill.time + timezone.timedelta(minutes=10)) - timezone.now()).total_seconds())
         context = {
             'acc' : acc,
+            'user': Manager.objects.get(account=acc) if acc.role == 'manager' else Sharer.objects.get(account=acc),
             'bill' : bill,
             'form_pay' : form_pay,
             'manager' : manager,
@@ -179,6 +169,7 @@ class OrderList(View):
 
             context = {
                 'acc' : _acc,
+                'user': Manager.objects.get(account=_acc) if _acc.role == 'manager' else Sharer.objects.get(account=_acc),
                 'productOfBill' : productsOfBill
             }
             return render(request, "shoppingcart/orderlist.html", context)
@@ -187,3 +178,19 @@ class OrderList(View):
     def post(self, request):
         pass
         return HttpResponse("Post Orderlist")
+ 
+@csrf_exempt
+def addToCart(request):
+    if request.method == "POST":
+        itemId = request.POST.get('itemId')
+        print(itemId)
+        # acc, user : Bản thân người đang đăng nhập
+        acc = Account.objects.get(user_ptr=request.user)
+        product = Product.objects.get(pk = itemId)
+
+        # Lấy (Tạo) cartItem
+        cart_item, created = CartItem.objects.get_or_create(account=acc, product=product)
+        if not created:
+            cart_item.quantity += 1
+            cart_item.save()
+        return JsonResponse({'success': True})

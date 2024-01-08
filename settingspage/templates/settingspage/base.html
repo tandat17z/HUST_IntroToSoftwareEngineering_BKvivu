@@ -17,15 +17,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 <body>
-
-    {% for message in messages %}
-        <div id="alert-message" js-message="{{message}}"></div>
-    {% endfor %}
-    <script>
-        var message = document.getElementById('alert-message').getAttribute('js-message');
-        alert(message);
-    </script>
-
     <header>
         <a href="{% url 'profilepage:profilePage' acc.id%}" class="profile_link" style="position:absolute; left:10px; color:white; text-decoration:none; border:2px solid white; padding:5px">
             ← back to profile

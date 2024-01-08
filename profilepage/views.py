@@ -36,6 +36,7 @@ def profilePage(request, acc_id):
         if UserLike.objects.filter(account= acc, post = _posts):
             listPostsLike.append(_posts)
     context = {
+        'acc': acc,
         'target_user': target_user,
         'user': user,
         'starsvotetarget': starsvotetarget,

@@ -8,13 +8,6 @@
     <link rel="stylesheet" href="{% static 'css_settings/register.css'%}">
 </head>
 <body>
-    {% for message in messages %}
-        <div id="alert-message" js-message="{{message}}"></div>
-    {% endfor %}
-    <script>
-        var message = document.getElementById('alert-message').getAttribute('js-message');
-        alert(message);
-    </script>
     <div class="header_fixed">
         <header class="header_settings">
             <a href="{% url 'profilepage:profilePage' acc.id%}" class="profile_link" style="position:absolute; left:10px; color:white; text-decoration:none; border:2px solid white; padding:5px">
@@ -111,7 +104,7 @@
     </div>
     
     <div class="form-group">
-      <button type="submit" id="submit" class="submit-button">
+      <button type="submit" id="submit" class="submit-button" onclick="alertSuccess()">
         Submit
       </button>
     </div>
@@ -262,7 +255,7 @@
       </div>
   
       <div class="form-group">
-        <button type="submit" id="submit" class="submit-button">
+        <button type="submit" id="submit" class="submit-button" onclick="alertSuccess()">
           Submit
         </button>
         
@@ -345,6 +338,10 @@
         };
         reader.readAsDataURL(selectedFile);
       }
+    }
+
+    function alertSuccess(){
+      alert("Cập nhật thông tin thành công");
     }
   </script>
 </body>

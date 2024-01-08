@@ -101,6 +101,7 @@ def getDataProduct(searchProduct):
     dataProduct = list()
     for product in searchProduct:
         dataProduct.append({
+            'id': product.id,
             'name': product.name,
             'provider': {
                 'id': product.provider.account.id,
@@ -164,7 +165,8 @@ def homePage(request):
     # list top cửa hàng-------------- 
     top_shops = Manager.objects.filter(avgStar__isnull=False).order_by('-avgStar')[:5]
     # list top posts-------------
-    posts = Post.objects.filter().order_by('-like')
+    posts = Post.objects.filter().order_by('-like')[:5]
+
     info = list()
     for p in posts:
         author = Sharer.objects.get(account= p.account) if p.account.role == 'sharer' else Manager.objects.get(account= p.account)

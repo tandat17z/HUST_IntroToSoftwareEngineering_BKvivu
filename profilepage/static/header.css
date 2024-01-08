@@ -1,0 +1,321 @@
+button{
+    cursor: pointer;
+}
+
+a{
+    text-decoration: none;
+}
+.header{
+    width: 100%;
+    display: flex;
+    height: 80px;
+    margin: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #cae0d8;
+}
+.header .left{
+    width: 400px;
+    margin-left:30px;
+}
+.header .left .logo{
+    display: flex;
+    margin-left: -20px;
+}
+.header .left .logo img{
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+}
+
+.header .left .logo .description {
+    margin: auto 0px auto 10px;
+    font-size: 18px;
+}
+.header .description h2, .header .description p{
+    margin: 0px;
+}
+
+.header .center{
+    width: 400px;
+}
+.header .center form{
+    display: flex;
+    position: relative;
+    width: 100%;
+}
+.header .center input{
+    width: 90%;
+    padding: 10px;
+    border-radius: 10px 0px 0px 10px;
+    font-size: 18px;
+    border-right: none;
+    margin-right: 0px;
+}
+.header .center button{
+    font-size: 18px;
+    border-radius: 0px 10px 10px 0px;
+    padding: 0px 15px;
+    background-color: #fff;
+}
+
+.header .right{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.header .right a{
+    float: left;
+    width: 130px;
+    text-align: center;
+    padding: 14px 10px 10px 0px;
+    font-size: 18px;
+    position: relative;
+}
+.header .right .subnav{
+    display: none;
+    position: absolute;
+    top: 60px;
+    width: 130px;
+    flex-direction: column;
+    background-color: #f1f1f1;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.226);
+    z-index: 1;
+}
+.header .right .subnav a {
+    /* display: block; */
+    color: rgb(0, 0, 0);
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 18px;
+    text-align: left;
+}
+.header .right a:hover {
+    /* background-color: #eee; */
+    border-radius: 15px;
+    /* color: black; */
+}
+.header .right .subnav a:hover {
+    background-color: #ddd;
+    border-radius: 0px;
+    /* color: black; */
+}
+
+
+.header .right .login{
+    display: none;
+    position:absolute;
+    top: 60px;
+    z-index: 2;
+}
+
+.header .right .login form {
+    background-color: #fff;
+    box-sizing: border-box;
+    width: 260px;
+    margin: 0;
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+    padding-bottom: 40px;
+    border-radius: 3px;
+}
+
+.header .right .login form h1 {
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.header .right .login input {
+    margin: 40px 25px;
+    width: 200px;
+    display: block;
+    border: none;
+    padding: 10px 0;
+    border-bottom: solid 1px #1abc9c;
+    transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, #1abc9c 4%);
+    background-position: -200px 0;
+    background-size: 200px 100%;
+    background-repeat: no-repeat;
+    color: #0e6252;
+}
+
+.header .right .login input:focus,
+.header .right .login input:valid {
+    box-shadow: none;
+    outline: none;
+    background-position: 0 0;
+}
+
+.header .right .login input:focus::-webkit-input-placeholder,
+.header .right .login input:valid::-webkit-input-placeholder {
+    color: #1abc9c;
+    font-size: 11px;
+    transform: translateY(-12px);
+    visibility: visible !important;
+}
+
+.header .right .login button {
+    background-color: #1abc9c;
+    border: none;
+    cursor: pointer;
+    width: 200px;
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+    margin-left: 25px;
+    padding: 5px 15px 5px 15px;
+    border-radius: 15px;
+    font-size: 15px;
+    font-weight: bold;
+}
+.header .right .login button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* --------------- signup -------------- */
+.header .right .sign-up-btn {
+    background-color: #3aa86c;
+    border: none;
+    cursor: pointer;
+    width: 200px;
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+    padding: 12px 20px 10px 20px;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.header .right .sign-up-btn:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+}
+/* Full-width input fields */
+#-box-signup input[type=text], #-box-signup input[type=password] {
+width: 100%;
+padding: 10px;
+margin: 0px 0 22px 0;
+display: inline-block;
+border: none;
+background: #f1f1f1;
+}
+
+/* Add a background color when the inputs get focus */
+#-box-signup input[type=text]:focus, #-box-signup input[type=password]:focus {
+background-color: #ddd;
+outline: none;
+}
+
+/* Set a style for all buttons */
+#-box-signup .container button{
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+#-box-signup .container button:hover {
+    opacity:1;
+}
+
+/* Extra styles for the cancel button */
+#-box-signup .cancelbtn {
+    width: 100px;
+    opacity: 0.8;
+    background-color: #f44336;
+}
+#-box-signup .signupbtn {
+    width: 100px;
+    opacity: 0.9;
+    font-weight: bold;
+    background-color: #0fed9c;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+#-box-signup .cancelbtn, #-box-signup .signupbtn {
+    float: left;
+    width: 50%;
+}
+
+/* Add padding to container elements */
+    #-box-signup .container {
+    padding: 16px;
+}
+
+/* The Modal (background) */
+#-box-signup .modal {
+display: none; /* Hidden by default */
+position: fixed; /* Stay in place */
+z-index: 10; /* Sit on top */
+left: 0;
+top: 0;
+width: 100%; /* Full width */
+height: 100%; /* Full height */
+overflow: auto; /* Enable scroll if needed */
+background-color: #474e5d;
+padding-top: 50px;
+}
+
+/* Modal Content/Box */
+#-box-signup .modal-content {
+background-color: #fefefe;
+margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+border: 1px solid #888;
+width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Style the horizontal ruler */
+#-box-signup hr {
+border: 1px solid #f1f1f1;
+margin-bottom: 25px;
+}
+
+/* The Close Button (x) */
+#-box-signup .close {
+position: absolute;
+right: 35px;
+top: 15px;
+font-size: 40px;
+font-weight: bold;
+color: #f1f1f1;
+}
+
+#-box-signup .close:hover,
+#-box-signup .close:focus {
+color: #f44336;
+cursor: pointer;
+}
+
+/* Clear floats */
+#-box-signup .clearfix::after {
+content: "";
+clear: both;
+display: table;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+    #-box-signup .cancelbtn, #-box-signup .signupbtn {
+    width: 100%;
+}
+}
+
+.header .right .img-user{
+    margin-top: -10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+.header .right .logo-user{
+    display: flex;
+    /* justify-content: center; */
+}
+
+#btnLogin:disabled, #btnRegister:disabled{
+    background-color: #dddddd; /* Màu nền xám */
+    color: #aaaaaa; /* Màu chữ xám */
+    cursor: not-allowed; /* Đổi hình con trỏ thành "not-allowed" */
+}

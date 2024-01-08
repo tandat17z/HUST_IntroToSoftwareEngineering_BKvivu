@@ -87,9 +87,8 @@
         <div class="address-info">
             <a href="#map">
                 <i class="fa-solid fa-location-dot"></i>
-                <h4>{{ target_user.address }}</h4>
                 {% if target_user.ward %}
-                <h4>, {{target_user.ward}} </h4>
+                <h4>{{target_user.ward}} </h4>
                 {% endif %}
                 {% if target_user.district %}
                 <h4>, {{target_user.district}} </h4>
@@ -97,6 +96,7 @@
                 {% if target_user.city %}
                 <h4>, {{target_user.city}}</h4>
                 {% endif %}
+                <h4 style="display: flex;justify-content: flex-end;">({{ target_user.address }})</h4>
             </a>
         </div>
     </div>
@@ -137,12 +137,9 @@
                                     </div>
 
                                     {% if user.account.role == 'sharer' %}
-                                    <form action="{% url 'shoppingcart:addItem' product.id %}" method="post">
-                                        {% csrf_token %}
-                                        <button onclick=actionBuy() class="buy" type="submit">
+                                        <button onclick=addToCart({{product.id}}) class="buy" type="submit">
                                             <i class="fa-solid fa-circle-plus"></i>
                                         </button>
-                                    </form>
                                     {% endif %}
                                 </div>
                             </div>
@@ -158,5 +155,20 @@
         function actionBuy(){
             alert("Sản phẩm đã được thêm vào giỏ hàng");
         }
+            function addToCart(itemId){
+                $.ajax({
+                    url: `/shoppingcart/addToCart/`,
+                    type: `POST`,
+                    data: {
+                        'itemId': itemId,
+                    },
+                    success: function(response) {
+                        alert("Đã thêm vào giỏ hàng");
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
     </script>
     {% endblock buttom_profile %}

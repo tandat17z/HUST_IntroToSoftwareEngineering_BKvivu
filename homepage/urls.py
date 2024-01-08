@@ -10,5 +10,4 @@ urlpatterns = [
 
     path('searchTag/<str:tag>/', views.searchTag, name='searchTag'),
     path('search/', views.mainSearch, name='mainSearch'),
-    
 ]

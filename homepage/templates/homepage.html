@@ -4,12 +4,22 @@
 {% comment %} block của avatar trên header {% endcomment %}
 {% block info_user%}
 <div id="-box-nav">
-    <a href="" id="community"><i class="fa fa-fw fa-users"></i> Giới thiệu </a>
+    <a href="{% url 'postspage:posts' %}" id="community"><i class="fa fa-fw fa-users"></i>Khám phá</a>
     <div class="subnav">
         <a href="{% url 'postspage:restaurants' %}">Cửa hàng</a>
         <a href="{% url 'postspage:posts' %}">Bài chia sẻ</a>
     </div>
 </div>
+{% if acc.role == 'sharer' %}
+<div class="setting_icon">
+    <a href="{% url 'shoppingcart:shoppingCart'  %}" class="setting">
+        <div >
+            <i class="fa-solid fa-cart-shopping"></i>
+        <span>Cart</span>
+        </div>
+    </a>
+</div>
+{% endif %}
 <div class="setting_icon">
     <a href="{% url 'settingspage:settingsPage' %}" class="setting">
         <div >
@@ -18,8 +28,7 @@
         </div>
     </a>
 </div>
-<a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user">
-    <p style="width: 125px; overflow: hidden; font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
+<a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user" style="width: auto;">
     <img class="img-user" src = "{{user.avatar.url}}"/>
 </a>
 
@@ -197,7 +206,7 @@
                     </div>
                     <hr>
                     <div class="cost">
-                        <button>{{item.price}} VND</button>
+                        <button onclick = "addToCart({{item.id}})">{{item.price}} VND</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -351,7 +360,7 @@
                     </div>
                     <hr>
                     <div class="cost">
-                        <button>${product.price} VND</button>
+                        <button onclick="addToCart(${product.id})">${product.price} VND</button>
                     </div>
                 </div>
                 `;
@@ -402,6 +411,23 @@
                         lengthData = response.dataProduct.length;
                     }
                     if(lengthData === 0) alert("Không tìm kiếm được gì!!");
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+    <script>
+        function addToCart(itemId){
+            $.ajax({
+                url: `/shoppingcart/addToCart/`,
+                type: `POST`,
+                data: {
+                    'itemId': itemId,
+                },
+                success: function(response) {
+                    alert("Đã thêm vào giỏ hàng");
                 },
                 error: function(error) {
                     console.log(error);

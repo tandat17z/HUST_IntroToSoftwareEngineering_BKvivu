@@ -12,48 +12,56 @@
 </head>
 <body>
   <!-- Header -->
-<div class="topnav">
-  <a href="{% url 'homepage:homePage' %}" class="logo-home">
-      <div class="logo">
-          <img src="" alt="">
-      </div>
-      <div class="app-name">
-          <h4>BKvivu</h4>
-          <span class="">Nền tảng chia sẻ dịch vụ hàng đầu</span>
-      </div>
-  </a>
-  <div class="option">
-      <a href="{% url 'profilepage:profilePage' user.account.id%}" class="my-profile">
-          <div>
-          <i class="fa-solid fa-user"></i>
-          <span>My Profile</span>
+  <div class="header" style="padding: 0px 35px;">
+    <div class="left">
+        <a href="{% url 'homepage:homePage' %}" class="logo">
+            <img src="{% static 'images/logo.png' %}"  alt="logo">
+            <div class = "description">
+                <h2><strong>BKvivu</strong></h2>
+                <p style="width: 400px;">Nền tảng chia sẻ dịch vụ hàng đầu</p>
+            </div> 
+        </a>
+    </div>
+        
+    <div class="right">
+        <div id="-box-nav">
+            <a href="{% url 'postspage:posts' %}" id="community"><i class="fa fa-fw fa-users"></i>Khám phá</a>
+            <div class="subnav">
+                <a href="{% url 'postspage:restaurants' %}">Cửa hàng</a>
+                <a href="{% url 'postspage:posts' %}">Bài chia sẻ</a>
+            </div>
+        </div>
+        {% if acc.role == 'sharer' %}
+          <div class="setting_icon">
+              <a href="{% url 'shoppingcart:shoppingCart'  %}" class="setting">
+                  <div >
+                      <i class="fa-solid fa-cart-shopping"></i>
+                  <span>Cart</span>
+                  </div>
+              </a>
           </div>
-      </a>
-
-      <a href="{% url 'settingspage:settingsPage' %}" class="setting">
-          <div >
-          <i class="fa-solid fa-gear"></i>
-          <span>Settings</span>
-          </div>
-      </a>
-      <!-- Shopping Cart Icon-->
-      {% if user.account.role == "sharer" %}
-      <a href="{% url 'shoppingcart:shoppingCart'%}" class="log-out">
-          <div>
-          <i class="fa-solid fa-cart-shopping"></i>
-          <span>Giỏ hàng</span>
-          </div>
-      </a>
-      {% endif %}
-      <!-- Logout -->
-      <a href="{% url 'profilepage:logoutPage'%}" class="log-out">
-          <div>
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span>Log out</span>
-          </div>
-      </a>
-
-  </div>
+          {% endif %}
+        <div class="setting_icon">
+            <a href="{% url 'settingspage:settingsPage' %}" class="setting">
+                <div >
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+                </div>
+            </a>
+        </div>
+        <div class="setting_icon">
+            <a href="/logout/" class="setting">
+                <div>
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Logout</span>
+                </div>
+            </a>
+        </div>
+        <a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user" style="width: auto;">
+            <img class="img-user" src = "{{user.avatar.url}}"/>
+        </a>
+        
+    </div>
 </div>
 {% comment %} Vòng for duyệt tất cả các đơn hàng {% endcomment %}
     {% for bill, orders in productOfBill.items %}
