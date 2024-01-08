@@ -1,23 +1,27 @@
 # BKvivu - Nền tảng chia sẻ trải nghiệm và quản lý dịch vụ
 - [Giới thiệu](#angel-giới-thiệu)
 - [Cài đặt](#gear-cài-đặt)
-- [Quy trình](#airplane-quy-trình)
 - [Cách sử dụng](#anchor-cách-sử-dụng)
-- [Tính năng](#anger-tính-năng)
+- [Tính năng](#anger-tính-năng-chính)
+  
 ## :angel: Giới thiệu
 Đây là một project mà teams phát triển đã thực hiện trong quá trình học môn `Intro to software engineering` tại `HUST`. Dự án được triển khai trên web dựa vào framework `django`. Hệ thống sẽ giúp cho người dùng dựa trên 2 vai trò chính (người chia sẻ, người quản lý). Người chia sẻ có thể tìm kiếm, mua và chia sẻ những trải nghiệm dịch vụ của mình thông qua tạo bài viết... .Còn đối với người quản lý, nền tảng sẽ cung cấp tính năng để người dùng quảng bá dịch vụ của mình cũng như kinh doanh, thống kê doanh thu....
+
 ## :gear: Cài đặt
 (Đảm bảo rằng bạn đã thiết lập môi trường để chạy python và git)
 
-**1. Clone dự án từ GitHub:**
+### 1. Clone dự án từ GitHub:
+- Tải dự án về thiết bị của bạn:
     ```bash
-  git clone https://github.com/tandat17z/HUST_IntroToSoftwareEngineering_BKvivu.git
+    git clone https://github.com/tandat17z/HUST_IntroToSoftwareEngineering_BKvivu.git
     ```
-Tới thư mục làm việc của dự án. Ví dụ:
+- Tới thư mục làm việc của dự án. Ví dụ:
     ```bash
     cd D:\HUST_IntroToSoftwareEngineering_BKvivu
     ```
-**2. Cài đặt môi trường :**
+    
+### 2. Cài đặt môi trường :
+- Dự án cần tới nhiều thư viện liên quan. Hãy dùng lệnh sau để thiết lập môi trường để dự án có thể hoạt động tốt nhất
     ```bash
     pip install -r requirements.txt
     ```
@@ -89,3 +93,5 @@ Tới thư mục làm việc của dự án. Ví dụ:
   - Khi người dùng nhấn vào phần chat trong cửa hàng thì nó sẽ ra phần chat của người đó và người quản lí, còn ấn vào cái chat nổi nằm phía dưới sẽ hiện ra phần chat mặc định của người chia sẻ
   - Đang phát triển thêm chat có kèm hình ảnh (continue)
 
+## :adult: Lời cảm ơn:
+    Cảm ơn bạn đã ghé thăm dự án của chúng tôi. Vì đây là dự án đầu tiên teams nghiên cứu và phát triển nên không thể tránh khỏi những vấn đề. Nếu có bất kì thắc mắc nào, đừng ngần ngại hãy liên hệ với chúng tôi, chúng tôi chắc chắn sẽ trợ giúp bạn. Thanks...
