@@ -5,75 +5,65 @@
 - [Cách sử dụng](#anchor-cách-sử-dụng)
 - [Tính năng](#anger-tính-năng)
 ## :angel: Giới thiệu
-Đây là một project mà teams phát triển đã thực hiện trong quá trình học môn `Intro to software engineering tại `HUST`. Dự án được triển khai trên web dựa vào framework `django`. Hệ thống sẽ giúp cho người dùng dựa trên 2 vai trò chính (người chia sẻ, người quản lý). Người chia sẻ có thể tìm kiếm, mua và chia sẻ những trải nghiệm dịch vụ của mình thông qua tạo bài viết... .Còn đối với người quản lý, nền tảng sẽ cung cấp tính năng để người dùng quảng bá dịch vụ của mình cũng như kinh doanh, thống kê doanh thu....
+Đây là một project mà teams phát triển đã thực hiện trong quá trình học môn `Intro to software engineering` tại `HUST`. Dự án được triển khai trên web dựa vào framework `django`. Hệ thống sẽ giúp cho người dùng dựa trên 2 vai trò chính (người chia sẻ, người quản lý). Người chia sẻ có thể tìm kiếm, mua và chia sẻ những trải nghiệm dịch vụ của mình thông qua tạo bài viết... .Còn đối với người quản lý, nền tảng sẽ cung cấp tính năng để người dùng quảng bá dịch vụ của mình cũng như kinh doanh, thống kê doanh thu....
 ## :gear: Cài đặt
 (Đảm bảo rằng bạn đã thiết lập môi trường để chạy python và git)
 
 **1. Clone dự án từ GitHub:**
   ```bash
-  git clone https://github.com/tandat17z/Hust_AIproject_PathfindingProblem.git
+git clone https://github.com/tandat17z/HUST_IntroToSoftwareEngineering_BKvivu.git
   ```
 Tới thư mục làm việc của dự án. Ví dụ:
   ```bash
-  cd D:\Hust_AIproject_PathfindingProblem
+  cd D:\HUST_IntroToSoftwareEngineering_BKvivu
   ```
 **2. Cài đặt môi trường :**
-
-Dự án cần sử dụng đến nhiều thư viện như:  `folium`, `shapely`, `geopandas`, `django`, .... cụ thể trong file **requirements.txt**<br>
-**HOÀN THÀNH CÀI ĐẶT MÔI TRƯỜNG CHO DỰ ÁN** sau khi thực hiện xong câu lệnh sau.
   ```bash
   pip install -r requirements.txt
   ```
 
-## :airplane: Quy trình
-
 ## :anchor: Cách sử dụng:
-  - Tới thư mục làm việc **website**
-  ```bash
-  cd ../website
-  ```
-  - Khởi chạy máy chủ (được phát triển tích hợp trong `Django`) bằng lệnh dưới đây và ấn vào địa chỉ bên dưới để truy cập web. Giao diện web hiển thị bản đồ khu vực để chúng ta thực hiện các thao tác tiếp theo.
-  ```bash
-  py manage.py runserver
-  ```
-## :anger: Tính năng: 
-_Đang phát triển_
-### Đã hoàn thành
-- HOMEPAGE:
-    - Khi chưa đăng nhập: chỉ hiện slide show + footer không cho sử dụng tính năng nào nữa **ok**
-    - Đăng kí/Đăng nhập: **(ok đã check)**
-        - Đăng nhập thành công: **ok** (đã check đăng nhập sai psw, đăng nhập với tk chưa có)
-        - Đăng nhập thất bại: (alert) **ok**
-        - Đăng kí: **ok**
-          - Các trường hợp đã check: đăng nhập với tk đã tạo; psw khác repsw;
-        - Hiệu ứng: Nhập psw >= 8 mới bấm đc (login + register)
-    - Hiển thị top cửa hàng theo sao: **ok**
-    - Hiển thị product mới theo thời gian: `sắp oke`
-    - Tìm kiếm sản phẩm/dịch vụ: **ok**
-        - Hiển thị mặc định: -> `Sản phẩm` sắp xếp theo like
-        - Tìm kiếm nhanh ở header -> trả ra `sản phẩm` theo từ khóa tìm kiếm (sắp xếp theo thời gian)
-        - Tìm kiếm chuẩn: (phân loại, từ khóa, khu vực, thời gian)
-            - Theo tag: Tìm kiếm `sản phẩm` theo tag đã gán (hoặc chứa từ khóa của tag)
-            - Theo đầy đủ: Tìm kiếm `cửa hàng` (sắp xếp theo vote), tìm kiếm `sản phẩm` (sắp xếp theo mới nhất)
-            - Tìm kiếm theo từng loại khu vực: city, district, ward
-- posts: Có 2 trang: posts (Hiển thị các bài viết), restaurant(Đề xuất các cửa hàng)
-    - posts:
+  - Đầu tiên, bạn cần kết nối hệ thống với cơ sở dữ liệu đã có sẵn (cập nhật cấu trúc cơ sở dữ liệu):
+    ```bash
+    py manage.py makemigrations homepage
+    ```
+    ```bash
+    py manage.py makemigrations
+    ```
+    ```bash
+    py manage.py migrate
+    ```
+  - Khởi chạy máy chủ (được phát triển tích hợp trong `Django`) bằng lệnh dưới đây và ấn vào địa chỉ bên dưới để truy cập web. Đến đây bạn đã có thể trải nghiệm BKvivu
+    ```bash
+    py manage.py runserver
+    ```
+## :anger: Tính năng chính: 
+### HOMEPAGE:
+  - Đăng kí/ Đăng nhập: (bạn cần tạo, nhập mật khẩu >= 8 kí tự)
+  - Phần header
+  - Hiển thị top dịch vụ theo số sao đã được vote
+  - Hiển thị top bài viết có nhiều like nhất
+  - Tìm kiếm sản phẩm/dịch vụ:
+    - Tìm kiếm nhanh tại header: (Nhập từ khóa bạn muốn tìm kiếm và click search, sẽ được chuyển tới mục tìm kiếm)
+    - Tìm kiếm:
+      - Theo tag: chọn lọc (phân loại) và sau đó click vào các tag tương ứng.
+      - Tìm kiếm và lọc: Nhập từ khóa (có thể thêm các thao tác chọn phân loại, chọn khu vực, thời gian) -> sau đó click search.
+    - Kết quả tìm kiếm sẽ được hiển thị bên cạnh, bạn có thể đi tới xem chi tiết hoặc thêm vào giỏ hàng.
+### POSTSPAGE: 
+    - Bài viết:
       - Hiển thị các bài viết theo thời gian
-      - like + comment **ok**
-      - Show các comment, xóa comment (của mình) **ok**
-      - Link trực tiếp tới trang cá nhân **ok**
-      - Tìm kiềm bài viết (đang làm)
+      - Like và comment
+      - Tìm kiếm bài viết
     - restaurant:
-      - Hiện giao diện **ok**
-      - (Đang làm)
-- Profile:
+      - Hiển thị thông tin cơ bản về nơi cung cấp dịch vụ
+### PROFILEPAGE: :
     - Hiển thị thông tin cơ bản
     - Hiển thị sản phẩm (đối với cửa hàng)
     - Hiển thị bài viết
     - Đánh giá cửa hàng:
       - Hiển thị số sao đã đánh giá cho cửa hàng
       - Hiển thị số sao của cửa hàng
-- Mua hàng:
+### SHOPPINGPAGE: 
     - Giỏ hàng:
       - Hiển thị sản phẩm đã thêm vào giỏ hàng theo từng cửa hàng
       - Tích chọn sản phẩm, số lượng và đặt hàng theo từng cửa hàng
@@ -84,7 +74,7 @@ _Đang phát triển_
     - Thanh toán đơn hàng:
       - Hiển thị Mã Qr thanh toán và gửi ảnh thanh toán
       - Hiển thị cửa hàng, những sản phẩm và số tiền của đơn hàng này
-- settings:
+### SETTINGSPAGE: 
      - Chỉnh sửa thông tin
      - Tạo sản phẩm
      - Tạo bài viết
@@ -94,8 +84,7 @@ _Đang phát triển_
     - Product(done- có thể chỉnh lại chút ui)
     - Statistics(có thống kê về doanh số bán được theo tháng trong năm, đang làm thêm về sản phẩm)
     - Post (Chỉnh lại giao diện thêm và chỉnh bài viết cho giống giao diện khi mà bài viết được hiện thị)
-
-- Chat :
+### CHAT: 
     - Chỉ có người chia sẻ mới có thể nhắn với người quản lí
     - Khi người dùng nhấn vào phần chat trong cửa hàng thì nó sẽ ra phần chat của người đó và người quản lí, còn ấn vào cái chat nổi nằm phía dưới sẽ hiện ra phần chat mặc định của người chia sẻ
     - Đang phát triển thêm chat có kèm hình ảnh (continue)
