@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('homepage', '0006_alter_bill_time_alter_comment_time_and_more'),
+        ('homepage', '0005_alter_bill_time_alter_comment_time_and_more'),
     ]
 
     operations = [

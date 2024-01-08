@@ -1,11 +1,46 @@
 {% extends "settingspage/base.html" %}
 {% load static %}
 {% block statistics %} 
+<div style="display: flex; align-items: center; justify-content: center;">
+    <div>
+    <label for="month-select">Month</label>
+    
+    <select style="height: 30px; margin-right: 60px;" name="month-select" id="month-select" onchange="selectMonth()">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>        
+    </select>
+</div>  
+<div>
+    <label for="year-select">Year</label>
+    <select style="height: 30px;" name="year-select" id="year-select" onchange="selectYear()">
+        <option value="2015">2015</option>
+        <option value="2016">2016</option>
+        <option value="2017">2017</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+    </select>
+</div>
+</div>
 <div style="display: flex;">
 <div class="section1">
     <canvas id="myChart" style="width:100%; max-width:600px; align-items: center; margin: 0 auto; "></canvas>
     <div style="text-align: center; align-items: center; justify-content: center;" >
-        <p>Doanh thu tính từ đầu năm <i style="color: blue;font-weight: bold;">{{year}}</i> là : <i style="color: red; font-weight: bold;">{{total}}</i></p>
+        <p>Doanh thu tính từ đầu năm <i style="color: blue;font-weight: bold;">{{year}}</i> là : <i style="color: red; font-weight: bold;">{{total}} đ</i></p>
     </div>
     <div id="myData" data-array="{{ monthOfYear }}"></div>
 
@@ -15,6 +50,7 @@
 </div>
 <div class="section2">
     <div class="table-statistics">
+    
     <p>Danh sách sản phẩm và số lượng bán được trong tháng {{month}} - {{year}}</p>
     <table>
     <tr>
@@ -32,6 +68,20 @@
     </div>
 </div>
 </div>
+<script>
+    defaultValue = "{{month}}";
+    var dataSelector = document.getElementById('month-select');
+    var defaultOption = dataSelector.querySelector('option[value="' + defaultValue + '"]');
+    if (defaultOption) {
+        defaultOption.selected = true;
+    }
+    defaultValue1 = "{{year}}";
+    var dataSelector1 = document.getElementById('year-select');
+    var defaultOption1 = dataSelector1.querySelector('option[value="' + defaultValue1 + '"]');
+    if (defaultOption1) {
+        defaultOption1.selected = true;
+    }
+</script>
 <script>
     const xValues = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const yValues = Array(12).fill(0);
@@ -94,5 +144,17 @@
             }
         }
     });
+</script>
+<script>
+    
+    function selectMonth() {
+        var dataFromJavaScript = document.getElementById('month-select').value;
+        window.location.href = window.location.pathname + '?selectedDataMonth=' + encodeURIComponent(dataFromJavaScript);
+    }
+    
+    function selectYear() {
+        var dataFromJavaScript = document.getElementById('year-select').value;
+        window.location.href = window.location.pathname + '?selectedDataYear=' + encodeURIComponent(dataFromJavaScript);
+    }
 </script>
 {% endblock %}

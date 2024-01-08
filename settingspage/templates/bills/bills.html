@@ -5,14 +5,13 @@
 <div style="display: flex;">
 <div style="position: fixed; align-items: center; justify-content: center; display: flex; flex-direction: column; z-index: 1000;" >
 <label for="choices">Select Mode</label>
-    <select id="choices" name="choices" style="height: 50px; width: 70px;">
+    <select id="choices" name="choices" style="height: 50px; width: 70px;" onchange="selectChoice()">
         <option value="Waiting">Waiting</option>
         <option value="Accept">Accept</option>
         <option value="Decline">Decline</option>
         <option value="DeclineByUser">DeclineByUser</option>
         <option value="Timeout">Timeout</option>
     </select>
-<button id="getDataButton" style="height: 50px; width: 50px;">Lọc</button>
 </div>
 
 <div class="container" style="margin-left: 20%;">
@@ -60,16 +59,10 @@
     if (defaultOption) {
         defaultOption.selected = true;
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-    var getDataButton = document.getElementById('getDataButton');
-
-    getDataButton.addEventListener('click', function() {
+    function selectChoice() {
         var dataFromJavaScript = document.getElementById('choices').value;
         window.location.href = window.location.pathname + '?selectedData=' + encodeURIComponent(dataFromJavaScript);
-    });
-});
-
+    }
 </script>
 </div>
 {% endblock%}

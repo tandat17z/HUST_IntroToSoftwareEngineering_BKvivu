@@ -364,17 +364,17 @@ def testDeletePost(request, postId):
 
 #Sattistics Page
 def statisticsPage(request):
+    month = int(request.GET.get('selectedDataMonth', datetime.now().month))
+    year = int(request.GET.get('selectedDataYear', datetime.now().year))
     acc = Account.objects.get(user_ptr=request.user)
     user = Sharer.objects.get(account= acc) if acc.role == 'sharer' else Manager.objects.get(account= acc)
     bills = user.bill_set.all()
     monthOfYear = [0]*12
-    year = datetime.now().year
-    month = datetime.now().month
     total = 0
     for bill in bills :
         if bill.status == 'Accept' and bill.time.year == year :
-            month = bill.time.month
-            monthOfYear[month-1] += bill.price
+            month1 = bill.time.month
+            monthOfYear[month1-1] += bill.price
             total += bill.price
     listRevenue = json.dumps(monthOfYear)
 
