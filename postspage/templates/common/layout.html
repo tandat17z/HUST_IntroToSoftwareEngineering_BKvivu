@@ -52,8 +52,7 @@
                     </div>
                 </a>
             </div>
-            <a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user">
-                <p style="font-size: 18px; margin: 0px 3px 0px 10px;">{{acc.username}}</p>
+            <a href="{% url 'profilepage:profilePage' acc.id%}" class="logo-user" style="width:auto;">
                 <img class="img-user" src = "{{user.avatar.url}}"/>
             </a>
             
@@ -65,7 +64,7 @@
         {% comment %} ----------Sidebar----------- {% endcomment %}
         <div class="sidebar">
             <a href="{% url 'postspage:posts' %}"><i class="fa-solid fa-pager"> Posts</i></a>
-            <a href="{% url 'postspage:restaurants' %}"><i class="fa-solid fa-shop"> Restaurants</i></a>
+            <a href="{% url 'postspage:restaurants' %}"><i class="fa-solid fa-shop"> Services</i></a>
         </div>
         
         {% comment %} ----------content----------- {% endcomment %}

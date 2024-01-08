@@ -31,7 +31,8 @@
                     {% if item.img|length > 0 %}
                     <div class="post-photo">
                         {% for image in item.img %}
-                        <img src="{{image.img.url}}" alt="Post 1" class="photo">
+                        <a href="{{image.img.url}}"><img src="{{image.img.url}}" alt="Post 1" class="photo"></a>
+                        
                         {% endfor %}
                     </div>
                     {% endif %}
