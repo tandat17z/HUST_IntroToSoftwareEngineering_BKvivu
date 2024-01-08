@@ -30,7 +30,8 @@ def profilePage(request, acc_id):
         except:
             pass
     # Danh sách những bài viết mà người dùng đã like
-    listPosts = Post.objects.filter(account = target_acc)
+    listPosts = Post.objects.filter(account = target_acc).order_by('-time')
+ 
     listPostsLike = []
     for _posts in listPosts:
         if UserLike.objects.filter(account= acc, post = _posts):
